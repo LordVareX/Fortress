@@ -132,7 +132,7 @@ void APickupLoot::OnRep_WeaponAvailability()
 {
 	if (bIsWeaponAvailable)
 	{
-		SetWeaponPickupVisibility(false);
+		SetWeaponPickupVisibility(true);
 		//StartCoolDown();
 		PlayPickupEffects();
 	}
