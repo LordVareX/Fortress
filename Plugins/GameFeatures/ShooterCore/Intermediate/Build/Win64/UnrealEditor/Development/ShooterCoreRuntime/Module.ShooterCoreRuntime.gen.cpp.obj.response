@@ -1,6 +1,6 @@
-D:\UE5\LyraStarterGame\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64\UnrealEditor\Development\ShooterCoreRuntime\Module.ShooterCoreRuntime.gen.cpp
+E:\Fotress\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64\UnrealEditor\Development\ShooterCoreRuntime\Module.ShooterCoreRuntime.gen.cpp
 /I .
-/I D:\UE5\LyraStarterGame\Plugins\GameFeatures\ShooterCore\Source\ShooterCoreRuntime\Private
+/I E:\Fotress\Plugins\GameFeatures\ShooterCore\Source\ShooterCoreRuntime\Private
 /I ..\Intermediate\Build\Win64\UnrealEditor\Inc\CoreUObject
 /I Runtime
 /I Runtime\CoreUObject\Public
@@ -258,9 +258,9 @@ D:\UE5\LyraStarterGame\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64
 /I ..\Plugins\Runtime\DataRegistry\Intermediate\Build\Win64\UnrealEditor\Inc\DataRegistry
 /I ..\Plugins\Runtime\DataRegistry\Source
 /I ..\Plugins\Runtime\DataRegistry\Source\DataRegistry\Public
-/I D:\UE5\LyraStarterGame\Plugins\GameplayMessageRouter\Intermediate\Build\Win64\UnrealEditor\Inc\GameplayMessageRuntime
-/I D:\UE5\LyraStarterGame\Plugins\GameplayMessageRouter\Source
-/I D:\UE5\LyraStarterGame\Plugins\GameplayMessageRouter\Source\GameplayMessageRuntime\Public
+/I E:\Fotress\Plugins\GameplayMessageRouter\Intermediate\Build\Win64\UnrealEditor\Inc\GameplayMessageRuntime
+/I E:\Fotress\Plugins\GameplayMessageRouter\Source
+/I E:\Fotress\Plugins\GameplayMessageRouter\Source\GameplayMessageRuntime\Public
 /I ..\Plugins\Experimental\CommonUI\Intermediate\Build\Win64\UnrealEditor\Inc\CommonUI
 /I ..\Plugins\Experimental\CommonUI\Source
 /I ..\Plugins\Experimental\CommonUI\Source\CommonUI\Public
@@ -273,30 +273,30 @@ D:\UE5\LyraStarterGame\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64
 /I Runtime\Media\Public
 /I ..\Intermediate\Build\Win64\UnrealEditor\Inc\MediaUtils
 /I Runtime\MediaUtils\Public
-/I D:\UE5\LyraStarterGame\Plugins\AsyncMixin
-/I D:\UE5\LyraStarterGame\Plugins\AsyncMixin\Source
-/I D:\UE5\LyraStarterGame\Plugins\AsyncMixin\Source\Public
+/I E:\Fotress\Plugins\AsyncMixin
+/I E:\Fotress\Plugins\AsyncMixin\Source
+/I E:\Fotress\Plugins\AsyncMixin\Source\Public
 /I ..\Plugins\Experimental\EnhancedInput\Intermediate\Build\Win64\UnrealEditor\Inc\EnhancedInput
 /I ..\Plugins\Experimental\EnhancedInput\Source
 /I ..\Plugins\Experimental\EnhancedInput\Source\EnhancedInput\Public
-/I D:\UE5\LyraStarterGame\Plugins\GameSubtitles\Intermediate\Build\Win64\UnrealEditor\Inc\GameSubtitles
-/I D:\UE5\LyraStarterGame\Plugins\GameSubtitles
-/I D:\UE5\LyraStarterGame\Plugins\GameSubtitles\Source
-/I D:\UE5\LyraStarterGame\Plugins\GameSubtitles\Source\Public
+/I E:\Fotress\Plugins\GameSubtitles\Intermediate\Build\Win64\UnrealEditor\Inc\GameSubtitles
+/I E:\Fotress\Plugins\GameSubtitles
+/I E:\Fotress\Plugins\GameSubtitles\Source
+/I E:\Fotress\Plugins\GameSubtitles\Source\Public
 /I ..\Intermediate\Build\Win64\UnrealEditor\Inc\Overlay
 /I Runtime\Overlay\Public
-/I D:\UE5\LyraStarterGame\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64\UnrealEditor\Inc\ShooterCoreRuntime
-/I D:\UE5\LyraStarterGame\Plugins\GameFeatures\ShooterCore\Source
-/I D:\UE5\LyraStarterGame\Plugins\GameFeatures\ShooterCore\Source\ShooterCoreRuntime\Public
-/I D:\UE5\LyraStarterGame\Intermediate\Build\Win64\UnrealEditor\Inc\LyraGame
-/I D:\UE5\LyraStarterGame\Source
-/I D:\UE5\LyraStarterGame\Source\LyraGame
+/I E:\Fotress\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64\UnrealEditor\Inc\ShooterCoreRuntime
+/I E:\Fotress\Plugins\GameFeatures\ShooterCore\Source
+/I E:\Fotress\Plugins\GameFeatures\ShooterCore\Source\ShooterCoreRuntime\Public
+/I E:\Fotress\Intermediate\Build\Win64\UnrealEditor\Inc\LyraGame
+/I E:\Fotress\Source
+/I E:\Fotress\Source\LyraGame
 /I ..\Plugins\Experimental\ModularGameplay\Intermediate\Build\Win64\UnrealEditor\Inc\ModularGameplay
 /I ..\Plugins\Experimental\ModularGameplay\Source
 /I ..\Plugins\Experimental\ModularGameplay\Source\ModularGameplay\Public
-/I D:\UE5\LyraStarterGame\Plugins\ModularGameplayActors\Intermediate\Build\Win64\UnrealEditor\Inc\ModularGameplayActors
-/I D:\UE5\LyraStarterGame\Plugins\ModularGameplayActors\Source
-/I D:\UE5\LyraStarterGame\Plugins\ModularGameplayActors\Source\ModularGameplayActors\Public
+/I E:\Fotress\Plugins\ModularGameplayActors\Intermediate\Build\Win64\UnrealEditor\Inc\ModularGameplayActors
+/I E:\Fotress\Plugins\ModularGameplayActors\Source
+/I E:\Fotress\Plugins\ModularGameplayActors\Source\ModularGameplayActors\Public
 /I ..\Plugins\Runtime\ReplicationGraph\Intermediate\Build\Win64\UnrealEditor\Inc\ReplicationGraph
 /I ..\Plugins\Runtime\ReplicationGraph
 /I ..\Plugins\Runtime\ReplicationGraph\Source\Public
@@ -317,9 +317,9 @@ D:\UE5\LyraStarterGame\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64
 /I ..\Plugins\Online\OnlineSubsystem\Source\Public
 /I ..\Plugins\Online\OnlineBase
 /I ..\Plugins\Online\OnlineBase\Source\Public
-/I D:\UE5\LyraStarterGame\Plugins\CommonLoadingScreen\Intermediate\Build\Win64\UnrealEditor\Inc\CommonLoadingScreen
-/I D:\UE5\LyraStarterGame\Plugins\CommonLoadingScreen\Source
-/I D:\UE5\LyraStarterGame\Plugins\CommonLoadingScreen\Source\CommonLoadingScreen\Public
+/I E:\Fotress\Plugins\CommonLoadingScreen\Intermediate\Build\Win64\UnrealEditor\Inc\CommonLoadingScreen
+/I E:\Fotress\Plugins\CommonLoadingScreen\Source
+/I E:\Fotress\Plugins\CommonLoadingScreen\Source\CommonLoadingScreen\Public
 /I ..\Plugins\FX\Niagara\Intermediate\Build\Win64\UnrealEditor\Inc\Niagara
 /I ..\Plugins\FX\Niagara\Source
 /I ..\Plugins\FX\Niagara\Source\Niagara\Classes
@@ -334,13 +334,13 @@ D:\UE5\LyraStarterGame\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64
 /I Developer\DesktopPlatform\Public
 /I ..\Plugins\Experimental\ControlFlows\Source
 /I ..\Plugins\Experimental\ControlFlows\Source\ControlFlows\Public
-/I D:\UE5\LyraStarterGame\Plugins\CommonGame\Intermediate\Build\Win64\UnrealEditor\Inc\CommonGame
-/I D:\UE5\LyraStarterGame\Plugins\CommonGame
-/I D:\UE5\LyraStarterGame\Plugins\CommonGame\Source
-/I D:\UE5\LyraStarterGame\Plugins\CommonGame\Source\Public
-/I D:\UE5\LyraStarterGame\Plugins\CommonUser\Intermediate\Build\Win64\UnrealEditor\Inc\CommonUser
-/I D:\UE5\LyraStarterGame\Plugins\CommonUser\Source
-/I D:\UE5\LyraStarterGame\Plugins\CommonUser\Source\CommonUser\Public
+/I E:\Fotress\Plugins\CommonGame\Intermediate\Build\Win64\UnrealEditor\Inc\CommonGame
+/I E:\Fotress\Plugins\CommonGame
+/I E:\Fotress\Plugins\CommonGame\Source
+/I E:\Fotress\Plugins\CommonGame\Source\Public
+/I E:\Fotress\Plugins\CommonUser\Intermediate\Build\Win64\UnrealEditor\Inc\CommonUser
+/I E:\Fotress\Plugins\CommonUser\Source
+/I E:\Fotress\Plugins\CommonUser\Source\CommonUser\Public
 /I ThirdParty\mimalloc\include
 /I ThirdParty\LibTiff\Source\Win64
 /I ThirdParty\LibTiff\Source
@@ -355,18 +355,18 @@ D:\UE5\LyraStarterGame\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64
 /I ThirdParty\PhysX3\PhysX_3.4\Include\common
 /I ThirdParty\PhysX3\PhysX_3.4\Include\extensions
 /I ThirdParty\PhysX3\PhysX_3.4\Include\geometry
-/I "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\INCLUDE"
-/I "C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6.2\include\um"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\ucrt"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\shared"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\um"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\winrt"
-/FI"D:\UE5\LyraStarterGame\Intermediate\Build\Win64\LyraEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h"
-/FI"D:\UE5\LyraStarterGame\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64\UnrealEditor\Development\ShooterCoreRuntime\Definitions.ShooterCoreRuntime.h"
-/Yu"D:\UE5\LyraStarterGame\Intermediate\Build\Win64\LyraEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h"
-/Fp"D:\UE5\LyraStarterGame\Intermediate\Build\Win64\LyraEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h.pch"
-/Fo"D:\UE5\LyraStarterGame\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64\UnrealEditor\Development\ShooterCoreRuntime\Module.ShooterCoreRuntime.gen.cpp.obj"
-/sourceDependencies D:\UE5\LyraStarterGame\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64\UnrealEditor\Development\ShooterCoreRuntime\Module.ShooterCoreRuntime.gen.cpp.json
+/I "D:\Visual Studio 2019\VC\Tools\MSVC\14.29.30133\INCLUDE"
+/I "C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6.1\include\um"
+/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\ucrt"
+/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\shared"
+/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\um"
+/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\winrt"
+/FI"..\Intermediate\Build\Win64\UnrealEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h"
+/FI"E:\Fotress\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64\UnrealEditor\Development\ShooterCoreRuntime\Definitions.ShooterCoreRuntime.h"
+/Yu"..\Intermediate\Build\Win64\UnrealEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h"
+/Fp"..\Intermediate\Build\Win64\UnrealEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h.pch"
+/Fo"E:\Fotress\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64\UnrealEditor\Development\ShooterCoreRuntime\Module.ShooterCoreRuntime.gen.cpp.obj"
+/sourceDependencies E:\Fotress\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64\UnrealEditor\Development\ShooterCoreRuntime\Module.ShooterCoreRuntime.gen.cpp.json
 /Zc:inline
 /nologo
 /Oi
