@@ -57,12 +57,12 @@
 /DRHI_RAYTRACING=1
 /DNDEBUG=1
 /DUE_BUILD_DEVELOPMENT=1
-/DORIGINAL_FILE_NAME="UnrealEditor-TopDownArenaRuntime.dll"
+/DORIGINAL_FILE_NAME="UnrealEditor-ShooterCoreRuntime.dll"
 /DBUILT_FROM_CHANGELIST=19505902
 /DBUILD_VERSION=++UE5+Release-5.0-CL-19505902
-/DBUILD_ICON_FILE_NAME="\"D:\\UE5\\Fotress\\Build\\Windows\\Application.ico\""
+/DBUILD_ICON_FILE_NAME="\"D:\\UE5\\LyraStarterGame\\Build\\Windows\\Application.ico\""
 /DPROJECT_COPYRIGHT_STRING="Fill out your copyright notice in the Description page of Project Settings."
 /DPROJECT_PRODUCT_NAME=Lyra
 /DPROJECT_PRODUCT_IDENTIFIER=LyraStarterGame
-/fo "D:\UE5\Fotress\Plugins\GameFeatures\TopDownArena\Intermediate\Build\Win64\UnrealEditor\Development\TopDownArenaRuntime\Default.rc2.res"
+/fo "D:\UE5\LyraStarterGame\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64\UnrealEditor\Development\ShooterCoreRuntime\Default.rc2.res"
 "..\Build\Windows\Resources\Default.rc2"
