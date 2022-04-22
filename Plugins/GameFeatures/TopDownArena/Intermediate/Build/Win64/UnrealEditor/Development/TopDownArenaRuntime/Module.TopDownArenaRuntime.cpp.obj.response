@@ -1,4 +1,3 @@
-
 D:\UE5\Fotress\Plugins\GameFeatures\TopDownArena\Intermediate\Build\Win64\UnrealEditor\Development\TopDownArenaRuntime\Module.TopDownArenaRuntime.cpp
 /I .
 /I D:\UE5\Fotress\Plugins\GameFeatures\TopDownArena\Source\TopDownArenaRuntime\Private
@@ -325,28 +324,16 @@ D:\UE5\Fotress\Plugins\GameFeatures\TopDownArena\Intermediate\Build\Win64\Unreal
 /I ThirdParty\PhysX3\PhysX_3.4\Include\common
 /I ThirdParty\PhysX3\PhysX_3.4\Include\extensions
 /I ThirdParty\PhysX3\PhysX_3.4\Include\geometry
-/I "D:\Visual Studio 2019\VC\Tools\MSVC\14.29.30133\INCLUDE"
-/I "C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6.1\include\um"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\ucrt"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\shared"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\um"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\winrt"
-/FI"..\Intermediate\Build\Win64\UnrealEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h"
-/FI"E:\Fotress\Plugins\GameFeatures\TopDownArena\Intermediate\Build\Win64\UnrealEditor\Development\TopDownArenaRuntime\Definitions.TopDownArenaRuntime.h"
-/Yu"..\Intermediate\Build\Win64\UnrealEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h"
-/Fp"..\Intermediate\Build\Win64\UnrealEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h.pch"
-/Fo"E:\Fotress\Plugins\GameFeatures\TopDownArena\Intermediate\Build\Win64\UnrealEditor\Development\TopDownArenaRuntime\Module.TopDownArenaRuntime.cpp.obj"
-/sourceDependencies E:\Fotress\Plugins\GameFeatures\TopDownArena\Intermediate\Build\Win64\UnrealEditor\Development\TopDownArenaRuntime\Module.TopDownArenaRuntime.cpp.json
 /I "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\INCLUDE"
 /I "C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6.2\include\um"
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\ucrt"
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\shared"
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\um"
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\winrt"
-/FI"D:\UE5\Fotress\Intermediate\Build\Win64\LyraEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h"
+/FI"..\Intermediate\Build\Win64\UnrealEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h"
 /FI"D:\UE5\Fotress\Plugins\GameFeatures\TopDownArena\Intermediate\Build\Win64\UnrealEditor\Development\TopDownArenaRuntime\Definitions.TopDownArenaRuntime.h"
-/Yu"D:\UE5\Fotress\Intermediate\Build\Win64\LyraEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h"
-/Fp"D:\UE5\Fotress\Intermediate\Build\Win64\LyraEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h.pch"
+/Yu"..\Intermediate\Build\Win64\UnrealEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h"
+/Fp"..\Intermediate\Build\Win64\UnrealEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h.pch"
 /Fo"D:\UE5\Fotress\Plugins\GameFeatures\TopDownArena\Intermediate\Build\Win64\UnrealEditor\Development\TopDownArenaRuntime\Module.TopDownArenaRuntime.cpp.obj"
 /sourceDependencies D:\UE5\Fotress\Plugins\GameFeatures\TopDownArena\Intermediate\Build\Win64\UnrealEditor\Development\TopDownArenaRuntime\Module.TopDownArenaRuntime.cpp.json
 /Zc:inline
