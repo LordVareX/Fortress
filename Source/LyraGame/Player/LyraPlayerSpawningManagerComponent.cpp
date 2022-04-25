@@ -10,6 +10,8 @@
 #include "EngineUtils.h"
 #include "Engine/PlayerStartPIE.h"
 #include "LyraPlayerStart.h"
+#include "LyraPlayerState.h"
+#include "Teams/LyraTeamSubsystem.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogPlayerSpawning, Log, All);
 
@@ -82,12 +84,30 @@ AActor* ULyraPlayerSpawningManagerComponent::ChoosePlayerStart(AController* Play
 		}
 #endif
 
-		TArray<ALyraPlayerStart*> StarterPoints;
+		ALyraPlayerState* PS = Cast<ALyraPlayerState>(Player->PlayerState);
+
+		bool IsEven = PS->GetTeamId()%2==0;
+
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Orange, FString::Printf(TEXT("Team ID: %d"), PS->GetTeamId()));
+
+		TArray<ALyraPlayerStart*> EvenPoints;
+		TArray<ALyraPlayerStart*> OddPoints;
+		//TArray<ALyraPlayerStart*> StarterPoints;
 		for (auto StartIt = CachedPlayerStarts.CreateIterator(); StartIt; ++StartIt)
 		{
 			if (ALyraPlayerStart* Start = (*StartIt).Get())
 			{
-				StarterPoints.Add(Start);
+				int32 ID = FCString::Atoi(*Start->PlayerStartTag.ToString());
+
+				if (IsEven && ID % 2 == 0)
+				{
+					EvenPoints.Add(Start);
+				}
+				else if (!IsEven && ID % 2 != 0)
+				{
+					OddPoints.Add(Start);
+				}
+				//StarterPoints.Add(Start);
 			}
 			else
 			{
@@ -100,16 +120,62 @@ AActor* ULyraPlayerSpawningManagerComponent::ChoosePlayerStart(AController* Play
 			// start dedicated spectators at any random starting location, but they do not claim it
 			if (PlayerState->IsOnlyASpectator())
 			{
-				if (!StarterPoints.IsEmpty())
+				if (IsEven)
+				{
+					if (!EvenPoints.IsEmpty())
+					{
+						return EvenPoints[FMath::RandRange(0, EvenPoints.Num() - 1)];
+					}
+				}
+				else
+				{
+					if (!OddPoints.IsEmpty())
+					{
+						return OddPoints[FMath::RandRange(0, OddPoints.Num() - 1)];
+					}
+				}
+				/*if (!StarterPoints.IsEmpty())
 				{
 					return StarterPoints[FMath::RandRange(0, StarterPoints.Num() - 1)];
-				}
+				}*/
 
 				return nullptr;
 			}
 		}
 
-		AActor* PlayerStart = OnChoosePlayerStart(Player, StarterPoints);
+		if (IsEven)
+		{
+			AActor* PlayerStart = OnChoosePlayerStart(Player, EvenPoints);
+
+			if (!PlayerStart)
+			{
+				PlayerStart = GetFirstRandomUnoccupiedPlayerStart(Player, EvenPoints);
+			}
+
+			if (ALyraPlayerStart* LyraStart = Cast<ALyraPlayerStart>(PlayerStart))
+			{
+				LyraStart->TryClaim(Player);
+			}
+
+			return PlayerStart;
+		}
+		else
+		{
+			AActor* PlayerStart = OnChoosePlayerStart(Player, OddPoints);
+
+			if (!PlayerStart)
+			{
+				PlayerStart = GetFirstRandomUnoccupiedPlayerStart(Player, OddPoints);
+			}
+
+			if (ALyraPlayerStart* LyraStart = Cast<ALyraPlayerStart>(PlayerStart))
+			{
+				LyraStart->TryClaim(Player);
+			}
+			return PlayerStart;
+		}
+
+		/*AActor* PlayerStart = OnChoosePlayerStart(Player, StarterPoints);
 
 		if (!PlayerStart)
 		{
@@ -119,9 +185,9 @@ AActor* ULyraPlayerSpawningManagerComponent::ChoosePlayerStart(AController* Play
 		if (ALyraPlayerStart* LyraStart = Cast<ALyraPlayerStart>(PlayerStart))
 		{
 			LyraStart->TryClaim(Player);
-		}
+		}*/
 
-		return PlayerStart;
+		/*return PlayerStart;*/
 	}
 
 	return nullptr;
@@ -188,12 +254,12 @@ APlayerStart* ULyraPlayerSpawningManagerComponent::GetFirstRandomUnoccupiedPlaye
 
 			switch (State)
 			{
-				case ELyraPlayerStartLocationOccupancy::Empty:
-					UnOccupiedStartPoints.Add(StartPoint);
-					break;
-				case ELyraPlayerStartLocationOccupancy::Partial:
-					OccupiedStartPoints.Add(StartPoint);
-					break;
+			case ELyraPlayerStartLocationOccupancy::Empty:
+				UnOccupiedStartPoints.Add(StartPoint);
+				break;
+			case ELyraPlayerStartLocationOccupancy::Partial:
+				OccupiedStartPoints.Add(StartPoint);
+				break;
 
 			}
 		}
