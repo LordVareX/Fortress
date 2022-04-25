@@ -65,6 +65,8 @@ void ALyraGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(ThisClass, ServerFPS);
+	DOREPLIFETIME(ThisClass, BluePickC4);
+	DOREPLIFETIME(ThisClass, RedPickC4);
 }
 
 void ALyraGameState::Tick(float DeltaSeconds)
