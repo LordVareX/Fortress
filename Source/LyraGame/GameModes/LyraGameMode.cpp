@@ -323,6 +323,7 @@ void ALyraGameMode::OnPostLogin(AController* NewPlayer)
 	Super::OnPostLogin(NewPlayer);
 
 	OnGameModeCombinedPostLoginDelegate.Broadcast(this, NewPlayer);
+
 }
 
 void ALyraGameMode::RequestPlayerRestartNextFrame(AController* Controller, bool bForceReset)

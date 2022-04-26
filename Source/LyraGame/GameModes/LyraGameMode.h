@@ -71,4 +71,9 @@ protected:
 	void OnMatchAssignmentGiven(FPrimaryAssetId ExperienceId, const FString& ExperienceIdSource);
 
 	void HandleMatchAssignmentIfNotExpectingOne();
+
+public:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NewPlayer")
+		APlayerController* newPlayer;
 };

@@ -57,11 +57,16 @@ public:
 	UFUNCTION(NetMulticast, Reliable, BlueprintCallable, Category = "Lyra|GameState")
 	void MulticastReliableMessageToClients(const FLyraVerbMessage Message);
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Replicated)
-	bool BluePickC4;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated)
+		bool BluePickC4;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Replicated)
-	bool RedPickC4;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated)
+		bool RedPickC4;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated)
+		int PID;
+
+
 
 private:
 	UPROPERTY()

@@ -125,6 +125,7 @@ void ALyraPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	DOREPLIFETIME_WITH_PARAMS_FAST(ThisClass, MySquadID, SharedParams);
 
 	DOREPLIFETIME(ThisClass, StatTags);
+	DOREPLIFETIME(ThisClass, Pi);
 }
 
 ALyraPlayerController* ALyraPlayerState::GetLyraPlayerController() const

@@ -160,4 +160,11 @@ private:
 
 	UFUNCTION()
 	void OnRep_MySquadID();
+
+public:
+	
+
+	UPROPERTY(VisibleAnywhere, Replicated, BlueprintReadWrite)
+		int32 Pi = 0;
+
 };
