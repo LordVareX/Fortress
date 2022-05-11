@@ -51,6 +51,21 @@ void ALyraGameState::EndPlay(const EEndPlayReason::Type EndPlayReason)
 void ALyraGameState::AddPlayerState(APlayerState* PlayerState)
 {
 	Super::AddPlayerState(PlayerState);
+	
+	FGameplayTag GetTag;
+	FLyraVerbMessage SpawnIconMessage;
+
+	SpawnIconMessage.Instigator = PlayerState;
+	SpawnIconMessage.Verb = GetTag.RequestGameplayTag("Load Minimap Icon");
+
+	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::Printf(TEXT("Gameplay tag is %s"), *GetTag.RequestGameplayTag("Load Minimap Icon").GetTagName().ToString()));
+
+	MulticastReliableMessageToClients(SpawnIconMessage);
+
+	if (GetNetMode() != NM_DedicatedServer)
+	{
+		UGameplayMessageSubsystem::Get(this).BroadcastMessage(SpawnIconMessage.Verb, SpawnIconMessage);
+	}
 }
 
 void ALyraGameState::RemovePlayerState(APlayerState* PlayerState)
@@ -68,8 +83,6 @@ void ALyraGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 	DOREPLIFETIME(ThisClass, BluePickC4);
 	DOREPLIFETIME(ThisClass, RedPickC4);
 	DOREPLIFETIME(ThisClass, PID);
-
-
 }
 
 void ALyraGameState::Tick(float DeltaSeconds)

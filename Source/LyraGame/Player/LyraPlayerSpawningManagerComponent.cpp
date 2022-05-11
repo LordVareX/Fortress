@@ -12,6 +12,7 @@
 #include "LyraPlayerStart.h"
 #include "LyraPlayerState.h"
 #include "Teams/LyraTeamSubsystem.h"
+#include "GameModes/LyraGameState.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogPlayerSpawning, Log, All);
 
@@ -172,6 +173,7 @@ AActor* ULyraPlayerSpawningManagerComponent::ChoosePlayerStart(AController* Play
 			{
 				LyraStart->TryClaim(Player);
 			}
+
 			return PlayerStart;
 		}
 
