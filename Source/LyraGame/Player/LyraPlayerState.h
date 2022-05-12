@@ -163,6 +163,8 @@ private:
 
 public:
 	
+	UPROPERTY(VisibleAnywhere, Replicated, BlueprintReadWrite)
+		int ScrapCount;
 
 	UPROPERTY(VisibleAnywhere, Replicated, BlueprintReadWrite)
 		int32 Pi = 0;

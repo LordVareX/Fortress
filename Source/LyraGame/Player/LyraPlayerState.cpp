@@ -126,6 +126,7 @@ void ALyraPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 
 	DOREPLIFETIME(ThisClass, StatTags);
 	DOREPLIFETIME(ThisClass, Pi);
+	DOREPLIFETIME(ThisClass, ScrapCount);
 }
 
 ALyraPlayerController* ALyraPlayerState::GetLyraPlayerController() const
