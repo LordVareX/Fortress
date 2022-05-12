@@ -217,6 +217,22 @@ APawn* ALyraGameMode::SpawnDefaultPawnAtTransform_Implementation(AController* Ne
 				if (const ULyraPawnData* PawnData = GetPawnDataForController(NewPlayer))
 				{
 					PawnExtComp->SetPawnData(PawnData);
+					FGameplayTag GetTag;
+					FLyraVerbMessage SpawnIconMessage;
+
+					SpawnIconMessage.Instigator = NewPlayer->PlayerState;
+					SpawnIconMessage.Verb = GetTag.RequestGameplayTag("Load Minimap Icon");
+
+					GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::Printf(TEXT("Gameplay tag is %s"), *SpawnIconMessage.Verb.GetTagName().ToString()));
+
+					ALyraGameState* GS = Cast<ALyraGameState>(GameState);
+					GS->MulticastReliableMessageToClients(SpawnIconMessage);
+
+					/*if (GetNetMode() != NM_DedicatedServer)
+					{
+						GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Purple, FString::Printf(TEXT("Gameplay tag is %s"), *SpawnIconMessage.Verb.GetTagName().ToString()));
+						UGameplayMessageSubsystem::Get(this).BroadcastMessage(SpawnIconMessage.Verb, SpawnIconMessage);
+					}*/
 				}
 				else
 				{
