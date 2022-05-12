@@ -66,10 +66,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated)
 		int PID;
 
-	
-
-
-
 private:
 	UPROPERTY()
 	ULyraExperienceManagerComponent* ExperienceManagerComponent;
