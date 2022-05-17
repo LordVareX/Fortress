@@ -50,6 +50,9 @@ public:
 
 protected:
 
+	UFUNCTION(BlueprintCallable, Category = "Rendered Actors")
+	void Visibility_GetNotRenderedActors(TArray<class ALyraCharacter*>& CurrentlyNotRenderedActors, float MinRecentTime);
+
 	virtual void OnRegister() override;
 	virtual void GetCameraView(float DeltaTime, FMinimalViewInfo& DesiredView) override;
 
@@ -60,6 +63,9 @@ protected:
 	// Stack used to blend the camera modes.
 	UPROPERTY()
 	ULyraCameraModeStack* CameraModeStack;
+
+	UPROPERTY()
+	class ALyraPlayerState* thisPS = nullptr;
 
 	// Offset applied to the field of view.  The offset is only for one frame, it gets cleared once it is applied.
 	float FieldOfViewOffset;

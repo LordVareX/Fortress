@@ -17,6 +17,7 @@
 #include "LyraLocalPlayer.h"
 #include "Settings/LyraSettingsShared.h"
 #include "Development/LyraDeveloperSettings.h"
+#include "Character/LyraCharacter.h"
 
 ALyraPlayerController::ALyraPlayerController(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)

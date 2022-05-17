@@ -5,6 +5,10 @@
 #include "GameFramework/Pawn.h"
 #include "GameFramework/PlayerController.h"
 #include "Engine/Canvas.h"
+#include "Character/LyraCharacter.h"
+#include "Math/Vector.h"
+#include "Player/LyraPlayerState.h"
+#include "GameFramework/GameplayMessageSubsystem.h"
 
 
 ULyraCameraComponent::ULyraCameraComponent(const FObjectInitializer& ObjectInitializer)
@@ -12,6 +16,26 @@ ULyraCameraComponent::ULyraCameraComponent(const FObjectInitializer& ObjectIniti
 {
 	CameraModeStack = nullptr;
 	FieldOfViewOffset = 0.0f;
+}
+
+void ULyraCameraComponent::Visibility_GetNotRenderedActors(TArray<class ALyraCharacter*>& CurrentlyNotRenderedActors, float MinRecentTime)
+{
+	//Empty any previous entries
+	CurrentlyNotRenderedActors.Empty();
+
+	//Iterate Over Actors
+	for (TObjectIterator<ALyraCharacter> Itr; Itr; ++Itr)
+	{
+		if (Itr->GetLastRenderTime() <= MinRecentTime)
+		{
+			CurrentlyNotRenderedActors.Add(*Itr);
+			ALyraCharacter* Char = Cast<ALyraCharacter>(*Itr);
+			if (Char != nullptr)
+			{
+				GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, FString::Printf(TEXT("Player not in view %s"), *Char->GetFName().ToString()));
+			}
+		}
+	}
 }
 
 void ULyraCameraComponent::OnRegister()
@@ -31,8 +55,6 @@ void ULyraCameraComponent::GetCameraView(float DeltaTime, FMinimalViewInfo& Desi
 
 	UpdateCameraModes();
 
-	
-
 	FLyraCameraModeView CameraModeView;
 	CameraModeStack->EvaluateStack(DeltaTime, CameraModeView);
 
@@ -41,16 +63,63 @@ void ULyraCameraComponent::GetCameraView(float DeltaTime, FMinimalViewInfo& Desi
 	{
 		if (APlayerController* PC = TargetPawn->GetController<APlayerController>())
 		{
-			PC->SetControlRotation(CameraModeView.ControlRotation);
+			thisPS = Cast<ALyraPlayerState>(PC->PlayerState);
+			if (thisPS != nullptr)
+			{
+				PC->SetControlRotation(CameraModeView.ControlRotation);
+
+				for (TObjectIterator<ALyraCharacter> Itr; Itr; ++Itr)
+				{
+					ALyraCharacter* Char = Cast<ALyraCharacter>(*Itr);
+					if (Char != nullptr && Char != TargetPawn)
+					{
+						ALyraPlayerState* PS = Cast<ALyraPlayerState>(Char->GetPlayerState());
+						if (PS != nullptr && thisPS->GetTeamId() != PS->GetTeamId())
+						{
+							if (PC->LineOfSightTo(Char))
+							{
+								if (Char->GetLastRenderTime() > DeltaTime)
+								{
+									FGameplayTag GetTag;
+									FLyraVerbMessage SpawnIconMessage;
+
+									SpawnIconMessage.Instigator = PS;
+									SpawnIconMessage.Verb = GetTag.RequestGameplayTag("Show Enemy");
+
+									GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, FString::Printf(TEXT("Is in view")));
+									if (GetNetMode() != NM_DedicatedServer)
+									{
+										UGameplayMessageSubsystem::Get(this).BroadcastMessage(SpawnIconMessage.Verb, SpawnIconMessage);
+									}
+								}
+							}
+							else
+							{
+								if (Char->GetLastRenderTime() > DeltaTime)
+								{
+									FGameplayTag GetTag;
+									FLyraVerbMessage SpawnIconMessage;
+
+									SpawnIconMessage.Instigator = PS;
+									SpawnIconMessage.Verb = GetTag.RequestGameplayTag("Hide Enemy");
+
+									GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, FString::Printf(TEXT("Is out of view")));
+									if (GetNetMode() != NM_DedicatedServer)
+									{
+										UGameplayMessageSubsystem::Get(this).BroadcastMessage(SpawnIconMessage.Verb, SpawnIconMessage);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 	}
-
 
 	// Apply any offset that was added to the field of view.
 	CameraModeView.FieldOfView += FieldOfViewOffset;
 	FieldOfViewOffset = 0.0f;
-
-	
 
 	// Keep camera component in sync with the latest view.
 	SetWorldLocationAndRotation(CameraModeView.Location, CameraModeView.Rotation);

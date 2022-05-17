@@ -19,6 +19,7 @@
 #include "Development/LyraDeveloperSettings.h"
 #include "Player/LyraPlayerSpawningManagerComponent.h"
 #include "TimerManager.h"
+#include "GameFramework/GameplayMessageSubsystem.h"
 
 ALyraGameMode::ALyraGameMode(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -226,13 +227,14 @@ APawn* ALyraGameMode::SpawnDefaultPawnAtTransform_Implementation(AController* Ne
 					GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::Printf(TEXT("Gameplay tag is %s"), *SpawnIconMessage.Verb.GetTagName().ToString()));
 
 					ALyraGameState* GS = Cast<ALyraGameState>(GameState);
-					GS->MulticastReliableMessageToClients(SpawnIconMessage);
-
-					/*if (GetNetMode() != NM_DedicatedServer)
+					if (GS != nullptr)
 					{
-						GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Purple, FString::Printf(TEXT("Gameplay tag is %s"), *SpawnIconMessage.Verb.GetTagName().ToString()));
+						GS->MulticastReliableMessageToClients(SpawnIconMessage);
+					}
+					if (GetNetMode() != NM_DedicatedServer)
+					{
 						UGameplayMessageSubsystem::Get(this).BroadcastMessage(SpawnIconMessage.Verb, SpawnIconMessage);
-					}*/
+					}
 				}
 				else
 				{
