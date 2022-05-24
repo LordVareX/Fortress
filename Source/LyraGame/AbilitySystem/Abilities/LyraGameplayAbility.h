@@ -71,6 +71,7 @@ public:
 
 	UPROPERTY(BlueprintReadWrite)
 	UAnimMontage* FailureMontage = nullptr;
+
 };
 
 /**

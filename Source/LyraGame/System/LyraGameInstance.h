@@ -23,6 +23,9 @@ public:
 
 	ALyraPlayerController* GetPrimaryPlayerController() const;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	bool ThrowMode = false;
+
 protected:
 
 	virtual void Init() override;
