@@ -60,7 +60,7 @@ private:
 
 protected:
 	UPROPERTY()
-	int32 NumSlots = 3;
+	int32 NumSlots = 6;
 
 	UFUNCTION()
 	void OnRep_Slots();

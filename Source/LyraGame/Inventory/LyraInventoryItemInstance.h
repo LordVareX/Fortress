@@ -57,6 +57,7 @@ private:
 	void SetItemDef(TSubclassOf<ULyraInventoryItemDefinition> InDef);
 
 	friend struct FLyraInventoryList;
+	friend struct FLyraThrInventoryList;
 
 private:
 	UPROPERTY(Replicated)
