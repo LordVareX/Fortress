@@ -92,6 +92,12 @@ public:
 	virtual FOnLyraTeamIndexChangedDelegate* GetOnTeamIndexChangedDelegate() override;
 	//~End of ILyraTeamAgentInterface interface
 
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite)
+	bool Sliding = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool WantsToJump = false;
+
 protected:
 
 	virtual void OnAbilitySystemInitialized();
@@ -170,4 +176,37 @@ private:
 
 	UFUNCTION()
 	void OnRep_MyTeamID(FGenericTeamId OldTeamID);
+
+	UFUNCTION(BlueprintCallable)
+	float GetAngleSpeed();
+
+protected:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool WantsToCrouch = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FVector PrevLocation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		UCurveFloat* SpeedCurve;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float MaxSlideSpeed = 950.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float DefaultWalkSpeed = 600.f;
+
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite)
+		AActor* HitActor;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FVector DashLocation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FVector StartLocation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FVector NewLocation;
+
 };

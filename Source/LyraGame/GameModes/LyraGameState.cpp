@@ -84,7 +84,6 @@ void ALyraGameState::MulticastMessageToClients_Implementation(const FLyraVerbMes
 {
 	if (GetNetMode() == NM_Client)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, FString::Printf(TEXT("LyraVerbMessage is %s"), *Message.Verb.GetTagName().ToString()));
 		UGameplayMessageSubsystem::Get(this).BroadcastMessage(Message.Verb, Message);
 	}
 }

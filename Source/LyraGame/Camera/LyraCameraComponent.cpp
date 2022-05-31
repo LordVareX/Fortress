@@ -68,17 +68,17 @@ void ULyraCameraComponent::GetCameraView(float DeltaTime, FMinimalViewInfo& Desi
 			{
 				PC->SetControlRotation(CameraModeView.ControlRotation);
 
-				for (TObjectIterator<ALyraCharacter> Itr; Itr; ++Itr)
+				if (!thisPS->IsABot())
 				{
-					ALyraCharacter* Char = Cast<ALyraCharacter>(*Itr);
-					if (Char != nullptr && Char != TargetPawn)
+					for (TObjectIterator<ALyraCharacter> Itr; Itr; ++Itr)
 					{
-						ALyraPlayerState* PS = Cast<ALyraPlayerState>(Char->GetPlayerState());
-						if (PS != nullptr && thisPS->GetTeamId() != PS->GetTeamId())
+						ALyraCharacter* Char = Cast<ALyraCharacter>(*Itr);
+						if (Char != nullptr && Char != TargetPawn)
 						{
-							if (PC->LineOfSightTo(Char))
+							ALyraPlayerState* PS = Cast<ALyraPlayerState>(Char->GetPlayerState());
+							if (PS != nullptr && thisPS->GetTeamId() != PS->GetTeamId())
 							{
-								if (Char->GetLastRenderTime() > DeltaTime)
+								if (PC->LineOfSightTo(Char) && Char->GetLastRenderTime() > 0.1f)
 								{
 									FGameplayTag GetTag;
 									FLyraVerbMessage SpawnIconMessage;
@@ -86,16 +86,13 @@ void ULyraCameraComponent::GetCameraView(float DeltaTime, FMinimalViewInfo& Desi
 									SpawnIconMessage.Instigator = PS;
 									SpawnIconMessage.Verb = GetTag.RequestGameplayTag("Show Enemy");
 
-									GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, FString::Printf(TEXT("Is in view")));
+									//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, FString::Printf(TEXT("Is in view")));
 									if (GetNetMode() != NM_DedicatedServer)
 									{
 										UGameplayMessageSubsystem::Get(this).BroadcastMessage(SpawnIconMessage.Verb, SpawnIconMessage);
 									}
 								}
-							}
-							else
-							{
-								if (Char->GetLastRenderTime() > DeltaTime)
+								else if (!PC->LineOfSightTo(Char) && Char->GetLastRenderTime() <= 0.1f)
 								{
 									FGameplayTag GetTag;
 									FLyraVerbMessage SpawnIconMessage;
@@ -103,7 +100,7 @@ void ULyraCameraComponent::GetCameraView(float DeltaTime, FMinimalViewInfo& Desi
 									SpawnIconMessage.Instigator = PS;
 									SpawnIconMessage.Verb = GetTag.RequestGameplayTag("Hide Enemy");
 
-									GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, FString::Printf(TEXT("Is out of view")));
+									//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, FString::Printf(TEXT("Is out of view")));
 									if (GetNetMode() != NM_DedicatedServer)
 									{
 										UGameplayMessageSubsystem::Get(this).BroadcastMessage(SpawnIconMessage.Verb, SpawnIconMessage);

@@ -12,6 +12,8 @@ class ULyraWeaponPickupDefinition;
 class UCapsuleComponent;
 class UStaticMeshComponent;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FLightColorItem, ALyraWeaponSpawner*, SpawnedItem, FColor, ColorItem);
+
 UCLASS(Blueprintable,BlueprintType)
 class LYRAGAME_API ALyraWeaponSpawner : public AActor
 {
@@ -104,4 +106,7 @@ public:
 	/** Searches an item definition type for a matching stat and returns the value, or 0 if not found */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Lyra|WeaponPickup")
 	static int32 GetDefaultStatFromItemDef(const TSubclassOf<ULyraInventoryItemDefinition> WeaponItemClass, FGameplayTag StatTag);
+
+	UPROPERTY(BlueprintCallable, BlueprintAssignable)
+	FLightColorItem OnLightColorItem;
 };

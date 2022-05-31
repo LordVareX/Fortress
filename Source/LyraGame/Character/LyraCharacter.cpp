@@ -16,6 +16,7 @@
 #include "System/LyraSignificanceManager.h"
 #include "Net/UnrealNetwork.h"
 #include "TimerManager.h"
+#include "Kismet/KismetMathLibrary.h"
 
 static FName NAME_LyraCharacterCollisionProfile_Capsule(TEXT("LyraPawnCapsule"));
 static FName NAME_LyraCharacterCollisionProfile_Mesh(TEXT("LyraPawnMesh"));
@@ -514,4 +515,13 @@ void ALyraCharacter::OnControllerChangedTeam(UObject* TeamAgent, int32 OldTeam, 
 void ALyraCharacter::OnRep_MyTeamID(FGenericTeamId OldTeamID)
 {
 	ConditionalBroadcastTeamChanged(this, OldTeamID, MyTeamID);
+}
+
+float ALyraCharacter::GetAngleSpeed()
+{
+	FRotator Rot = UKismetMathLibrary::FindLookAtRotation(PrevLocation, GetActorLocation());
+
+	PrevLocation = GetActorLocation();
+
+	return SpeedCurve->GetFloatValue(Rot.Pitch);
 }
