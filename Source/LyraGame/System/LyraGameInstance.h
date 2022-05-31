@@ -23,6 +23,12 @@ public:
 
 	ALyraPlayerController* GetPrimaryPlayerController() const;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	bool ThrowMode = false;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	bool ThrowGrenadeMode = false;
+
 protected:
 
 	virtual void Init() override;

@@ -45,7 +45,7 @@ void ULyraQuickBarComponent::BeginPlay()
 
 void ULyraQuickBarComponent::CycleActiveSlotForward()
 {
-	if (Slots.Num() < 2)
+	if (Slots.Num() < 5)
 	{
 		return;
 	}
@@ -65,7 +65,7 @@ void ULyraQuickBarComponent::CycleActiveSlotForward()
 
 void ULyraQuickBarComponent::CycleActiveSlotBackward()
 {
-	if (Slots.Num() < 2)
+	if (Slots.Num() < 5)
 	{
 		return;
 	}
