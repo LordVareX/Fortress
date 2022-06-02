@@ -16,6 +16,12 @@
 #include "System/LyraSignificanceManager.h"
 #include "Net/UnrealNetwork.h"
 #include "TimerManager.h"
+#include "Kismet/KismetMathLibrary.h"
+#include "GameplayEffect.h"
+#include "Animation/LyraAnimInstance.h"
+#include "Components/TimelineComponent.h"
+#include "InputAction.h"
+#include "InputActionValue.h"
 
 static FName NAME_LyraCharacterCollisionProfile_Capsule(TEXT("LyraPawnCapsule"));
 static FName NAME_LyraCharacterCollisionProfile_Mesh(TEXT("LyraPawnMesh"));
@@ -24,10 +30,12 @@ ALyraCharacter::ALyraCharacter(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<ULyraCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
 	// Avoid ticking characters if possible.
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = false;
 
 	NetCullDistanceSquared = 900000000.0f;
+
+	SlideTimeline = CreateDefaultSubobject<UTimelineComponent>(TEXT("SlidingTimeline"));
 
 	UCapsuleComponent* CapsuleComp = GetCapsuleComponent();
 	check(CapsuleComp);
@@ -92,6 +100,8 @@ void ALyraCharacter::BeginPlay()
 //@TODO: SignificanceManager->RegisterObject(this, (EFortSignificanceType)SignificanceType);
 		}
 	}
+
+	DeclareSlidingTimeline();
 }
 
 void ALyraCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -124,7 +134,9 @@ void ALyraCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& Out
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME_CONDITION(ThisClass, ReplicatedAcceleration, COND_SimulatedOnly);
-	DOREPLIFETIME(ThisClass, MyTeamID)
+	DOREPLIFETIME(ThisClass, MyTeamID);
+	DOREPLIFETIME(ThisClass, Sliding);
+	DOREPLIFETIME(ThisClass, HitActor);
 }
 
 void ALyraCharacter::PreReplication(IRepChangedPropertyTracker& ChangedPropertyTracker)
@@ -143,6 +155,16 @@ void ALyraCharacter::PreReplication(IRepChangedPropertyTracker& ChangedPropertyT
 		ReplicatedAcceleration.AccelXYMagnitude = FMath::FloorToInt((AccelXYMagnitude / MaxAccel) * 255.0);	// [0, MaxAccel] -> [0, 255]
 		ReplicatedAcceleration.AccelZ           = FMath::FloorToInt((CurrentAccel.Z / MaxAccel) * 127.0);   // [-MaxAccel, MaxAccel] -> [-127, 127]
 	}
+}
+
+void ALyraCharacter::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	/*if (SlideTimeline != NULL)
+	{
+		SlideTimeline->TickComponent(DeltaSeconds, ELevelTick::LEVELTICK_TimeOnly, NULL);
+	}*/
 }
 
 void ALyraCharacter::NotifyControllerChanged()
@@ -382,6 +404,11 @@ void ALyraCharacter::UninitAndDestroy()
 	SetActorHiddenInGame(true);
 }
 
+bool ALyraCharacter::CanSlide()
+{
+	return this->GetLastMovementInputVector().Size() > 0.0f;
+}
+
 void ALyraCharacter::OnMovementModeChanged(EMovementMode PrevMovementMode, uint8 PreviousCustomMode)
 {
 	Super::OnMovementModeChanged(PrevMovementMode, PreviousCustomMode);
@@ -426,6 +453,92 @@ void ALyraCharacter::ToggleCrouch()
 	else if (LyraMoveComp->IsMovingOnGround())
 	{
 		Crouch();
+	}
+}
+
+bool ALyraCharacter::ServerSlide_Validate(float SlideSpeed, float Friction, bool IsSliding)
+{
+	return true;
+}
+
+void ALyraCharacter::ServerSlide_Implementation(float SlideSpeed, float Friction, bool IsSliding)
+{
+	ULyraCharacterMovementComponent* LyraMoveComp = CastChecked<ULyraCharacterMovementComponent>(GetCharacterMovement());
+
+	if (LyraMoveComp != nullptr)
+	{
+		LyraMoveComp->MaxWalkSpeed = SlideSpeed;
+		LyraMoveComp->GroundFriction = Friction;
+
+		USkeletalMeshComponent* MeshComp = GetMesh();
+		ULyraAnimInstance* AnimInst = Cast<ULyraAnimInstance>(MeshComp->GetAnimInstance());
+		if (AnimInst != nullptr)
+		{
+			AnimInst->OnSliding = IsSliding;
+			MulticastSlide(SlideSpeed, Friction, IsSliding);
+		}
+	}
+}
+
+bool ALyraCharacter::MulticastSlide_Validate(float SlideSpeed, float Friction, bool IsSliding)
+{
+	return true;
+}
+
+void ALyraCharacter::MulticastSlide_Implementation(float SlideSpeed, float Friction, bool IsSliding)
+{
+	Sliding = IsSliding;
+	ULyraCharacterMovementComponent* LyraMoveComp = CastChecked<ULyraCharacterMovementComponent>(GetCharacterMovement());
+
+	if (LyraMoveComp != nullptr)
+	{
+		LyraMoveComp->MaxWalkSpeed = SlideSpeed;
+		LyraMoveComp->GroundFriction = Friction;
+
+		USkeletalMeshComponent* MeshComp = GetMesh();
+		ULyraAnimInstance* AnimInst = Cast<ULyraAnimInstance>(MeshComp->GetAnimInstance());
+		if (AnimInst != nullptr)
+		{
+			AnimInst->OnSliding = IsSliding;
+		}
+	}
+}
+
+bool ALyraCharacter::ServerApplyGameplayEffect_Validate(UAbilitySystemComponent* AbilitySystem, TSubclassOf<UGameplayEffect> GameEffect)
+{
+	return true;
+}
+
+void ALyraCharacter::ServerApplyGameplayEffect_Implementation(UAbilitySystemComponent* AbilitySystem, TSubclassOf<UGameplayEffect> GameEffect)
+{
+	MulticastApplyGameplayEffect(AbilitySystem, GameEffect);
+
+	FTimerHandle handle;
+	FTimerDelegate TimerDelegate;
+
+	//set the row boolean to false after finish cooldown timer
+	TimerDelegate.BindLambda([AbilitySystem, GameEffect, this]()
+	{
+		AbilitySystem->RemoveActiveGameplayEffectBySourceEffect(GameEffect, AbilitySystem);
+		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("done")));
+
+		HitActor = nullptr;
+	});
+	//delay
+	this->GetWorldTimerManager().SetTimer(handle, TimerDelegate, .2f, false);
+}
+
+bool ALyraCharacter::MulticastApplyGameplayEffect_Validate(UAbilitySystemComponent* AbilitySystem, TSubclassOf<UGameplayEffect> GameEffect)
+{
+	return true;
+}
+
+void ALyraCharacter::MulticastApplyGameplayEffect_Implementation(UAbilitySystemComponent* AbilitySystem, TSubclassOf<UGameplayEffect> GameEffect)
+{
+	if (AbilitySystem != nullptr)
+	{
+		FGameplayEffectContextHandle NewHandle = FGameplayEffectContextHandle();
+		AbilitySystem->BP_ApplyGameplayEffectToSelf(GameEffect, 0.f, NewHandle);
 	}
 }
 
@@ -514,4 +627,93 @@ void ALyraCharacter::OnControllerChangedTeam(UObject* TeamAgent, int32 OldTeam, 
 void ALyraCharacter::OnRep_MyTeamID(FGenericTeamId OldTeamID)
 {
 	ConditionalBroadcastTeamChanged(this, OldTeamID, MyTeamID);
+}
+
+float ALyraCharacter::GetAngleSpeed()
+{
+	FRotator Rot = UKismetMathLibrary::FindLookAtRotation(PrevLocation, GetActorLocation());
+
+	PrevLocation = GetActorLocation();
+
+	return SpeedCurve->GetFloatValue(Rot.Pitch);
+}
+
+void ALyraCharacter::TimelineCallback(float val)
+{
+	// This function is called for every tick in the timeline.
+	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("tick")));
+
+	FVector NormalizeVect;
+	GetCharacterMovement()->GetLastUpdateVelocity().GetSafeNormal(0.000f, NormalizeVect);
+
+	FInputActionInstance ActionInstance(InputAction);
+	FInputActionValue ActionValue = ActionInstance.GetValue();
+	FVector2D Val = ActionValue.Get<FVector2D>();
+
+	FVector WorldDir = FVector(NormalizeVect.X, NormalizeVect.Y, 0.0f);
+	AddMovementInput(WorldDir, UKismetMathLibrary::Abs(Val.X)*val, true);
+}
+
+void ALyraCharacter::TimelineFinishedCallback()
+{
+	// This function is called when the timeline finishes playing.
+	FVector Start = GetCharacterMovement()->GetLastUpdateLocation();
+	FVector End = Start + FVector(0.0f, 0.0f, -200.f);
+
+	FHitResult Hit;
+	FCollisionQueryParams AttackTraceParams;
+	AttackTraceParams.AddIgnoredActor(this);
+
+	bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility, AttackTraceParams);
+
+	FVector DotRaw = FVector(GetCharacterMovement()->GetLastUpdateVelocity().GetSafeNormal(0.0001f).X, GetCharacterMovement()->GetLastUpdateVelocity().GetSafeNormal(0.0001f).Y, 0.0f);
+
+	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("Dot product value: %f"), FVector::DotProduct(Hit.Normal, DotRaw)));
+
+	if (FVector::DotProduct(Hit.Normal, DotRaw) > 0.1f)
+	{
+		PlayTimeline();
+		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("Continue")));
+	}
+	else
+	{
+		ServerSlide(DefaultWalkSpeed, 8.0f, false);
+		GetCharacterMovement()->MaxWalkSpeed = DefaultWalkSpeed;
+		GetCharacterMovement()->GroundFriction = 8.0f;
+
+		USkeletalMeshComponent* MeshComp = GetMesh();
+		ULyraAnimInstance* AnimInst = Cast<ULyraAnimInstance>(MeshComp->GetAnimInstance());
+		if (AnimInst != nullptr)
+		{
+			AnimInst->OnSliding = false;
+		}
+		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("END")));
+	}
+}
+
+void ALyraCharacter::PlayTimeline()
+{
+	if (SlideTimeline != NULL)
+	{
+		SlideTimeline->PlayFromStart();
+		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("start timeline")));
+	}
+}
+
+void ALyraCharacter::DeclareSlidingTimeline()
+{
+	TimelineProgress.BindUFunction(this, FName("TimelineCallback"));
+	TimelineFinishedEvent.BindUFunction(this, FName("TimelineFinishedCallback"));
+
+	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("VALID")));
+
+	if (FloatCurve)
+	{
+		SlideTimeline->SetLooping(false);
+		SlideTimeline->SetTimelineLength(.5f);
+
+		//Add the float curve to the timeline and connect it to your timelines's interpolation function
+		SlideTimeline->AddInterpFloat(FloatCurve, TimelineProgress);
+		SlideTimeline->SetTimelineFinishedFunc(TimelineFinishedEvent);
+	}
 }

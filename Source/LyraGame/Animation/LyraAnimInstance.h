@@ -26,6 +26,9 @@ public:
 
 	virtual void InitializeWithAbilitySystem(UAbilitySystemComponent* ASC);
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Character State Data")
+	bool OnSliding = false;
+
 protected:
 
 #if WITH_EDITOR
