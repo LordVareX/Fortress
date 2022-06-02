@@ -11,6 +11,7 @@ class ULyraSocialManager;
 class ULyraSocialParty;
 class USocialManager;
 class ALyraPlayerController;
+class ULyraInventoryItemDefinition;
 
 UCLASS(Config = Game)
 class LYRAGAME_API ULyraGameInstance : public UCommonGameInstance
@@ -28,6 +29,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	bool ThrowGrenadeMode = false;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TArray< TSubclassOf<ULyraInventoryItemDefinition>> ItemDefArray;
 
 protected:
 

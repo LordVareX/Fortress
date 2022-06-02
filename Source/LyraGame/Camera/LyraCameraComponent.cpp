@@ -86,7 +86,7 @@ void ULyraCameraComponent::GetCameraView(float DeltaTime, FMinimalViewInfo& Desi
 									SpawnIconMessage.Instigator = PS;
 									SpawnIconMessage.Verb = GetTag.RequestGameplayTag("Show Enemy");
 
-									GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, FString::Printf(TEXT("Is in view")));
+									//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, FString::Printf(TEXT("Is in view")));
 									if (GetNetMode() != NM_DedicatedServer)
 									{
 										UGameplayMessageSubsystem::Get(this).BroadcastMessage(SpawnIconMessage.Verb, SpawnIconMessage);
@@ -103,7 +103,7 @@ void ULyraCameraComponent::GetCameraView(float DeltaTime, FMinimalViewInfo& Desi
 									SpawnIconMessage.Instigator = PS;
 									SpawnIconMessage.Verb = GetTag.RequestGameplayTag("Hide Enemy");
 
-									GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, FString::Printf(TEXT("Is out of view")));
+									//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, FString::Printf(TEXT("Is out of view")));
 									if (GetNetMode() != NM_DedicatedServer)
 									{
 										UGameplayMessageSubsystem::Get(this).BroadcastMessage(SpawnIconMessage.Verb, SpawnIconMessage);

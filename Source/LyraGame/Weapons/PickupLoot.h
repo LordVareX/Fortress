@@ -24,6 +24,7 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 public:	
 	// Called every frame
@@ -35,22 +36,44 @@ public:
 	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category = "Lyra|WeaponPickup", Meta = (ExposeOnSpawn = "true"))
 	ULyraWeaponPickupDefinition* WeaponDefinition;
 
+	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category = "Lyra|WeaponPickup", Meta = (ExposeOnSpawn = "true"))
+	TSubclassOf<UStaticMeshComponent> SM;
+
 protected:
 	
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, ReplicatedUsing = OnRep_WeaponAvailability, Category = "Lyra|WeaponPickup")
 	bool bIsWeaponAvailable;
 
+	//The amount of time between weapon pickup and weapon spawning in seconds
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Lyra|WeaponPickup")
+		float CoolDownTime;
+
+	//Delay between when the weapon is made available and when we check for a pawn standing in the spawner. Used to give the bIsWeaponAvailable OnRep time to fire and play FX. 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Lyra|WeaponPickup")
+		float CheckExistingOverlapDelay;
+
+	//Used to drive weapon respawn time indicators 0-1
+	UPROPERTY(BlueprintReadOnly, Transient, Category = "Lyra|WeaponPickup")
+		float CoolDownPercentage;
+
 public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Lyra|WeaponPickup")
 	UCapsuleComponent* CollisionVolume;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Lyra|WeaponPickup")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Lyra|WeaponPickup")
+	UStaticMeshComponent* PadMesh;
+
+	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category = "Lyra|WeaponPickup")
 	UStaticMeshComponent* WeaponMesh;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Lyra|WeaponPickup")
 	float WeaponMeshRotationSpeed;
+
+	FTimerHandle CoolDownTimerHandle;
+
+	FTimerHandle CheckOverlapsDelayTimerHandle;
 
 	UFUNCTION()
 	void OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepHitResult);
@@ -64,10 +87,21 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Lyra|WeaponPickup")
 	bool GiveWeapon(TSubclassOf<ULyraInventoryItemDefinition> WeaponItemClass, APawn* ReceivingPawn);
 
+	void StartCoolDown();
+
+	UFUNCTION(BlueprintCallable, Category = "Lyra|WeaponPickup")
+	void ResetCoolDown();
+
+	UFUNCTION()
+	void OnCoolDownTimerComplete();
+
 	void SetWeaponPickupVisibility(bool bShouldBeVisible);
 
 	UFUNCTION(BlueprintNativeEvent, Category = "Lyra|WeaponPickup")
 	void PlayPickupEffects();
+
+	UFUNCTION(BlueprintNativeEvent, Category = "Lyra|WeaponPickup")
+	void PlayRespawnEffects();
 
 	UFUNCTION()
 	void OnRep_WeaponAvailability();

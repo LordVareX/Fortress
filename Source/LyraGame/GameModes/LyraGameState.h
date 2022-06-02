@@ -12,6 +12,7 @@
 class ULyraExperienceManagerComponent;
 class ULyraAbilitySystemComponent;
 class UAbilitySystemComponent;
+class ULyraInventoryItemDefinition;
 
 /**
  * ALyraGameState
@@ -65,6 +66,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated)
 		int PID;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TArray< TSubclassOf<ULyraInventoryItemDefinition>> ItemDefArray;
 
 private:
 	UPROPERTY()

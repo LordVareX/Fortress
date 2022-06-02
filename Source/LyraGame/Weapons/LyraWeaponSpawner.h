@@ -32,10 +32,12 @@ public:
 
 	void OnConstruction(const FTransform& Transform) override;
 
-protected:
 	//Data asset used to configure a Weapon Spawner
-	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category = "Lyra|WeaponPickup")
+	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category = "Lyra|WeaponPickup", Meta = (ExposeOnSpawn = "true"))
 	ULyraWeaponPickupDefinition* WeaponDefinition;
+
+protected:
+	
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, ReplicatedUsing = OnRep_WeaponAvailability, Category = "Lyra|WeaponPickup")
 	bool bIsWeaponAvailable;

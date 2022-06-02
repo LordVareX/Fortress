@@ -171,6 +171,7 @@ void ULyraInventoryManagerComponent::AddItemInstance(ULyraInventoryItemInstance*
 	InventoryList.AddEntry(ItemInstance);
 }
 
+
 void ULyraInventoryManagerComponent::RemoveItemInstance(ULyraInventoryItemInstance* ItemInstance)
 {
 	InventoryList.RemoveEntry(ItemInstance);
@@ -178,6 +179,7 @@ void ULyraInventoryManagerComponent::RemoveItemInstance(ULyraInventoryItemInstan
 
 TArray<ULyraInventoryItemInstance*> ULyraInventoryManagerComponent::GetAllItems() const
 {
+	
 	return InventoryList.GetAllItems();
 }
 
@@ -221,6 +223,7 @@ int32 ULyraInventoryManagerComponent::GetTotalItemCountByDefinition(TSubclassOf<
 bool ULyraInventoryManagerComponent::ConsumeItemsByDefinition(TSubclassOf<ULyraInventoryItemDefinition> ItemDef, int32 NumToConsume)
 {
 	AActor* OwningActor = GetOwner();
+	
 	if (!OwningActor || !OwningActor->HasAuthority())
 	{
 		return false;
@@ -247,10 +250,10 @@ bool ULyraInventoryManagerComponent::ConsumeItemsByDefinition(TSubclassOf<ULyraI
 bool ULyraInventoryManagerComponent::ReplicateSubobjects(UActorChannel* Channel, class FOutBunch* Bunch, FReplicationFlags* RepFlags)
 {
 	bool WroteSomething = Super::ReplicateSubobjects(Channel, Bunch, RepFlags);
-
+	ULyraInventoryItemInstance* Instance;
 	for (FLyraInventoryEntry& Entry : InventoryList.Entries)
 	{
-		ULyraInventoryItemInstance* Instance = Entry.Instance;
+		Instance = Entry.Instance;
 
 		if (Instance && IsValid(Instance))
 		{

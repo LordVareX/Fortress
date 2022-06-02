@@ -158,6 +158,11 @@ public:
 	//~UObject interface
 	virtual bool ReplicateSubobjects(class UActorChannel* Channel, class FOutBunch* Bunch, FReplicationFlags* RepFlags) override;
 	//~End of UObject interface
+	ULyraInventoryItemInstance* Instances;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TArray< TSubclassOf<ULyraInventoryItemDefinition>> ItemDefArray;
+	
 
 private:
 	UPROPERTY(Replicated)
