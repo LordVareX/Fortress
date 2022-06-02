@@ -8,7 +8,8 @@
 #include "AbilitySystemInterface.h"
 #include "GameplayCueInterface.h"
 #include "GameplayTagAssetInterface.h"
-
+#include "Components/TimelineComponent.h"
+#include "InputAction.h"
 #include "LyraCharacter.generated.h"
 
 
@@ -19,6 +20,7 @@ class UAbilitySystemComponent;
 class ULyraPawnExtensionComponent;
 class ULyraHealthComponent;
 class ULyraCameraComponent;
+class UInputAction;
 
 
 /**
@@ -52,6 +54,9 @@ class ALyraCharacter : public AModularCharacter, public IAbilitySystemInterface,
 {
 	GENERATED_BODY()
 
+	UPROPERTY()
+	class UTimelineComponent* SlideTimeline;
+
 public:
 
 	ALyraCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
@@ -73,6 +78,20 @@ public:
 
 	void ToggleCrouch();
 
+	//~For Damage implementation Mechanic
+	UFUNCTION(BlueprintCallable, Reliable, Server, WithValidation, Category = "Transformation")
+	void ServerApplyGameplayEffect(UAbilitySystemComponent* AbilitySystem, TSubclassOf<class UGameplayEffect> GameEffect);
+
+	UFUNCTION(Unreliable, NetMulticast, WithValidation, Category = "Transformation")
+	void MulticastApplyGameplayEffect(UAbilitySystemComponent* AbilitySystem, TSubclassOf<class UGameplayEffect> GameEffect);
+
+	//~For Sliding mechanic
+	UFUNCTION(BlueprintCallable, Reliable, Server, WithValidation, Category = "Transformation")
+	void ServerSlide(float SlideSpeed, float Friction, bool IsSliding);
+
+	UFUNCTION(Unreliable, NetMulticast, WithValidation, Category = "Transformation")
+	void MulticastSlide(float SlideSpeed, float Friction, bool IsSliding);
+
 	//~AActor interface
 	virtual void PreInitializeComponents() override;
 	virtual void BeginPlay() override;
@@ -80,6 +99,10 @@ public:
 	virtual void Reset() override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void PreReplication(IRepChangedPropertyTracker& ChangedPropertyTracker) override;
+
+	// Called every frame
+	virtual void Tick(float DeltaSeconds) override;
+
 	//~End of AActor interface
 
 	//~APawn interface
@@ -98,7 +121,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool WantsToJump = false;
 
+	UPROPERTY(EditDefaultsOnly)
+	UInputAction* InputAction;
+
 protected:
+
+	FOnTimelineFloat TimelineProgress;
+	FOnTimelineEvent TimelineFinishedEvent;
 
 	virtual void OnAbilitySystemInitialized();
 	virtual void OnAbilitySystemUninitialized();
@@ -126,6 +155,13 @@ protected:
 	void DisableMovementAndCollision();
 	void DestroyDueToDeath();
 	void UninitAndDestroy();
+
+	UFUNCTION(BlueprintPure)
+	bool CanSlide();
+
+	// Called when the death sequence for the character has completed
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, meta = (DisplayName = "OnSlideStart"))
+	void ContinueSlide();
 
 	// Called when the death sequence for the character has completed
 	UFUNCTION(BlueprintImplementableEvent, meta=(DisplayName="OnDeathFinished"))
@@ -209,4 +245,18 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FVector NewLocation;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Timeline")
+	class UCurveFloat* FloatCurve;
+
+	UFUNCTION()
+		void TimelineCallback(float val);
+
+	UFUNCTION()
+		void TimelineFinishedCallback();
+
+	UFUNCTION(BlueprintCallable)
+	void PlayTimeline();
+
+	UFUNCTION()
+		void DeclareSlidingTimeline();
 };
