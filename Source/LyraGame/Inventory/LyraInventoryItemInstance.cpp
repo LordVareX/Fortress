@@ -42,6 +42,7 @@ void ULyraInventoryItemInstance::SetItemDef(TSubclassOf<ULyraInventoryItemDefini
 	ItemDef = InDef;
 }
 
+
 const ULyraInventoryItemFragment* ULyraInventoryItemInstance::FindFragmentByClass(TSubclassOf<ULyraInventoryItemFragment> FragmentClass) const
 {
 	if ((ItemDef != nullptr) && (FragmentClass != nullptr))

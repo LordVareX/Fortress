@@ -26,10 +26,15 @@ APickupLoot::APickupLoot()
 	CollisionVolume->InitCapsuleSize(80.f, 80.f);
 	CollisionVolume->OnComponentBeginOverlap.AddDynamic(this, &APickupLoot::OnOverlapBegin);
 
+	PadMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PadMesh"));
+	PadMesh->SetupAttachment(RootComponent);
+
 	WeaponMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WeaponMesh"));
 	WeaponMesh->SetupAttachment(RootComponent);
 
 	WeaponMeshRotationSpeed = 40.0f;
+	CoolDownTime = 30.0f;
+	CheckExistingOverlapDelay = 0.25f;
 	bIsWeaponAvailable = true;
 	bReplicates = true;
 
@@ -40,7 +45,25 @@ void APickupLoot::BeginPlay()
 {
 	Super::BeginPlay();
 
-	
+	if (WeaponDefinition && WeaponDefinition->InventoryItemDefinition)
+	{
+		CoolDownTime = WeaponDefinition->SpawnCoolDownSeconds;
+	}
+	else
+	{
+		UE_LOG(LogLyra, Error, TEXT("'%s' does not have a valid weapon definition! Make sure to set this data on the instance!"), *GetNameSafe(this));
+	}
+}
+
+void APickupLoot::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	if (UWorld* World = GetWorld())
+	{
+		World->GetTimerManager().ClearTimer(CoolDownTimerHandle);
+		World->GetTimerManager().ClearTimer(CheckOverlapsDelayTimerHandle);
+	}
+
+	Super::EndPlay(EndPlayReason);
 }
 
 // Called every frame
@@ -49,6 +72,10 @@ void APickupLoot::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	UWorld* World = GetWorld();
+	if (World->GetTimerManager().IsTimerActive(CoolDownTimerHandle))
+	{
+		CoolDownPercentage = 1.0f - World->GetTimerManager().GetTimerRemaining(CoolDownTimerHandle) / CoolDownTime;
+	}
 
 	WeaponMesh->AddRelativeRotation(FRotator(0.0f, World->GetDeltaSeconds() * WeaponMeshRotationSpeed, 0.0f));
 
@@ -99,10 +126,47 @@ void APickupLoot::AttemptPickUpWeapon_Implementation(APawn* Pawn)
 				SetWeaponPickupVisibility(false);
 				PlayPickupEffects();
 				Destroy();
-				//StartCoolDown();
+				StartCoolDown();
 			}
 		}
 	}
+}
+
+void APickupLoot::StartCoolDown()
+{
+	if (UWorld* World = GetWorld())
+	{
+		World->GetTimerManager().SetTimer(CoolDownTimerHandle, this, &APickupLoot::OnCoolDownTimerComplete, CoolDownTime);
+	}
+}
+
+void APickupLoot::ResetCoolDown()
+{
+	UWorld* World = GetWorld();
+
+	if (World)
+	{
+		World->GetTimerManager().ClearTimer(CoolDownTimerHandle);
+	}
+
+	if (GetLocalRole() == ROLE_Authority)
+	{
+		bIsWeaponAvailable = true;
+		PlayRespawnEffects();
+		SetWeaponPickupVisibility(true);
+
+		if (World)
+		{
+			World->GetTimerManager().SetTimer(CheckOverlapsDelayTimerHandle, this, &APickupLoot::CheckForExistingOverlaps, CheckExistingOverlapDelay);
+		}
+	}
+
+	CoolDownPercentage = 0.0f;
+}
+
+void APickupLoot::OnCoolDownTimerComplete()
+{
+	ResetCoolDown();
 }
 
 void APickupLoot::SetWeaponPickupVisibility(bool bShouldBeVisible)
@@ -128,11 +192,34 @@ void APickupLoot::PlayPickupEffects_Implementation()
 	}
 }
 
+void APickupLoot::PlayRespawnEffects_Implementation()
+{
+	if (WeaponDefinition != nullptr)
+	{
+		USoundBase* RespawnSound = WeaponDefinition->RespawnedSound;
+		if (RespawnSound != nullptr)
+		{
+			UGameplayStatics::PlaySoundAtLocation(this, RespawnSound, GetActorLocation());
+		}
+
+		UNiagaraSystem* RespawnEffect = WeaponDefinition->RespawnedEffect;
+		if (RespawnEffect != nullptr)
+		{
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, RespawnEffect, WeaponMesh->GetComponentLocation());
+		}
+	}
+}
+
 void APickupLoot::OnRep_WeaponAvailability()
 {
 	if (bIsWeaponAvailable)
 	{
+		//PlayRespawnEffects();
 		SetWeaponPickupVisibility(true);
+	}
+	else
+	{
+		SetWeaponPickupVisibility(false);
 		//StartCoolDown();
 		PlayPickupEffects();
 	}
