@@ -87,10 +87,10 @@ public:
 
 	//~For Sliding mechanic
 	UFUNCTION(BlueprintCallable, Reliable, Server, WithValidation, Category = "Transformation")
-	void ServerSlide(float SlideSpeed, float Friction, bool IsSliding);
+	void ServerSlide(float SlideSpeed, float Friction, bool IsSliding, FRotator NewRot);
 
 	UFUNCTION(Unreliable, NetMulticast, WithValidation, Category = "Transformation")
-	void MulticastSlide(float SlideSpeed, float Friction, bool IsSliding);
+	void MulticastSlide(float SlideSpeed, float Friction, bool IsSliding, FRotator NewRot);
 
 	//~AActor interface
 	virtual void PreInitializeComponents() override;
@@ -99,10 +99,6 @@ public:
 	virtual void Reset() override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void PreReplication(IRepChangedPropertyTracker& ChangedPropertyTracker) override;
-
-	// Called every frame
-	virtual void Tick(float DeltaSeconds) override;
-
 	//~End of AActor interface
 
 	//~APawn interface
@@ -195,6 +191,9 @@ private:
 	UPROPERTY()
 	FOnLyraTeamIndexChangedDelegate OnTeamChangedDelegate;
 
+	UPROPERTY()
+	FRotator BaseRot;
+
 protected:
 	// Called to determine what happens to the team ID when possession ends
 	virtual FGenericTeamId DetermineNewTeamAfterPossessionEnds(FGenericTeamId OldTeamID) const
@@ -259,4 +258,7 @@ protected:
 
 	UFUNCTION()
 		void DeclareSlidingTimeline();
+
+	UFUNCTION()
+		void RotateOnPlaneAngle();
 };

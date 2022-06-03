@@ -157,16 +157,6 @@ void ALyraCharacter::PreReplication(IRepChangedPropertyTracker& ChangedPropertyT
 	}
 }
 
-void ALyraCharacter::Tick(float DeltaSeconds)
-{
-	Super::Tick(DeltaSeconds);
-
-	/*if (SlideTimeline != NULL)
-	{
-		SlideTimeline->TickComponent(DeltaSeconds, ELevelTick::LEVELTICK_TimeOnly, NULL);
-	}*/
-}
-
 void ALyraCharacter::NotifyControllerChanged()
 {
 	const FGenericTeamId OldTeamId = GetGenericTeamId();
@@ -456,12 +446,12 @@ void ALyraCharacter::ToggleCrouch()
 	}
 }
 
-bool ALyraCharacter::ServerSlide_Validate(float SlideSpeed, float Friction, bool IsSliding)
+bool ALyraCharacter::ServerSlide_Validate(float SlideSpeed, float Friction, bool IsSliding, FRotator NewRot)
 {
 	return true;
 }
 
-void ALyraCharacter::ServerSlide_Implementation(float SlideSpeed, float Friction, bool IsSliding)
+void ALyraCharacter::ServerSlide_Implementation(float SlideSpeed, float Friction, bool IsSliding, FRotator NewRot)
 {
 	ULyraCharacterMovementComponent* LyraMoveComp = CastChecked<ULyraCharacterMovementComponent>(GetCharacterMovement());
 
@@ -475,17 +465,18 @@ void ALyraCharacter::ServerSlide_Implementation(float SlideSpeed, float Friction
 		if (AnimInst != nullptr)
 		{
 			AnimInst->OnSliding = IsSliding;
-			MulticastSlide(SlideSpeed, Friction, IsSliding);
+			//SetActorRotation(NewRot);
+			MulticastSlide(SlideSpeed, Friction, IsSliding, NewRot);
 		}
 	}
 }
 
-bool ALyraCharacter::MulticastSlide_Validate(float SlideSpeed, float Friction, bool IsSliding)
+bool ALyraCharacter::MulticastSlide_Validate(float SlideSpeed, float Friction, bool IsSliding, FRotator NewRot)
 {
 	return true;
 }
 
-void ALyraCharacter::MulticastSlide_Implementation(float SlideSpeed, float Friction, bool IsSliding)
+void ALyraCharacter::MulticastSlide_Implementation(float SlideSpeed, float Friction, bool IsSliding, FRotator NewRot)
 {
 	Sliding = IsSliding;
 	ULyraCharacterMovementComponent* LyraMoveComp = CastChecked<ULyraCharacterMovementComponent>(GetCharacterMovement());
@@ -500,6 +491,7 @@ void ALyraCharacter::MulticastSlide_Implementation(float SlideSpeed, float Frict
 		if (AnimInst != nullptr)
 		{
 			AnimInst->OnSliding = IsSliding;
+			//SetActorRotation(NewRot);
 		}
 	}
 }
@@ -643,6 +635,8 @@ void ALyraCharacter::TimelineCallback(float val)
 	// This function is called for every tick in the timeline.
 	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("tick")));
 
+	RotateOnPlaneAngle();
+
 	FVector NormalizeVect;
 	GetCharacterMovement()->GetLastUpdateVelocity().GetSafeNormal(0.000f, NormalizeVect);
 
@@ -665,19 +659,20 @@ void ALyraCharacter::TimelineFinishedCallback()
 	AttackTraceParams.AddIgnoredActor(this);
 
 	bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility, AttackTraceParams);
-
 	FVector DotRaw = FVector(GetCharacterMovement()->GetLastUpdateVelocity().GetSafeNormal(0.0001f).X, GetCharacterMovement()->GetLastUpdateVelocity().GetSafeNormal(0.0001f).Y, 0.0f);
 
-	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("Dot product value: %f"), FVector::DotProduct(Hit.Normal, DotRaw)));
+	//GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("Dot product value: %f"), FVector::DotProduct(Hit.Normal, DotRaw)));
 
 	if (FVector::DotProduct(Hit.Normal, DotRaw) > 0.1f)
 	{
 		PlayTimeline();
+		//RotateOnPlaneAngle();
 		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("Continue")));
 	}
 	else
 	{
-		ServerSlide(DefaultWalkSpeed, 8.0f, false);
+		ServerSlide(DefaultWalkSpeed, 8.0f, false, FRotator(0.0f, GetActorRotation().Yaw, 0.f));
+		//SetActorRotation(FRotator(0.0f, GetActorRotation().Yaw, 0.0f));
 		GetCharacterMovement()->MaxWalkSpeed = DefaultWalkSpeed;
 		GetCharacterMovement()->GroundFriction = 8.0f;
 
@@ -686,18 +681,17 @@ void ALyraCharacter::TimelineFinishedCallback()
 		if (AnimInst != nullptr)
 		{
 			AnimInst->OnSliding = false;
+			AnimInst->CheckFloorAngle = FVector::DotProduct(Hit.Normal, DotRaw);
 		}
 		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("END")));
+		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("Dot product value: %f"), FVector::DotProduct(Hit.Normal, DotRaw)));
 	}
 }
 
 void ALyraCharacter::PlayTimeline()
 {
-	if (SlideTimeline != NULL)
-	{
-		SlideTimeline->PlayFromStart();
-		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("start timeline")));
-	}
+	SlideTimeline->PlayFromStart();
+	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("start timeline")));
 }
 
 void ALyraCharacter::DeclareSlidingTimeline()
@@ -716,4 +710,44 @@ void ALyraCharacter::DeclareSlidingTimeline()
 		SlideTimeline->AddInterpFloat(FloatCurve, TimelineProgress);
 		SlideTimeline->SetTimelineFinishedFunc(TimelineFinishedEvent);
 	}
+}
+
+void ALyraCharacter::RotateOnPlaneAngle()
+{
+	FVector Start = GetCharacterMovement()->GetLastUpdateLocation();
+	FVector End = Start + FVector(0.0f, 0.0f, -200.f);
+
+	FHitResult Hit;
+	FCollisionQueryParams AttackTraceParams;
+	AttackTraceParams.AddIgnoredActor(this);
+
+	bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility, AttackTraceParams);
+	FVector DotRaw = FVector(GetCharacterMovement()->GetLastUpdateVelocity().GetSafeNormal(0.0001f).X, GetCharacterMovement()->GetLastUpdateVelocity().GetSafeNormal(0.0001f).Y, 0.0f);
+
+	ULyraAnimInstance* AnimInst = Cast<ULyraAnimInstance>(GetMesh()->GetAnimInstance());
+	if (AnimInst != nullptr)
+	{
+		AnimInst->CheckFloorAngle = FVector::DotProduct(Hit.Normal, DotRaw);
+	}
+	
+	//if (bHit)
+	//{
+	//	if (AnimInst != nullptr && AnimInst->OnSliding == true)
+	//	{
+	//		AnimInst->OnSlidingSlope = true;
+	//	}
+	//	/*FVector VectorPlane = FVector::VectorPlaneProject(GetActorForwardVector(), Hit.ImpactNormal);
+	//	FRotator NewRotation = FRotationMatrix::MakeFromXZ(VectorPlane, Hit.ImpactNormal).Rotator();
+
+	//	FRotator FinalRot = FRotator(NewRotation.Pitch, NewRotation.Yaw, 0.0f);
+
+	//	SetActorRotation(FinalRot);*/
+	//}
+	/*else
+	{
+		if (AnimInst != nullptr && AnimInst->OnSliding == true)
+		{
+			AnimInst->OnSlidingSlope = false;
+		}
+	}*/
 }
