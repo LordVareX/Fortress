@@ -68,17 +68,17 @@ void ULyraCameraComponent::GetCameraView(float DeltaTime, FMinimalViewInfo& Desi
 			{
 				PC->SetControlRotation(CameraModeView.ControlRotation);
 
-				if (!thisPS->IsABot())
+				for (TObjectIterator<ALyraCharacter> Itr; Itr; ++Itr)
 				{
-					for (TObjectIterator<ALyraCharacter> Itr; Itr; ++Itr)
+					ALyraCharacter* Char = Cast<ALyraCharacter>(*Itr);
+					if (Char != nullptr && Char != TargetPawn)
 					{
-						ALyraCharacter* Char = Cast<ALyraCharacter>(*Itr);
-						if (Char != nullptr && Char != TargetPawn)
+						ALyraPlayerState* PS = Cast<ALyraPlayerState>(Char->GetPlayerState());
+						if (PS != nullptr && thisPS->GetTeamId() != PS->GetTeamId())
 						{
-							ALyraPlayerState* PS = Cast<ALyraPlayerState>(Char->GetPlayerState());
-							if (PS != nullptr && thisPS->GetTeamId() != PS->GetTeamId())
+							if (PC->LineOfSightTo(Char))
 							{
-								if (PC->LineOfSightTo(Char) && Char->GetLastRenderTime() > 0.1f)
+								if (Char->GetLastRenderTime() > DeltaTime)
 								{
 									FGameplayTag GetTag;
 									FLyraVerbMessage SpawnIconMessage;
@@ -92,7 +92,10 @@ void ULyraCameraComponent::GetCameraView(float DeltaTime, FMinimalViewInfo& Desi
 										UGameplayMessageSubsystem::Get(this).BroadcastMessage(SpawnIconMessage.Verb, SpawnIconMessage);
 									}
 								}
-								else if (!PC->LineOfSightTo(Char) && Char->GetLastRenderTime() <= 0.1f)
+							}
+							else
+							{
+								if (Char->GetLastRenderTime() > DeltaTime)
 								{
 									FGameplayTag GetTag;
 									FLyraVerbMessage SpawnIconMessage;

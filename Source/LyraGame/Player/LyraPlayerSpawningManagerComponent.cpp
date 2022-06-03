@@ -89,7 +89,7 @@ AActor* ULyraPlayerSpawningManagerComponent::ChoosePlayerStart(AController* Play
 
 		bool IsEven = PS->GetTeamId()%2==0;
 
-		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Orange, FString::Printf(TEXT("Team ID: %d"), PS->GetTeamId()));
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Orange, FString::Printf(TEXT("Team ID: %d"), PS->GetTeamId()));
 
 		TArray<ALyraPlayerStart*> EvenPoints;
 		TArray<ALyraPlayerStart*> OddPoints;
