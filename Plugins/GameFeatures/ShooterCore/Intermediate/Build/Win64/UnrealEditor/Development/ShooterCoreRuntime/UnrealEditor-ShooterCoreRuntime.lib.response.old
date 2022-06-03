@@ -7,7 +7,7 @@
 /IGNORE:4221
 /NODEFAULTLIB
 "..\Intermediate\Build\Win64\UnrealEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h.obj"
-"H:\FotressRepo\Fotress\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64\UnrealEditor\Development\ShooterCoreRuntime\Module.ShooterCoreRuntime.cpp.obj"
-"H:\FotressRepo\Fotress\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64\UnrealEditor\Development\ShooterCoreRuntime\Module.ShooterCoreRuntime.gen.cpp.obj"
+"C:\Users\User\Documents\GitHub\Fotress\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64\UnrealEditor\Development\ShooterCoreRuntime\Module.ShooterCoreRuntime.cpp.obj"
+"C:\Users\User\Documents\GitHub\Fotress\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64\UnrealEditor\Development\ShooterCoreRuntime\Module.ShooterCoreRuntime.gen.cpp.obj"
 "..\Intermediate\Build\Win64\UnrealEditor\Development\Default.rc2.res"
-/OUT:"H:\FotressRepo\Fotress\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64\UnrealEditor\Development\ShooterCoreRuntime\UnrealEditor-ShooterCoreRuntime.lib"
+/OUT:"C:\Users\User\Documents\GitHub\Fotress\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64\UnrealEditor\Development\ShooterCoreRuntime\UnrealEditor-ShooterCoreRuntime.lib"
