@@ -1,6 +1,6 @@
-D:\UE5\Fotress\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64\UnrealEditor\Development\ShooterCoreRuntime\Module.ShooterCoreRuntime.cpp
+C:\Users\User\Documents\GitHub\Fotress\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64\UnrealEditor\Development\ShooterCoreRuntime\Module.ShooterCoreRuntime.cpp
 /I .
-/I D:\UE5\Fotress\Plugins\GameFeatures\ShooterCore\Source\ShooterCoreRuntime\Private
+/I C:\Users\User\Documents\GitHub\Fotress\Plugins\GameFeatures\ShooterCore\Source\ShooterCoreRuntime\Private
 /I ..\Intermediate\Build\Win64\UnrealEditor\Inc\CoreUObject
 /I Runtime
 /I Runtime\CoreUObject\Public
@@ -258,9 +258,9 @@ D:\UE5\Fotress\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64\UnrealE
 /I ..\Plugins\Runtime\DataRegistry\Intermediate\Build\Win64\UnrealEditor\Inc\DataRegistry
 /I ..\Plugins\Runtime\DataRegistry\Source
 /I ..\Plugins\Runtime\DataRegistry\Source\DataRegistry\Public
-/I D:\UE5\Fotress\Plugins\GameplayMessageRouter\Intermediate\Build\Win64\UnrealEditor\Inc\GameplayMessageRuntime
-/I D:\UE5\Fotress\Plugins\GameplayMessageRouter\Source
-/I D:\UE5\Fotress\Plugins\GameplayMessageRouter\Source\GameplayMessageRuntime\Public
+/I C:\Users\User\Documents\GitHub\Fotress\Plugins\GameplayMessageRouter\Intermediate\Build\Win64\UnrealEditor\Inc\GameplayMessageRuntime
+/I C:\Users\User\Documents\GitHub\Fotress\Plugins\GameplayMessageRouter\Source
+/I C:\Users\User\Documents\GitHub\Fotress\Plugins\GameplayMessageRouter\Source\GameplayMessageRuntime\Public
 /I ..\Plugins\Experimental\CommonUI\Intermediate\Build\Win64\UnrealEditor\Inc\CommonUI
 /I ..\Plugins\Experimental\CommonUI\Source
 /I ..\Plugins\Experimental\CommonUI\Source\CommonUI\Public
@@ -273,30 +273,30 @@ D:\UE5\Fotress\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64\UnrealE
 /I Runtime\Media\Public
 /I ..\Intermediate\Build\Win64\UnrealEditor\Inc\MediaUtils
 /I Runtime\MediaUtils\Public
-/I D:\UE5\Fotress\Plugins\AsyncMixin
-/I D:\UE5\Fotress\Plugins\AsyncMixin\Source
-/I D:\UE5\Fotress\Plugins\AsyncMixin\Source\Public
+/I C:\Users\User\Documents\GitHub\Fotress\Plugins\AsyncMixin
+/I C:\Users\User\Documents\GitHub\Fotress\Plugins\AsyncMixin\Source
+/I C:\Users\User\Documents\GitHub\Fotress\Plugins\AsyncMixin\Source\Public
 /I ..\Plugins\Experimental\EnhancedInput\Intermediate\Build\Win64\UnrealEditor\Inc\EnhancedInput
 /I ..\Plugins\Experimental\EnhancedInput\Source
 /I ..\Plugins\Experimental\EnhancedInput\Source\EnhancedInput\Public
-/I D:\UE5\Fotress\Plugins\GameSubtitles\Intermediate\Build\Win64\UnrealEditor\Inc\GameSubtitles
-/I D:\UE5\Fotress\Plugins\GameSubtitles
-/I D:\UE5\Fotress\Plugins\GameSubtitles\Source
-/I D:\UE5\Fotress\Plugins\GameSubtitles\Source\Public
+/I C:\Users\User\Documents\GitHub\Fotress\Plugins\GameSubtitles\Intermediate\Build\Win64\UnrealEditor\Inc\GameSubtitles
+/I C:\Users\User\Documents\GitHub\Fotress\Plugins\GameSubtitles
+/I C:\Users\User\Documents\GitHub\Fotress\Plugins\GameSubtitles\Source
+/I C:\Users\User\Documents\GitHub\Fotress\Plugins\GameSubtitles\Source\Public
 /I ..\Intermediate\Build\Win64\UnrealEditor\Inc\Overlay
 /I Runtime\Overlay\Public
-/I D:\UE5\Fotress\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64\UnrealEditor\Inc\ShooterCoreRuntime
-/I D:\UE5\Fotress\Plugins\GameFeatures\ShooterCore\Source
-/I D:\UE5\Fotress\Plugins\GameFeatures\ShooterCore\Source\ShooterCoreRuntime\Public
-/I D:\UE5\Fotress\Intermediate\Build\Win64\UnrealEditor\Inc\LyraGame
-/I D:\UE5\Fotress\Source
-/I D:\UE5\Fotress\Source\LyraGame
+/I C:\Users\User\Documents\GitHub\Fotress\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64\UnrealEditor\Inc\ShooterCoreRuntime
+/I C:\Users\User\Documents\GitHub\Fotress\Plugins\GameFeatures\ShooterCore\Source
+/I C:\Users\User\Documents\GitHub\Fotress\Plugins\GameFeatures\ShooterCore\Source\ShooterCoreRuntime\Public
+/I C:\Users\User\Documents\GitHub\Fotress\Intermediate\Build\Win64\UnrealEditor\Inc\LyraGame
+/I C:\Users\User\Documents\GitHub\Fotress\Source
+/I C:\Users\User\Documents\GitHub\Fotress\Source\LyraGame
 /I ..\Plugins\Experimental\ModularGameplay\Intermediate\Build\Win64\UnrealEditor\Inc\ModularGameplay
 /I ..\Plugins\Experimental\ModularGameplay\Source
 /I ..\Plugins\Experimental\ModularGameplay\Source\ModularGameplay\Public
-/I D:\UE5\Fotress\Plugins\ModularGameplayActors\Intermediate\Build\Win64\UnrealEditor\Inc\ModularGameplayActors
-/I D:\UE5\Fotress\Plugins\ModularGameplayActors\Source
-/I D:\UE5\Fotress\Plugins\ModularGameplayActors\Source\ModularGameplayActors\Public
+/I C:\Users\User\Documents\GitHub\Fotress\Plugins\ModularGameplayActors\Intermediate\Build\Win64\UnrealEditor\Inc\ModularGameplayActors
+/I C:\Users\User\Documents\GitHub\Fotress\Plugins\ModularGameplayActors\Source
+/I C:\Users\User\Documents\GitHub\Fotress\Plugins\ModularGameplayActors\Source\ModularGameplayActors\Public
 /I ..\Plugins\Runtime\ReplicationGraph\Intermediate\Build\Win64\UnrealEditor\Inc\ReplicationGraph
 /I ..\Plugins\Runtime\ReplicationGraph
 /I ..\Plugins\Runtime\ReplicationGraph\Source\Public
@@ -317,9 +317,9 @@ D:\UE5\Fotress\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64\UnrealE
 /I ..\Plugins\Online\OnlineSubsystem\Source\Public
 /I ..\Plugins\Online\OnlineBase
 /I ..\Plugins\Online\OnlineBase\Source\Public
-/I D:\UE5\Fotress\Plugins\CommonLoadingScreen\Intermediate\Build\Win64\UnrealEditor\Inc\CommonLoadingScreen
-/I D:\UE5\Fotress\Plugins\CommonLoadingScreen\Source
-/I D:\UE5\Fotress\Plugins\CommonLoadingScreen\Source\CommonLoadingScreen\Public
+/I C:\Users\User\Documents\GitHub\Fotress\Plugins\CommonLoadingScreen\Intermediate\Build\Win64\UnrealEditor\Inc\CommonLoadingScreen
+/I C:\Users\User\Documents\GitHub\Fotress\Plugins\CommonLoadingScreen\Source
+/I C:\Users\User\Documents\GitHub\Fotress\Plugins\CommonLoadingScreen\Source\CommonLoadingScreen\Public
 /I ..\Plugins\FX\Niagara\Intermediate\Build\Win64\UnrealEditor\Inc\Niagara
 /I ..\Plugins\FX\Niagara\Source
 /I ..\Plugins\FX\Niagara\Source\Niagara\Classes
@@ -334,13 +334,13 @@ D:\UE5\Fotress\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64\UnrealE
 /I Developer\DesktopPlatform\Public
 /I ..\Plugins\Experimental\ControlFlows\Source
 /I ..\Plugins\Experimental\ControlFlows\Source\ControlFlows\Public
-/I D:\UE5\Fotress\Plugins\CommonGame\Intermediate\Build\Win64\UnrealEditor\Inc\CommonGame
-/I D:\UE5\Fotress\Plugins\CommonGame
-/I D:\UE5\Fotress\Plugins\CommonGame\Source
-/I D:\UE5\Fotress\Plugins\CommonGame\Source\Public
-/I D:\UE5\Fotress\Plugins\CommonUser\Intermediate\Build\Win64\UnrealEditor\Inc\CommonUser
-/I D:\UE5\Fotress\Plugins\CommonUser\Source
-/I D:\UE5\Fotress\Plugins\CommonUser\Source\CommonUser\Public
+/I C:\Users\User\Documents\GitHub\Fotress\Plugins\CommonGame\Intermediate\Build\Win64\UnrealEditor\Inc\CommonGame
+/I C:\Users\User\Documents\GitHub\Fotress\Plugins\CommonGame
+/I C:\Users\User\Documents\GitHub\Fotress\Plugins\CommonGame\Source
+/I C:\Users\User\Documents\GitHub\Fotress\Plugins\CommonGame\Source\Public
+/I C:\Users\User\Documents\GitHub\Fotress\Plugins\CommonUser\Intermediate\Build\Win64\UnrealEditor\Inc\CommonUser
+/I C:\Users\User\Documents\GitHub\Fotress\Plugins\CommonUser\Source
+/I C:\Users\User\Documents\GitHub\Fotress\Plugins\CommonUser\Source\CommonUser\Public
 /I ThirdParty\mimalloc\include
 /I ThirdParty\LibTiff\Source\Win64
 /I ThirdParty\LibTiff\Source
@@ -357,16 +357,16 @@ D:\UE5\Fotress\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64\UnrealE
 /I ThirdParty\PhysX3\PhysX_3.4\Include\geometry
 /I "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\INCLUDE"
 /I "C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6.2\include\um"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\ucrt"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\shared"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\um"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\winrt"
+/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\ucrt"
+/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\shared"
+/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\um"
+/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\winrt"
 /FI"..\Intermediate\Build\Win64\UnrealEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h"
-/FI"D:\UE5\Fotress\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64\UnrealEditor\Development\ShooterCoreRuntime\Definitions.ShooterCoreRuntime.h"
+/FI"C:\Users\User\Documents\GitHub\Fotress\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64\UnrealEditor\Development\ShooterCoreRuntime\Definitions.ShooterCoreRuntime.h"
 /Yu"..\Intermediate\Build\Win64\UnrealEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h"
 /Fp"..\Intermediate\Build\Win64\UnrealEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h.pch"
-/Fo"D:\UE5\Fotress\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64\UnrealEditor\Development\ShooterCoreRuntime\Module.ShooterCoreRuntime.cpp.obj"
-/sourceDependencies D:\UE5\Fotress\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64\UnrealEditor\Development\ShooterCoreRuntime\Module.ShooterCoreRuntime.cpp.json
+/Fo"C:\Users\User\Documents\GitHub\Fotress\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64\UnrealEditor\Development\ShooterCoreRuntime\Module.ShooterCoreRuntime.cpp.obj"
+/sourceDependencies C:\Users\User\Documents\GitHub\Fotress\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64\UnrealEditor\Development\ShooterCoreRuntime\Module.ShooterCoreRuntime.cpp.json
 /Zc:inline
 /nologo
 /Oi
