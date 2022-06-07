@@ -137,6 +137,7 @@ void ALyraCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& Out
 	DOREPLIFETIME(ThisClass, MyTeamID);
 	DOREPLIFETIME(ThisClass, Sliding);
 	DOREPLIFETIME(ThisClass, HitActor);
+	DOREPLIFETIME(ThisClass, Blocking);
 }
 
 void ALyraCharacter::PreReplication(IRepChangedPropertyTracker& ChangedPropertyTracker)
@@ -460,6 +461,14 @@ void ALyraCharacter::ServerSlide_Implementation(float SlideSpeed, float Friction
 		LyraMoveComp->MaxWalkSpeed = SlideSpeed;
 		LyraMoveComp->GroundFriction = Friction;
 
+		if (IsSliding == true)
+		{
+			if (bIsCrouched == true)
+			{
+				UnCrouch();
+			}
+		}
+
 		USkeletalMeshComponent* MeshComp = GetMesh();
 		ULyraAnimInstance* AnimInst = Cast<ULyraAnimInstance>(MeshComp->GetAnimInstance());
 		if (AnimInst != nullptr)
@@ -486,12 +495,83 @@ void ALyraCharacter::MulticastSlide_Implementation(float SlideSpeed, float Frict
 		LyraMoveComp->MaxWalkSpeed = SlideSpeed;
 		LyraMoveComp->GroundFriction = Friction;
 
+		if (IsSliding == true)
+		{
+			if (bIsCrouched == true)
+			{
+				UnCrouch();
+			}
+		}
+
 		USkeletalMeshComponent* MeshComp = GetMesh();
 		ULyraAnimInstance* AnimInst = Cast<ULyraAnimInstance>(MeshComp->GetAnimInstance());
 		if (AnimInst != nullptr)
 		{
 			AnimInst->OnSliding = IsSliding;
 			//SetActorRotation(NewRot);
+		}
+	}
+}
+
+bool ALyraCharacter::ServerShield_Validate(bool IsShield, float WalkSpeed)
+{
+	return true;
+}
+
+void ALyraCharacter::ServerShield_Implementation(bool IsShield, float WalkSpeed)
+{
+	Blocking = IsShield;
+	ULyraCharacterMovementComponent* LyraMoveComp = CastChecked<ULyraCharacterMovementComponent>(GetCharacterMovement());
+
+	if (LyraMoveComp != nullptr)
+	{
+		LyraMoveComp->MaxWalkSpeed = WalkSpeed;
+
+		if (Blocking == true)
+		{
+			if (bIsCrouched == true)
+			{
+				UnCrouch();
+			}
+		}
+
+		USkeletalMeshComponent* MeshComp = GetMesh();
+		ULyraAnimInstance* AnimInst = Cast<ULyraAnimInstance>(MeshComp->GetAnimInstance());
+		if (AnimInst != nullptr)
+		{
+			AnimInst->OnShield = IsShield;
+			MulticastShield(Blocking, WalkSpeed);
+		}
+	}
+}
+
+bool ALyraCharacter::MulticastShield_Validate(bool IsShield, float WalkSpeed)
+{
+	return true;
+}
+
+void ALyraCharacter::MulticastShield_Implementation(bool IsShield, float WalkSpeed)
+{
+	Blocking = IsShield;
+	ULyraCharacterMovementComponent* LyraMoveComp = CastChecked<ULyraCharacterMovementComponent>(GetCharacterMovement());
+
+	if (LyraMoveComp != nullptr)
+	{
+		LyraMoveComp->MaxWalkSpeed = WalkSpeed;
+
+		if (Blocking == true)
+		{
+			if (bIsCrouched == true)
+			{
+				UnCrouch();
+			}
+		}
+
+		USkeletalMeshComponent* MeshComp = GetMesh();
+		ULyraAnimInstance* AnimInst = Cast<ULyraAnimInstance>(MeshComp->GetAnimInstance());
+		if (AnimInst != nullptr)
+		{
+			AnimInst->OnShield = IsShield;
 		}
 	}
 }

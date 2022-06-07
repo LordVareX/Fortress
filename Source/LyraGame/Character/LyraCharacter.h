@@ -92,6 +92,13 @@ public:
 	UFUNCTION(Unreliable, NetMulticast, WithValidation, Category = "Transformation")
 	void MulticastSlide(float SlideSpeed, float Friction, bool IsSliding, FRotator NewRot);
 
+	//~For Shield mechanic
+	UFUNCTION(BlueprintCallable, Reliable, Server, WithValidation, Category = "Shield")
+	void ServerShield(bool IsShield, float WalkSpeed);
+
+	UFUNCTION(Unreliable, NetMulticast, WithValidation, Category = "Shield")
+	void MulticastShield(bool IsShield, float WalkSpeed);
+
 	//~AActor interface
 	virtual void PreInitializeComponents() override;
 	virtual void BeginPlay() override;
@@ -113,6 +120,9 @@ public:
 
 	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite)
 	bool Sliding = false;
+
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite)
+	bool Blocking = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool WantsToJump = false;

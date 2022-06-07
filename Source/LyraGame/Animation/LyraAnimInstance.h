@@ -30,6 +30,9 @@ public:
 	bool OnSliding = false;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Character State Data")
+	bool OnShield = false;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Character State Data")
 	bool OnSlidingSlope = false;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Character State Data")
