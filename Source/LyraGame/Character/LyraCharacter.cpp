@@ -349,6 +349,16 @@ void ALyraCharacter::OnDeathFinished(AActor*)
 	GetWorld()->GetTimerManager().SetTimerForNextTick(this, &ThisClass::DestroyDueToDeath);
 }
 
+void ALyraCharacter::Landed(const FHitResult& Hit)
+{
+	Super::Landed(Hit);
+	if (WantsToSliding == true)
+	{
+		ServerSlide(MaxSlideSpeed, 0.f, true, FRotator());
+		PlayTimeline();
+	}
+}
+
 
 void ALyraCharacter::DisableMovementAndCollision()
 {
@@ -397,7 +407,7 @@ void ALyraCharacter::UninitAndDestroy()
 
 bool ALyraCharacter::CanSlide()
 {
-	return this->GetLastMovementInputVector().Size() > 0.0f;
+	return (this->GetLastMovementInputVector().Size() > 0.0f && GetCharacterMovement()->IsFalling() != true);
 }
 
 void ALyraCharacter::OnMovementModeChanged(EMovementMode PrevMovementMode, uint8 PreviousCustomMode)
@@ -454,6 +464,7 @@ bool ALyraCharacter::ServerSlide_Validate(float SlideSpeed, float Friction, bool
 
 void ALyraCharacter::ServerSlide_Implementation(float SlideSpeed, float Friction, bool IsSliding, FRotator NewRot)
 {
+	Sliding = IsSliding;
 	ULyraCharacterMovementComponent* LyraMoveComp = CastChecked<ULyraCharacterMovementComponent>(GetCharacterMovement());
 
 	if (LyraMoveComp != nullptr)
@@ -513,15 +524,26 @@ void ALyraCharacter::MulticastSlide_Implementation(float SlideSpeed, float Frict
 	}
 }
 
-bool ALyraCharacter::ServerShield_Validate(bool IsShield, float WalkSpeed)
+bool ALyraCharacter::ServerShield_Validate(TSubclassOf<AActor> ShieldToSpawn, bool IsShield, float WalkSpeed)
 {
 	return true;
 }
 
-void ALyraCharacter::ServerShield_Implementation(bool IsShield, float WalkSpeed)
+void ALyraCharacter::ServerShield_Implementation(TSubclassOf<AActor> ShieldToSpawn, bool IsShield, float WalkSpeed)
 {
 	Blocking = IsShield;
 	ULyraCharacterMovementComponent* LyraMoveComp = CastChecked<ULyraCharacterMovementComponent>(GetCharacterMovement());
+
+	FActorSpawnParameters SpawnInfo;
+	SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	FTransform SpawnTransform = FTransform(GetCapsuleComponent()->GetComponentRotation(), GetCapsuleComponent()->GetComponentScale(), (GetCapsuleComponent()->GetForwardVector() * 500.f) - GetCapsuleComponent()->GetComponentLocation());
+
+	AActor* ShieldActor = GetWorld()->SpawnActor<AActor>(ShieldToSpawn, SpawnTransform, SpawnInfo);
+	if (ShieldActor != nullptr)
+	{
+		ShieldActor->AttachToComponent(GetCapsuleComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+	}
 
 	if (LyraMoveComp != nullptr)
 	{
@@ -765,6 +787,7 @@ void ALyraCharacter::TimelineFinishedCallback()
 		}
 		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("END")));
 		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("Dot product value: %f"), FVector::DotProduct(Hit.Normal, DotRaw)));
+		WantsToSliding = false;
 	}
 }
 

@@ -94,7 +94,7 @@ public:
 
 	//~For Shield mechanic
 	UFUNCTION(BlueprintCallable, Reliable, Server, WithValidation, Category = "Shield")
-	void ServerShield(bool IsShield, float WalkSpeed);
+	void ServerShield(TSubclassOf<AActor> ShieldToSpawn, bool IsShield, float WalkSpeed);
 
 	UFUNCTION(Unreliable, NetMulticast, WithValidation, Category = "Shield")
 	void MulticastShield(bool IsShield, float WalkSpeed);
@@ -127,6 +127,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool WantsToJump = false;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool WantsToSliding = false;
+
 	UPROPERTY(EditDefaultsOnly)
 	UInputAction* InputAction;
 
@@ -149,6 +152,9 @@ protected:
 	void InitializeGameplayTags();
 
 	virtual void FellOutOfWorld(const class UDamageType& dmgType) override;
+
+	UFUNCTION()
+	virtual void Landed(const FHitResult& Hit);
 
 	// Begins the death sequence for the character (disables collision, disables movement, etc...)
 	UFUNCTION()
