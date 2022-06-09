@@ -36,9 +36,6 @@ public:
 	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category = "Lyra|WeaponPickup", Meta = (ExposeOnSpawn = "true"))
 	ULyraWeaponPickupDefinition* WeaponDefinition;
 
-	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category = "Lyra|WeaponPickup", Meta = (ExposeOnSpawn = "true"))
-	TSubclassOf<UStaticMeshComponent> SM;
-
 protected:
 	
 
@@ -65,8 +62,11 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Lyra|WeaponPickup")
 	UStaticMeshComponent* PadMesh;
 
-	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category = "Lyra|WeaponPickup")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Lyra|WeaponPickup")
 	UStaticMeshComponent* WeaponMesh;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Lyra|WeaponPickup")
+	UStaticMeshComponent* StaticMeshLootBox;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Lyra|WeaponPickup")
 	float WeaponMeshRotationSpeed;
