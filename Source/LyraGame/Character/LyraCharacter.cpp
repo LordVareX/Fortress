@@ -73,6 +73,10 @@ ALyraCharacter::ALyraCharacter(const FObjectInitializer& ObjectInitializer)
 	CameraComponent = CreateDefaultSubobject<ULyraCameraComponent>(TEXT("CameraComponent"));
 	CameraComponent->SetRelativeLocation(FVector(-300.0f, 0.0f, 75.0f));
 
+	/*ShieldComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ShieldComponent"));
+	ShieldComponent->SetupAttachment(CapsuleComp);
+	ShieldComponent->SetRelativeLocation(FVector(-300.0f, 0.0f, 75.0f));*/
+
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = true;
 	bUseControllerRotationRoll = false;
@@ -357,6 +361,10 @@ void ALyraCharacter::Landed(const FHitResult& Hit)
 		ServerSlide(MaxSlideSpeed, 0.f, true, FRotator());
 		PlayTimeline();
 	}
+	else
+	{
+		GetCharacterMovement()->JumpZVelocity = DefaultJumpSpeed;
+	}
 }
 
 
@@ -539,26 +547,36 @@ void ALyraCharacter::ServerShield_Implementation(TSubclassOf<AActor> ShieldToSpa
 	Blocking = IsShield;
 	ULyraCharacterMovementComponent* LyraMoveComp = CastChecked<ULyraCharacterMovementComponent>(GetCharacterMovement());
 
-	FActorSpawnParameters SpawnInfo;
-	SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-
-	FTransform SpawnTransform = FTransform(GetCapsuleComponent()->GetComponentRotation(), GetCapsuleComponent()->GetComponentScale(), (GetCapsuleComponent()->GetForwardVector() * 500.f) - GetCapsuleComponent()->GetComponentLocation());
-
-	AActor* ShieldActor = GetWorld()->SpawnActor<AActor>(ShieldToSpawn, SpawnTransform, SpawnInfo);
-	if (ShieldActor != nullptr)
-	{
-		ShieldActor->AttachToComponent(GetCapsuleComponent(), FAttachmentTransformRules::KeepRelativeTransform);
-	}
-
 	if (LyraMoveComp != nullptr)
 	{
 		LyraMoveComp->MaxWalkSpeed = WalkSpeed;
 
 		if (Blocking == true)
 		{
+			FActorSpawnParameters SpawnInfo;
+			SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
 			if (bIsCrouched == true)
 			{
 				UnCrouch();
+			}
+
+			//FTransform SpawnTransform = FTransform(CameraComponent->GetComponentRotation(), GetCapsuleComponent()->GetComponentScale(), GetCapsuleComponent()->GetComponentLocation() + GetCapsuleComponent()->GetComponentTransform().GetUnitAxis(EAxis::Y)*200.f);
+
+			if (ShieldActor == nullptr)
+			{
+				ShieldActor = GetWorld()->SpawnActor<AActor>(ShieldToSpawn, GetCapsuleComponent()->GetComponentTransform(), SpawnInfo);
+				ShieldActor->AttachToComponent(GetCapsuleComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+				ShieldActor->SetActorRelativeLocation(FVector(200.f, 0.f, 0.f));
+			}
+			else
+				ShieldActor->SetActorHiddenInGame(false);
+		}
+		else
+		{
+			if (ShieldActor != nullptr)
+			{
+				ShieldActor->SetActorHiddenInGame(true);
 			}
 		}
 
@@ -737,10 +755,18 @@ float ALyraCharacter::GetAngleSpeed()
 	return SpeedCurve->GetFloatValue(Rot.Pitch);
 }
 
+void ALyraCharacter::UpdateMovementSpeed(float DesiredSpeed)
+{
+	GetCharacterMovement()->MaxWalkSpeed = FMath::FInterpTo(GetCharacterMovement()->MaxWalkSpeed, DesiredSpeed, GetWorld()->GetDeltaSeconds(), 4.f);
+	GetCharacterMovement()->JumpZVelocity = GetCharacterMovement()->MaxWalkSpeed;
+}
+
 void ALyraCharacter::TimelineCallback(float val)
 {
 	// This function is called for every tick in the timeline.
 	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("tick")));
+
+	UpdateMovementSpeed(GetAngleSpeed());
 
 	RotateOnPlaneAngle();
 

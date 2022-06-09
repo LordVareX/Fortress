@@ -137,6 +137,9 @@ public:
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "OnResetStart"))
 		void ResetCharacter();
 
+	UPROPERTY()
+	AActor* ShieldActor;
+
 protected:
 
 	FOnTimelineFloat TimelineProgress;
@@ -204,6 +207,9 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Lyra|Character", Meta = (AllowPrivateAccess = "true"))
 		ULyraCameraComponent* CameraComponent;
 
+	/*UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Lyra|Character", Meta = (AllowPrivateAccess = "true"))
+	UStaticMeshComponent* ShieldComponent;*/
+
 	UPROPERTY(Transient, ReplicatedUsing = OnRep_ReplicatedAcceleration)
 		FLyraReplicatedAcceleration ReplicatedAcceleration;
 
@@ -237,6 +243,9 @@ private:
 	UFUNCTION(BlueprintCallable)
 		float GetAngleSpeed();
 
+	UFUNCTION(BlueprintCallable)
+	void UpdateMovementSpeed(float DesiredSpeed);
+
 protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -253,6 +262,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float DefaultWalkSpeed = 600.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float DefaultJumpSpeed = 500.f;
 
 	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite)
 		AActor* HitActor;
