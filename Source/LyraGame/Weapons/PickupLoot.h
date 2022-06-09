@@ -33,7 +33,7 @@ public:
 	void OnConstruction(const FTransform& Transform) override;
 
 	//Data asset used to configure a loot box
-	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category = "Lyra|WeaponPickup", Meta = (ExposeOnSpawn = "true"))
+	UPROPERTY(BlueprintReadWrite, Category = "Lyra|WeaponPickup", Meta = (ExposeOnSpawn = "true"))
 	ULyraWeaponPickupDefinition* WeaponDefinition;
 
 protected:
