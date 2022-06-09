@@ -87,10 +87,18 @@ public:
 
 	//~For Sliding mechanic
 	UFUNCTION(BlueprintCallable, Reliable, Server, WithValidation, Category = "Transformation")
-		void ServerSlide(float SlideSpeed, float Friction, bool IsSliding);
+	void ServerSlide(float SlideSpeed, float Friction, bool IsSliding, FRotator NewRot);
 
 	UFUNCTION(Unreliable, NetMulticast, WithValidation, Category = "Transformation")
-		void MulticastSlide(float SlideSpeed, float Friction, bool IsSliding);
+	void MulticastSlide(float SlideSpeed, float Friction, bool IsSliding, FRotator NewRot);
+
+	//~For Shield mechanic
+	UFUNCTION(BlueprintCallable, Reliable, Server, WithValidation, Category = "Shield")
+	void ServerShield(TSubclassOf<AActor> ShieldToSpawn, bool IsShield, float WalkSpeed);
+
+	UFUNCTION(Unreliable, NetMulticast, WithValidation, Category = "Shield")
+	void MulticastShield(bool IsShield, float WalkSpeed);
+
 
 	//~AActor interface
 	virtual void PreInitializeComponents() override;
@@ -99,10 +107,6 @@ public:
 	virtual void Reset() override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void PreReplication(IRepChangedPropertyTracker& ChangedPropertyTracker) override;
-
-	// Called every frame
-	virtual void Tick(float DeltaSeconds) override;
-
 	//~End of AActor interface
 
 	//~APawn interface
@@ -118,8 +122,14 @@ public:
 	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite)
 		bool Sliding = false;
 
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite)
+	bool Blocking = false;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool WantsToJump = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool WantsToSliding = false;
 
 	UPROPERTY(EditDefaultsOnly)
 		UInputAction* InputAction;
@@ -146,6 +156,9 @@ protected:
 	void InitializeGameplayTags();
 
 	virtual void FellOutOfWorld(const class UDamageType& dmgType) override;
+
+	UFUNCTION()
+	virtual void Landed(const FHitResult& Hit);
 
 	// Begins the death sequence for the character (disables collision, disables movement, etc...)
 	UFUNCTION()
@@ -199,6 +212,9 @@ private:
 
 	UPROPERTY()
 		FOnLyraTeamIndexChangedDelegate OnTeamChangedDelegate;
+
+	UPROPERTY()
+	FRotator BaseRot;
 
 protected:
 	// Called to determine what happens to the team ID when possession ends
@@ -264,4 +280,7 @@ protected:
 
 	UFUNCTION()
 		void DeclareSlidingTimeline();
+
+	UFUNCTION()
+		void RotateOnPlaneAngle();
 };

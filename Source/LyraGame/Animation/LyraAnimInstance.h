@@ -29,6 +29,15 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Character State Data")
 	bool OnSliding = false;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Character State Data")
+	bool OnShield = false;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Character State Data")
+	bool OnSlidingSlope = false;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Character State Data")
+	float CheckFloorAngle = 0.0f;
+
 protected:
 
 #if WITH_EDITOR
