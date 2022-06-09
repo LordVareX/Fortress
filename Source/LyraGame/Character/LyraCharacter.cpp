@@ -97,7 +97,7 @@ void ALyraCharacter::BeginPlay()
 	{
 		if (ULyraSignificanceManager* SignificanceManager = USignificanceManager::Get<ULyraSignificanceManager>(World))
 		{
-//@TODO: SignificanceManager->RegisterObject(this, (EFortSignificanceType)SignificanceType);
+			//@TODO: SignificanceManager->RegisterObject(this, (EFortSignificanceType)SignificanceType);
 		}
 	}
 
@@ -151,9 +151,9 @@ void ALyraCharacter::PreReplication(IRepChangedPropertyTracker& ChangedPropertyT
 		double AccelXYRadians, AccelXYMagnitude;
 		FMath::CartesianToPolar(CurrentAccel.X, CurrentAccel.Y, AccelXYMagnitude, AccelXYRadians);
 
-		ReplicatedAcceleration.AccelXYRadians   = FMath::FloorToInt((AccelXYRadians / TWO_PI) * 255.0);     // [0, 2PI] -> [0, 255]
+		ReplicatedAcceleration.AccelXYRadians = FMath::FloorToInt((AccelXYRadians / TWO_PI) * 255.0);     // [0, 2PI] -> [0, 255]
 		ReplicatedAcceleration.AccelXYMagnitude = FMath::FloorToInt((AccelXYMagnitude / MaxAccel) * 255.0);	// [0, MaxAccel] -> [0, 255]
-		ReplicatedAcceleration.AccelZ           = FMath::FloorToInt((CurrentAccel.Z / MaxAccel) * 127.0);   // [-MaxAccel, MaxAccel] -> [-127, 127]
+		ReplicatedAcceleration.AccelZ = FMath::FloorToInt((CurrentAccel.Z / MaxAccel) * 127.0);   // [-MaxAccel, MaxAccel] -> [-127, 127]
 	}
 }
 
@@ -409,6 +409,11 @@ bool ALyraCharacter::CanSlide()
 	return this->GetLastMovementInputVector().Size() > 0.0f;
 }
 
+void ALyraCharacter::ResetCharacter()
+{
+	Reset();
+}
+
 void ALyraCharacter::OnMovementModeChanged(EMovementMode PrevMovementMode, uint8 PreviousCustomMode)
 {
 	Super::OnMovementModeChanged(PrevMovementMode, PreviousCustomMode);
@@ -574,9 +579,9 @@ void ALyraCharacter::OnRep_ReplicatedAcceleration()
 	if (ULyraCharacterMovementComponent* LyraMovementComponent = Cast<ULyraCharacterMovementComponent>(GetCharacterMovement()))
 	{
 		// Decompress Acceleration
-		const double MaxAccel         = LyraMovementComponent->MaxAcceleration;
+		const double MaxAccel = LyraMovementComponent->MaxAcceleration;
 		const double AccelXYMagnitude = double(ReplicatedAcceleration.AccelXYMagnitude) * MaxAccel / 255.0; // [0, 255] -> [0, MaxAccel]
-		const double AccelXYRadians   = double(ReplicatedAcceleration.AccelXYRadians) * TWO_PI / 255.0;     // [0, 255] -> [0, 2PI]
+		const double AccelXYRadians = double(ReplicatedAcceleration.AccelXYRadians) * TWO_PI / 255.0;     // [0, 255] -> [0, 2PI]
 
 		FVector UnpackedAcceleration(FVector::ZeroVector);
 		FMath::PolarToCartesian(AccelXYMagnitude, AccelXYRadians, UnpackedAcceleration.X, UnpackedAcceleration.Y);
@@ -651,7 +656,7 @@ void ALyraCharacter::TimelineCallback(float val)
 	FVector2D Val = ActionValue.Get<FVector2D>();
 
 	FVector WorldDir = FVector(NormalizeVect.X, NormalizeVect.Y, 0.0f);
-	AddMovementInput(WorldDir, UKismetMathLibrary::Abs(Val.X)*val, true);
+	AddMovementInput(WorldDir, UKismetMathLibrary::Abs(Val.X) * val, true);
 }
 
 void ALyraCharacter::TimelineFinishedCallback()

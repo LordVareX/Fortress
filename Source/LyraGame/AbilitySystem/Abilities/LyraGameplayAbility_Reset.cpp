@@ -52,6 +52,7 @@ void ULyraGameplayAbility_Reset::ActivateAbility(const FGameplayAbilitySpecHandl
 	// Execute the reset from the character
 	if (ALyraCharacter* LyraChar = Cast<ALyraCharacter>(CurrentActorInfo->AvatarActor.Get()))
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, FString::Printf(TEXT("Is in view")));
 		LyraChar->Reset();
 	}
 

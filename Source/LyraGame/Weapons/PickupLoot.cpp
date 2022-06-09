@@ -32,6 +32,9 @@ APickupLoot::APickupLoot()
 	WeaponMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WeaponMesh"));
 	WeaponMesh->SetupAttachment(RootComponent);
 
+	StaticMeshLootBox = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("LootBoxMesh"));
+	StaticMeshLootBox->SetupAttachment(RootComponent);
+
 	WeaponMeshRotationSpeed = 40.0f;
 	CoolDownTime = 30.0f;
 	CheckExistingOverlapDelay = 0.25f;
@@ -77,7 +80,7 @@ void APickupLoot::Tick(float DeltaTime)
 		CoolDownPercentage = 1.0f - World->GetTimerManager().GetTimerRemaining(CoolDownTimerHandle) / CoolDownTime;
 	}
 
-	WeaponMesh->AddRelativeRotation(FRotator(0.0f, World->GetDeltaSeconds() * WeaponMeshRotationSpeed, 0.0f));
+	StaticMeshLootBox->AddRelativeRotation(FRotator(0.0f, World->GetDeltaSeconds() * WeaponMeshRotationSpeed, 0.0f));
 
 }
 

@@ -31,14 +31,14 @@ struct FLyraReplicatedAcceleration
 {
 	GENERATED_BODY()
 
-	UPROPERTY()
-	uint8 AccelXYRadians = 0;	// Direction of XY accel component, quantized to represent [0, 2*pi]
+		UPROPERTY()
+		uint8 AccelXYRadians = 0;	// Direction of XY accel component, quantized to represent [0, 2*pi]
 
 	UPROPERTY()
-	uint8 AccelXYMagnitude = 0;	//Accel rate of XY component, quantized to represent [0, MaxAcceleration]
+		uint8 AccelXYMagnitude = 0;	//Accel rate of XY component, quantized to represent [0, MaxAcceleration]
 
 	UPROPERTY()
-	int8 AccelZ = 0;	// Raw Z accel rate component, quantized to represent [-MaxAcceleration, MaxAcceleration]
+		int8 AccelZ = 0;	// Raw Z accel rate component, quantized to represent [-MaxAcceleration, MaxAcceleration]
 };
 
 
@@ -54,21 +54,21 @@ class ALyraCharacter : public AModularCharacter, public IAbilitySystemInterface,
 {
 	GENERATED_BODY()
 
-	UPROPERTY()
-	class UTimelineComponent* SlideTimeline;
+		UPROPERTY()
+		class UTimelineComponent* SlideTimeline;
 
 public:
 
 	ALyraCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 	UFUNCTION(BlueprintCallable, Category = "Lyra|Character")
-	ALyraPlayerController* GetLyraPlayerController() const;
+		ALyraPlayerController* GetLyraPlayerController() const;
 
 	UFUNCTION(BlueprintCallable, Category = "Lyra|Character")
-	ALyraPlayerState* GetLyraPlayerState() const;
+		ALyraPlayerState* GetLyraPlayerState() const;
 
 	UFUNCTION(BlueprintCallable, Category = "Lyra|Character")
-	ULyraAbilitySystemComponent* GetLyraAbilitySystemComponent() const;
+		ULyraAbilitySystemComponent* GetLyraAbilitySystemComponent() const;
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
 	virtual void GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const override;
@@ -80,17 +80,17 @@ public:
 
 	//~For Damage implementation Mechanic
 	UFUNCTION(BlueprintCallable, Reliable, Server, WithValidation, Category = "Transformation")
-	void ServerApplyGameplayEffect(UAbilitySystemComponent* AbilitySystem, TSubclassOf<class UGameplayEffect> GameEffect);
+		void ServerApplyGameplayEffect(UAbilitySystemComponent* AbilitySystem, TSubclassOf<class UGameplayEffect> GameEffect);
 
 	UFUNCTION(Unreliable, NetMulticast, WithValidation, Category = "Transformation")
-	void MulticastApplyGameplayEffect(UAbilitySystemComponent* AbilitySystem, TSubclassOf<class UGameplayEffect> GameEffect);
+		void MulticastApplyGameplayEffect(UAbilitySystemComponent* AbilitySystem, TSubclassOf<class UGameplayEffect> GameEffect);
 
 	//~For Sliding mechanic
 	UFUNCTION(BlueprintCallable, Reliable, Server, WithValidation, Category = "Transformation")
-	void ServerSlide(float SlideSpeed, float Friction, bool IsSliding);
+		void ServerSlide(float SlideSpeed, float Friction, bool IsSliding);
 
 	UFUNCTION(Unreliable, NetMulticast, WithValidation, Category = "Transformation")
-	void MulticastSlide(float SlideSpeed, float Friction, bool IsSliding);
+		void MulticastSlide(float SlideSpeed, float Friction, bool IsSliding);
 
 	//~AActor interface
 	virtual void PreInitializeComponents() override;
@@ -116,13 +116,16 @@ public:
 	//~End of ILyraTeamAgentInterface interface
 
 	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite)
-	bool Sliding = false;
+		bool Sliding = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool WantsToJump = false;
+		bool WantsToJump = false;
 
 	UPROPERTY(EditDefaultsOnly)
-	UInputAction* InputAction;
+		UInputAction* InputAction;
+
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "OnResetStart"))
+		void ResetCharacter();
 
 protected:
 
@@ -146,26 +149,28 @@ protected:
 
 	// Begins the death sequence for the character (disables collision, disables movement, etc...)
 	UFUNCTION()
-	virtual void OnDeathStarted(AActor* OwningActor);
+		virtual void OnDeathStarted(AActor* OwningActor);
 
 	// Ends the death sequence for the character (detaches controller, destroys pawn, etc...)
 	UFUNCTION()
-	virtual void OnDeathFinished(AActor* OwningActor);
+		virtual void OnDeathFinished(AActor* OwningActor);
 
 	void DisableMovementAndCollision();
 	void DestroyDueToDeath();
 	void UninitAndDestroy();
 
 	UFUNCTION(BlueprintPure)
-	bool CanSlide();
+		bool CanSlide();
 
 	// Called when the death sequence for the character has completed
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, meta = (DisplayName = "OnSlideStart"))
-	void ContinueSlide();
+		void ContinueSlide();
+
+	
 
 	// Called when the death sequence for the character has completed
-	UFUNCTION(BlueprintImplementableEvent, meta=(DisplayName="OnDeathFinished"))
-	void K2_OnDeathFinished();
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnDeathFinished"))
+		void K2_OnDeathFinished();
 
 	virtual void OnMovementModeChanged(EMovementMode PrevMovementMode, uint8 PreviousCustomMode) override;
 	void SetMovementModeTag(EMovementMode MovementMode, uint8 CustomMovementMode, bool bTagEnabled);
@@ -178,22 +183,22 @@ protected:
 private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Lyra|Character", Meta = (AllowPrivateAccess = "true"))
-	ULyraPawnExtensionComponent* PawnExtComponent;
+		ULyraPawnExtensionComponent* PawnExtComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Lyra|Character", Meta = (AllowPrivateAccess = "true"))
-	ULyraHealthComponent* HealthComponent;
+		ULyraHealthComponent* HealthComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Lyra|Character", Meta = (AllowPrivateAccess = "true"))
-	ULyraCameraComponent* CameraComponent;
+		ULyraCameraComponent* CameraComponent;
 
 	UPROPERTY(Transient, ReplicatedUsing = OnRep_ReplicatedAcceleration)
-	FLyraReplicatedAcceleration ReplicatedAcceleration;
+		FLyraReplicatedAcceleration ReplicatedAcceleration;
 
 	UPROPERTY(ReplicatedUsing = OnRep_MyTeamID)
-	FGenericTeamId MyTeamID;
+		FGenericTeamId MyTeamID;
 
 	UPROPERTY()
-	FOnLyraTeamIndexChangedDelegate OnTeamChangedDelegate;
+		FOnLyraTeamIndexChangedDelegate OnTeamChangedDelegate;
 
 protected:
 	// Called to determine what happens to the team ID when possession ends
@@ -205,16 +210,16 @@ protected:
 
 private:
 	UFUNCTION()
-	void OnControllerChangedTeam(UObject* TeamAgent, int32 OldTeam, int32 NewTeam);
+		void OnControllerChangedTeam(UObject* TeamAgent, int32 OldTeam, int32 NewTeam);
 
 	UFUNCTION()
-	void OnRep_ReplicatedAcceleration();
+		void OnRep_ReplicatedAcceleration();
 
 	UFUNCTION()
-	void OnRep_MyTeamID(FGenericTeamId OldTeamID);
+		void OnRep_MyTeamID(FGenericTeamId OldTeamID);
 
 	UFUNCTION(BlueprintCallable)
-	float GetAngleSpeed();
+		float GetAngleSpeed();
 
 protected:
 
@@ -246,7 +251,7 @@ protected:
 		FVector NewLocation;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Timeline")
-	class UCurveFloat* FloatCurve;
+		class UCurveFloat* FloatCurve;
 
 	UFUNCTION()
 		void TimelineCallback(float val);
@@ -255,7 +260,7 @@ protected:
 		void TimelineFinishedCallback();
 
 	UFUNCTION(BlueprintCallable)
-	void PlayTimeline();
+		void PlayTimeline();
 
 	UFUNCTION()
 		void DeclareSlidingTimeline();
