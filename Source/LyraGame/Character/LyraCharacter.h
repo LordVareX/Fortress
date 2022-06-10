@@ -131,6 +131,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool WantsToSliding = false;
 
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite)
+	bool StartDash = false;
+
 	UPROPERTY(EditDefaultsOnly)
 		UInputAction* InputAction;
 
@@ -293,6 +296,6 @@ protected:
 	UFUNCTION()
 		void DeclareSlidingTimeline();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 		void RotateOnPlaneAngle();
 };
