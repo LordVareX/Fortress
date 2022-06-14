@@ -94,10 +94,10 @@ public:
 
 	//~For Shield mechanic
 	UFUNCTION(BlueprintCallable, Reliable, Server, WithValidation, Category = "Shield")
-	void ServerShield(TSubclassOf<AActor> ShieldToSpawn, bool IsShield, float WalkSpeed);
+	void ServerShield(TSubclassOf<AActor> ShieldToSpawn, FGameplayTagContainer Tag, TSubclassOf<UGameplayEffect> GameplayEffectClass, bool IsShield, float WalkSpeed);
 
 	UFUNCTION(Unreliable, NetMulticast, WithValidation, Category = "Shield")
-	void MulticastShield(bool IsShield, float WalkSpeed);
+	void MulticastShield(bool IsShield, float WalkSpeed, AActor* Shield);
 
 
 	//~AActor interface
@@ -140,8 +140,8 @@ public:
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "OnResetStart"))
 		void ResetCharacter();
 
-	UPROPERTY()
-	AActor* ShieldActor;
+	UPROPERTY(Replicated)
+	AActor* ShieldActor = nullptr;
 
 protected:
 
