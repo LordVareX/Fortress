@@ -181,11 +181,8 @@ protected:
 	UFUNCTION(BlueprintPure)
 		bool CanSlide();
 
-	// Called when the death sequence for the character has completed
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, meta = (DisplayName = "OnSlideStart"))
-		void ContinueSlide();
-
-	
+	UFUNCTION(BlueprintPure, Category = "Movement")
+		bool IsMovingBackwards();
 
 	// Called when the death sequence for the character has completed
 	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnDeathFinished"))
