@@ -430,6 +430,10 @@ bool ALyraCharacter::IsMovingBackwards()
 
 void ALyraCharacter::ResetCharacter()
 {
+	if (ShieldActor != nullptr)
+	{
+		ShieldActor->Destroy();
+	}
 	Reset();
 }
 
@@ -582,14 +586,17 @@ void ALyraCharacter::ServerShield_Implementation(TSubclassOf<AActor> ShieldToSpa
 
 			AActor* Shield = GetWorld()->SpawnActor<AActor>(ShieldToSpawn, GetCapsuleComponent()->GetComponentTransform(), SpawnInfo);
 			Shield->AttachToComponent(GetCapsuleComponent(), FAttachmentTransformRules::KeepRelativeTransform);
-			Shield->SetActorRelativeLocation(FVector(200.f, 0.f, 0.f));
+			Shield->SetActorRelativeLocation(FVector(100.f, 0.f, 0.f));
 			Shield->SetActorRelativeRotation(FRotator(0.f, 0.f, 0.f));
 			ShieldActor = Shield;
 		}
 		else
 		{
 			//UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(this)->RemoveActiveGameplayEffectBySourceEffect(GameplayEffectClass, UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(this));
-			ShieldActor->Destroy();
+			if (ShieldActor != nullptr)
+			{
+				ShieldActor->Destroy();
+			}
 		}
 
 		USkeletalMeshComponent* MeshComp = GetMesh();
@@ -626,6 +633,14 @@ void ALyraCharacter::MulticastShield_Implementation(bool IsShield, float WalkSpe
 			{
 				ShieldActor->SetActorHiddenInGame(false);
 			}*/
+		}
+		else
+		{
+			//UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(this)->RemoveActiveGameplayEffectBySourceEffect(GameplayEffectClass, UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(this));
+			if (ShieldActor != nullptr)
+			{
+				ShieldActor->Destroy();
+			}
 		}
 
 		/*if (ShieldActor != nullptr)
