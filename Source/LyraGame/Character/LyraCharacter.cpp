@@ -22,6 +22,9 @@
 #include "Components/TimelineComponent.h"
 #include "InputAction.h"
 #include "InputActionValue.h"
+#include "AbilitySystemComponent.h"
+#include "AbilitySystemBlueprintLibrary.h"
+#include "Engine/StaticMeshActor.h"
 
 static FName NAME_LyraCharacterCollisionProfile_Capsule(TEXT("LyraPawnCapsule"));
 static FName NAME_LyraCharacterCollisionProfile_Mesh(TEXT("LyraPawnMesh"));
@@ -126,6 +129,10 @@ void ALyraCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void ALyraCharacter::Reset()
 {
+	if (ShieldActor != nullptr)
+	{
+		ShieldActor->Destroy();
+	}
 	DisableMovementAndCollision();
 
 	K2_OnReset();
@@ -143,6 +150,7 @@ void ALyraCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& Out
 	DOREPLIFETIME(ThisClass, HitActor);
 	DOREPLIFETIME(ThisClass, Blocking);
 	DOREPLIFETIME(ThisClass, StartDash);
+	DOREPLIFETIME(ThisClass, ShieldActor);
 }
 
 void ALyraCharacter::PreReplication(IRepChangedPropertyTracker& ChangedPropertyTracker)
@@ -346,6 +354,10 @@ void ALyraCharacter::FellOutOfWorld(const class UDamageType& dmgType)
 
 void ALyraCharacter::OnDeathStarted(AActor*)
 {
+	if (ShieldActor != nullptr)
+	{
+		ShieldActor->Destroy();
+	}
 	DisableMovementAndCollision();
 }
 
@@ -419,6 +431,11 @@ bool ALyraCharacter::CanSlide()
 	return (this->GetLastMovementInputVector().Size() > 0.0f && GetCharacterMovement()->IsFalling() != true);
 }
 
+bool ALyraCharacter::IsMovingBackwards()
+{
+	return (FVector::DotProduct(this->GetLastMovementInputVector(), GetActorForwardVector()) < 0.f);
+}
+
 void ALyraCharacter::ResetCharacter()
 {
 	Reset();
@@ -478,7 +495,19 @@ bool ALyraCharacter::ServerSlide_Validate(float SlideSpeed, float Friction, bool
 
 void ALyraCharacter::ServerSlide_Implementation(float SlideSpeed, float Friction, bool IsSliding, FRotator NewRot)
 {
+	RotateOnPlaneAngle();
+
 	Sliding = IsSliding;
+
+	USkeletalMeshComponent* MeshComp = GetMesh();
+	ULyraAnimInstance* AnimInst = Cast<ULyraAnimInstance>(MeshComp->GetAnimInstance());
+	if (AnimInst != nullptr)
+	{
+		AnimInst->OnSliding = IsSliding;
+		//SetActorRotation(NewRot);
+		MulticastSlide(SlideSpeed, Friction, IsSliding, NewRot);
+	}
+
 	ULyraCharacterMovementComponent* LyraMoveComp = CastChecked<ULyraCharacterMovementComponent>(GetCharacterMovement());
 
 	if (LyraMoveComp != nullptr)
@@ -486,21 +515,12 @@ void ALyraCharacter::ServerSlide_Implementation(float SlideSpeed, float Friction
 		LyraMoveComp->MaxWalkSpeed = SlideSpeed;
 		LyraMoveComp->GroundFriction = Friction;
 
-		if (IsSliding == true)
+		if (Sliding == true)
 		{
 			if (bIsCrouched == true)
 			{
 				UnCrouch();
 			}
-		}
-
-		USkeletalMeshComponent* MeshComp = GetMesh();
-		ULyraAnimInstance* AnimInst = Cast<ULyraAnimInstance>(MeshComp->GetAnimInstance());
-		if (AnimInst != nullptr)
-		{
-			AnimInst->OnSliding = IsSliding;
-			//SetActorRotation(NewRot);
-			MulticastSlide(SlideSpeed, Friction, IsSliding, NewRot);
 		}
 	}
 }
@@ -512,6 +532,8 @@ bool ALyraCharacter::MulticastSlide_Validate(float SlideSpeed, float Friction, b
 
 void ALyraCharacter::MulticastSlide_Implementation(float SlideSpeed, float Friction, bool IsSliding, FRotator NewRot)
 {
+	RotateOnPlaneAngle();
+
 	Sliding = IsSliding;
 	ULyraCharacterMovementComponent* LyraMoveComp = CastChecked<ULyraCharacterMovementComponent>(GetCharacterMovement());
 
@@ -520,30 +542,30 @@ void ALyraCharacter::MulticastSlide_Implementation(float SlideSpeed, float Frict
 		LyraMoveComp->MaxWalkSpeed = SlideSpeed;
 		LyraMoveComp->GroundFriction = Friction;
 
-		if (IsSliding == true)
+		if (Sliding == true)
 		{
 			if (bIsCrouched == true)
 			{
 				UnCrouch();
 			}
-		}
+			USkeletalMeshComponent* MeshComp = GetMesh();
 
-		USkeletalMeshComponent* MeshComp = GetMesh();
-		ULyraAnimInstance* AnimInst = Cast<ULyraAnimInstance>(MeshComp->GetAnimInstance());
-		if (AnimInst != nullptr)
-		{
-			AnimInst->OnSliding = IsSliding;
-			//SetActorRotation(NewRot);
+			ULyraAnimInstance* AnimInst = Cast<ULyraAnimInstance>(MeshComp->GetAnimInstance());
+			if (AnimInst != nullptr)
+			{
+				AnimInst->OnSliding = IsSliding;
+				//SetActorRotation(NewRot);
+			}
 		}
 	}
 }
 
-bool ALyraCharacter::ServerShield_Validate(TSubclassOf<AActor> ShieldToSpawn, bool IsShield, float WalkSpeed)
+bool ALyraCharacter::ServerShield_Validate(TSubclassOf<AActor> ShieldToSpawn, FGameplayTagContainer Tag, TSubclassOf<UGameplayEffect> GameplayEffectClass, bool IsShield, float WalkSpeed)
 {
 	return true;
 }
 
-void ALyraCharacter::ServerShield_Implementation(TSubclassOf<AActor> ShieldToSpawn, bool IsShield, float WalkSpeed)
+void ALyraCharacter::ServerShield_Implementation(TSubclassOf<AActor> ShieldToSpawn, FGameplayTagContainer Tag, TSubclassOf<UGameplayEffect> GameplayEffectClass, bool IsShield, float WalkSpeed)
 {
 	Blocking = IsShield;
 	ULyraCharacterMovementComponent* LyraMoveComp = CastChecked<ULyraCharacterMovementComponent>(GetCharacterMovement());
@@ -554,6 +576,10 @@ void ALyraCharacter::ServerShield_Implementation(TSubclassOf<AActor> ShieldToSpa
 
 		if (Blocking == true)
 		{
+			//FGameplayEffectContextHandle EffectContext;
+
+			//UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(this)->BP_ApplyGameplayEffectToSelf(GameplayEffectClass, 0.f, EffectContext);
+			
 			FActorSpawnParameters SpawnInfo;
 			SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
@@ -562,22 +588,18 @@ void ALyraCharacter::ServerShield_Implementation(TSubclassOf<AActor> ShieldToSpa
 				UnCrouch();
 			}
 
-			//FTransform SpawnTransform = FTransform(CameraComponent->GetComponentRotation(), GetCapsuleComponent()->GetComponentScale(), GetCapsuleComponent()->GetComponentLocation() + GetCapsuleComponent()->GetComponentTransform().GetUnitAxis(EAxis::Y)*200.f);
-
-			if (ShieldActor == nullptr)
-			{
-				ShieldActor = GetWorld()->SpawnActor<AActor>(ShieldToSpawn, GetCapsuleComponent()->GetComponentTransform(), SpawnInfo);
-				ShieldActor->AttachToComponent(GetCapsuleComponent(), FAttachmentTransformRules::KeepRelativeTransform);
-				ShieldActor->SetActorRelativeLocation(FVector(200.f, 0.f, 0.f));
-			}
-			else
-				ShieldActor->SetActorHiddenInGame(false);
+			AActor* Shield = GetWorld()->SpawnActor<AActor>(ShieldToSpawn, GetCapsuleComponent()->GetComponentTransform(), SpawnInfo);
+			Shield->AttachToComponent(GetCapsuleComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+			Shield->SetActorRelativeLocation(FVector(100.f, 0.f, 0.f));
+			Shield->SetActorRelativeRotation(FRotator(0.f, 0.f, 0.f));
+			ShieldActor = Shield;
 		}
 		else
 		{
+			//UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(this)->RemoveActiveGameplayEffectBySourceEffect(GameplayEffectClass, UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(this));
 			if (ShieldActor != nullptr)
 			{
-				ShieldActor->SetActorHiddenInGame(true);
+				ShieldActor->Destroy();
 			}
 		}
 
@@ -586,17 +608,17 @@ void ALyraCharacter::ServerShield_Implementation(TSubclassOf<AActor> ShieldToSpa
 		if (AnimInst != nullptr)
 		{
 			AnimInst->OnShield = IsShield;
-			MulticastShield(Blocking, WalkSpeed);
+			MulticastShield(Blocking, WalkSpeed, ShieldActor);
 		}
 	}
 }
 
-bool ALyraCharacter::MulticastShield_Validate(bool IsShield, float WalkSpeed)
+bool ALyraCharacter::MulticastShield_Validate(bool IsShield, float WalkSpeed, AActor* Shield)
 {
 	return true;
 }
 
-void ALyraCharacter::MulticastShield_Implementation(bool IsShield, float WalkSpeed)
+void ALyraCharacter::MulticastShield_Implementation(bool IsShield, float WalkSpeed, AActor* Shield)
 {
 	Blocking = IsShield;
 	ULyraCharacterMovementComponent* LyraMoveComp = CastChecked<ULyraCharacterMovementComponent>(GetCharacterMovement());
@@ -611,7 +633,25 @@ void ALyraCharacter::MulticastShield_Implementation(bool IsShield, float WalkSpe
 			{
 				UnCrouch();
 			}
+			/*if (ShieldActor != nullptr)
+			{
+				ShieldActor->SetActorHiddenInGame(false);
+			}*/
 		}
+		else
+		{
+			//UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(this)->RemoveActiveGameplayEffectBySourceEffect(GameplayEffectClass, UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(this));
+			if (ShieldActor != nullptr)
+			{
+				ShieldActor->Destroy();
+			}
+		}
+
+		/*if (ShieldActor != nullptr)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("Shield : %s"), ShieldActor));
+			ShieldActor->SetActorHiddenInGame(true);
+		}*/
 
 		USkeletalMeshComponent* MeshComp = GetMesh();
 		ULyraAnimInstance* AnimInst = Cast<ULyraAnimInstance>(MeshComp->GetAnimInstance());
@@ -638,7 +678,6 @@ void ALyraCharacter::ServerApplyGameplayEffect_Implementation(UAbilitySystemComp
 	TimerDelegate.BindLambda([AbilitySystem, GameEffect, this]()
 	{
 		AbilitySystem->RemoveActiveGameplayEffectBySourceEffect(GameEffect, AbilitySystem);
-		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("done")));
 
 		HitActor = nullptr;
 	});
@@ -764,22 +803,31 @@ void ALyraCharacter::UpdateMovementSpeed(float DesiredSpeed)
 
 void ALyraCharacter::TimelineCallback(float val)
 {
-	// This function is called for every tick in the timeline.
-	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("tick")));
+	AActor* FloorActor = GetCharacterMovement()->CurrentFloor.HitResult.GetActor();
 
-	UpdateMovementSpeed(GetAngleSpeed());
+	if (FloorActor != nullptr && FloorActor->ActorHasTag("stairs") == true || IsMovingBackwards() == true)
+	{
+		TimelineFinishedCallback();
+	}
+	else
+	{
+		// This function is called for every tick in the timeline.
+		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("Current value : %f"), val));
 
-	RotateOnPlaneAngle();
+		UpdateMovementSpeed(GetAngleSpeed());
 
-	FVector NormalizeVect;
-	GetCharacterMovement()->GetLastUpdateVelocity().GetSafeNormal(0.000f, NormalizeVect);
+		RotateOnPlaneAngle();
 
-	FInputActionInstance ActionInstance(InputAction);
-	FInputActionValue ActionValue = ActionInstance.GetValue();
-	FVector2D Val = ActionValue.Get<FVector2D>();
+		FVector NormalizeVect;
+		GetCharacterMovement()->GetLastUpdateVelocity().GetSafeNormal(0.000f, NormalizeVect);
 
-	FVector WorldDir = FVector(NormalizeVect.X, NormalizeVect.Y, 0.0f);
-	AddMovementInput(WorldDir, UKismetMathLibrary::Abs(Val.X) * val, true);
+		FInputActionInstance ActionInstance(InputAction);
+		FInputActionValue ActionValue = ActionInstance.GetValue();
+		FVector2D Val = ActionValue.Get<FVector2D>();
+
+		FVector WorldDir = FVector(NormalizeVect.X, NormalizeVect.Y, 0.0f);
+		AddMovementInput(WorldDir, UKismetMathLibrary::Abs(Val.X) * val, true);
+	}
 }
 
 void ALyraCharacter::TimelineFinishedCallback()
@@ -795,9 +843,10 @@ void ALyraCharacter::TimelineFinishedCallback()
 	bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility, AttackTraceParams);
 	FVector DotRaw = FVector(GetCharacterMovement()->GetLastUpdateVelocity().GetSafeNormal(0.0001f).X, GetCharacterMovement()->GetLastUpdateVelocity().GetSafeNormal(0.0001f).Y, 0.0f);
 
-	//GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("Dot product value: %f"), FVector::DotProduct(Hit.Normal, DotRaw)));
+	AActor* FloorActor = GetCharacterMovement()->CurrentFloor.HitResult.GetActor();
 
-	if (FVector::DotProduct(Hit.Normal, DotRaw) > 0.1f)
+	//GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("Dot product value: %f"), FVector::DotProduct(Hit.Normal, DotRaw)));
+	if (FVector::DotProduct(Hit.Normal, DotRaw) > 0.1f && FloorActor != nullptr && FloorActor->ActorHasTag("stairs") == false && IsMovingBackwards() == false)
 	{
 		PlayTimeline();
 		//RotateOnPlaneAngle();
@@ -805,21 +854,27 @@ void ALyraCharacter::TimelineFinishedCallback()
 	}
 	else
 	{
-		ServerSlide(DefaultWalkSpeed, 8.0f, false, FRotator(0.0f, GetActorRotation().Yaw, 0.f));
-		//SetActorRotation(FRotator(0.0f, GetActorRotation().Yaw, 0.0f));
-		GetCharacterMovement()->MaxWalkSpeed = DefaultWalkSpeed;
-		GetCharacterMovement()->GroundFriction = 8.0f;
-
-		USkeletalMeshComponent* MeshComp = GetMesh();
-		ULyraAnimInstance* AnimInst = Cast<ULyraAnimInstance>(MeshComp->GetAnimInstance());
-		if (AnimInst != nullptr)
+		if (IsLocallyControlled())
 		{
-			AnimInst->OnSliding = false;
-			AnimInst->CheckFloorAngle = FVector::DotProduct(Hit.Normal, DotRaw);
+			ServerSlide(DefaultWalkSpeed, 8.0f, false, FRotator(0.0f, GetActorRotation().Yaw, 0.f));
+
+			Sliding = false;
+
+			//SetActorRotation(FRotator(0.0f, GetActorRotation().Yaw, 0.0f));
+			GetCharacterMovement()->MaxWalkSpeed = DefaultWalkSpeed;
+			GetCharacterMovement()->GroundFriction = 8.0f;
+
+			USkeletalMeshComponent* MeshComp = GetMesh();
+			ULyraAnimInstance* AnimInst = Cast<ULyraAnimInstance>(MeshComp->GetAnimInstance());
+			if (AnimInst != nullptr)
+			{
+				AnimInst->OnSliding = false;
+				AnimInst->CheckFloorAngle = FVector::DotProduct(Hit.Normal, DotRaw);
+			}
+			GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("END")));
+			GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("Dot product value: %f"), FVector::DotProduct(Hit.Normal, DotRaw)));
+			WantsToSliding = false;
 		}
-		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("END")));
-		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("Dot product value: %f"), FVector::DotProduct(Hit.Normal, DotRaw)));
-		WantsToSliding = false;
 	}
 }
 
