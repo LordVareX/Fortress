@@ -129,6 +129,10 @@ void ALyraCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void ALyraCharacter::Reset()
 {
+	if (ShieldActor != nullptr)
+	{
+		ShieldActor->Destroy();
+	}
 	DisableMovementAndCollision();
 
 	K2_OnReset();
@@ -350,6 +354,10 @@ void ALyraCharacter::FellOutOfWorld(const class UDamageType& dmgType)
 
 void ALyraCharacter::OnDeathStarted(AActor*)
 {
+	if (ShieldActor != nullptr)
+	{
+		ShieldActor->Destroy();
+	}
 	DisableMovementAndCollision();
 }
 
@@ -430,10 +438,6 @@ bool ALyraCharacter::IsMovingBackwards()
 
 void ALyraCharacter::ResetCharacter()
 {
-	if (ShieldActor != nullptr)
-	{
-		ShieldActor->Destroy();
-	}
 	Reset();
 }
 
