@@ -65,8 +65,6 @@ public:
 
 protected:
 
-	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const;
-
 	virtual void OnUnregister() override;
 
 	void ClearGameplayTags();

@@ -35,9 +35,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Default Gameplay Effects", meta = (DisplayName = "Heal Gameplay Effect (SetByCaller)"))
 	TSoftClassPtr<UGameplayEffect> HealGameplayEffect_SetByCaller;
 
-	// Gameplay effect used to apply healing.  Uses SetByCaller for the healing magnitude.
-	UPROPERTY(EditDefaultsOnly, Category = "Default Gameplay Effects", meta = (DisplayName = "Heal Gameplay Effect (SetByCaller)"))
-	TSoftClassPtr<UGameplayEffect> EnergyGameplayEffect_SetByCaller;
+	//// Gameplay effect used to apply healing.  Uses SetByCaller for the energy magnitude.
+	//UPROPERTY(EditDefaultsOnly, Category = "Default Gameplay Effects", meta = (DisplayName = "Energy Gameplay Effect (SetByCaller)"))
+	//TSoftClassPtr<UGameplayEffect> EnergyGameplayEffect_SetByCaller;
 
 	// Gameplay effect used to add and remove dynamic tags.
 	UPROPERTY(EditDefaultsOnly, Category = "Default Gameplay Effects")
