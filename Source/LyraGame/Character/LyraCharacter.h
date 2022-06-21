@@ -19,6 +19,7 @@ class ULyraAbilitySystemComponent;
 class UAbilitySystemComponent;
 class ULyraPawnExtensionComponent;
 class ULyraHealthComponent;
+class ULyraEnergyComponent;
 class ULyraCameraComponent;
 class UInputAction;
 
@@ -203,6 +204,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Lyra|Character", Meta = (AllowPrivateAccess = "true"))
 		ULyraHealthComponent* HealthComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Lyra|Character", Meta = (AllowPrivateAccess = "true"))
+		ULyraEnergyComponent* EnergyComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Lyra|Character", Meta = (AllowPrivateAccess = "true"))
 		ULyraCameraComponent* CameraComponent;

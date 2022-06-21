@@ -9,6 +9,7 @@
 #include "AbilitySystem/LyraAbilitySet.h"
 #include "AbilitySystem/Attributes/LyraHealthSet.h"
 #include "AbilitySystem/Attributes/LyraCombatSet.h"
+#include "AbilitySystem/Attributes/LyraEnergySet.h"
 #include "Character/LyraPawnData.h"
 #include "Components/GameFrameworkComponentManager.h"
 #include "GameFramework/GameplayMessageSubsystem.h"
@@ -29,6 +30,7 @@ ALyraPlayerState::ALyraPlayerState(const FObjectInitializer& ObjectInitializer)
 
 	CreateDefaultSubobject<ULyraHealthSet>(TEXT("HealthSet"));
 	CreateDefaultSubobject<ULyraCombatSet>(TEXT("CombatSet"));
+	CreateDefaultSubobject<ULyraEnergySet>(TEXT("EnergySet"));
 
 	// AbilitySystemComponent needs to be updated at a high frequency.
 	NetUpdateFrequency = 100.0f;
