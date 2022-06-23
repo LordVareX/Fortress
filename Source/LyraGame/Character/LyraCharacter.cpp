@@ -11,6 +11,7 @@
 #include "Camera/LyraCameraComponent.h"
 #include "AbilitySystem/LyraAbilitySystemComponent.h"
 #include "Character/LyraHealthComponent.h"
+#include "Character/LyraEnergyComponent.h"
 #include "Player/LyraPlayerController.h"
 #include "Player/LyraPlayerState.h"
 #include "System/LyraSignificanceManager.h"
@@ -72,6 +73,10 @@ ALyraCharacter::ALyraCharacter(const FObjectInitializer& ObjectInitializer)
 	HealthComponent = CreateDefaultSubobject<ULyraHealthComponent>(TEXT("HealthComponent"));
 	HealthComponent->OnDeathStarted.AddDynamic(this, &ThisClass::OnDeathStarted);
 	HealthComponent->OnDeathFinished.AddDynamic(this, &ThisClass::OnDeathFinished);
+
+	EnergyComponent = CreateDefaultSubobject<ULyraEnergyComponent>(TEXT("EnergyComponent"));
+	/*EnergyComponent->OnDeathStarted.AddDynamic(this, &ThisClass::OnDeathStarted);
+	EnergyComponent->OnDeathFinished.AddDynamic(this, &ThisClass::OnDeathFinished);*/
 
 	CameraComponent = CreateDefaultSubobject<ULyraCameraComponent>(TEXT("CameraComponent"));
 	CameraComponent->SetRelativeLocation(FVector(-300.0f, 0.0f, 75.0f));
@@ -216,12 +221,20 @@ void ALyraCharacter::OnAbilitySystemInitialized()
 
 	HealthComponent->InitializeWithAbilitySystem(LyraASC);
 
+	//ULyraAbilitySystemComponent* LyraEn = GetLyraAbilitySystemComponent();
+	//check(LyraEn);
+
+	////LyraEn->SetOwnerActor(this);
+
+	//EnergyComponent->InitializeWithAbilitySystem(LyraEn);
+
 	InitializeGameplayTags();
 }
 
 void ALyraCharacter::OnAbilitySystemUninitialized()
 {
 	HealthComponent->UninitializeFromAbilitySystem();
+	EnergyComponent->UninitializeFromAbilitySystem();
 }
 
 void ALyraCharacter::PossessedBy(AController* NewController)

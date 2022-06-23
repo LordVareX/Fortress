@@ -13,6 +13,7 @@
 #include "AIController.h"
 #include "Kismet/GameplayStatics.h"
 #include "Character/LyraHealthComponent.h"
+#include "Character/LyraEnergyComponent.h"
 
 ULyraBotCreationComponent::ULyraBotCreationComponent(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
