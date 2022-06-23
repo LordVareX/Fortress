@@ -151,6 +151,7 @@ void ALyraCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& Out
 	DOREPLIFETIME(ThisClass, Blocking);
 	DOREPLIFETIME(ThisClass, StartDash);
 	DOREPLIFETIME(ThisClass, ShieldActor);
+	
 }
 
 void ALyraCharacter::PreReplication(IRepChangedPropertyTracker& ChangedPropertyTracker)
