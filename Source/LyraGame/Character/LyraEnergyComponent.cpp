@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "LyraEnergyComponent.h"
+
+#include "Character/LyraEnergyComponent.h"
 #include "LyraLogChannels.h"
 #include "System/LyraAssetManager.h"
 #include "System/LyraGameData.h"
@@ -31,12 +32,12 @@ ULyraEnergyComponent::ULyraEnergyComponent(const FObjectInitializer& ObjectIniti
 	EnergySet = nullptr;
 }
 
-void ULyraEnergyComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-
-	/*DOREPLIFETIME(ULyraEnergyComponent, DeathState);*/
-}
+//void ULyraEnergyComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+//{
+//	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+//
+//	/*DOREPLIFETIME(ULyraEnergyComponent, DeathState);*/
+//}
 
 void ULyraEnergyComponent::OnUnregister()
 {

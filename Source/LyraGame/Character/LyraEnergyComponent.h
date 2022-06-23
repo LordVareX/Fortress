@@ -12,7 +12,7 @@ class ULyraEnergySet;
 struct FGameplayEffectSpec;
 struct FOnAttributeChangeData;
 
-//DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FLyraEnergy_DeathEvent, AActor*, OwningActor);
+//DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FLyraEnergy_AttributeChanged, AActor*, OwningActor);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FLyraEnergy_AttributeChanged, ULyraEnergyComponent*, EnergyComponent, float, OldValue, float, NewValue, AActor*, Instigator);
 
 /**
@@ -31,37 +31,37 @@ public:
 
 	// Returns the energy component if one exists on the specified actor.
 	UFUNCTION(BlueprintPure, Category = "Lyra|Energy")
-	static ULyraEnergyComponent* FindEnergyComponent(const AActor* Actor) { return (Actor ? Actor->FindComponentByClass<ULyraEnergyComponent>() : nullptr); }
+		static ULyraEnergyComponent* FindEnergyComponent(const AActor* Actor) { return (Actor ? Actor->FindComponentByClass<ULyraEnergyComponent>() : nullptr); }
 
 	// Initialize the component using an ability system component.
 	UFUNCTION(BlueprintCallable, Category = "Lyra|Energy")
-	void InitializeWithAbilitySystem(ULyraAbilitySystemComponent* InASC);
+		void InitializeWithAbilitySystem(ULyraAbilitySystemComponent* InASC);
 
 	// Uninitialize the component, clearing any references to the ability system.
 	UFUNCTION(BlueprintCallable, Category = "Lyra|Energy")
-	void UninitializeFromAbilitySystem();
+		void UninitializeFromAbilitySystem();
 
 	// Returns the current Energy value.
 	UFUNCTION(BlueprintCallable, Category = "Lyra|Energy")
-	float GetEnergy() const;
+		float GetEnergy() const;
 
 	// Returns the current maximum Energy value.
 	UFUNCTION(BlueprintCallable, Category = "Lyra|Energy")
-	float GetMaxEnergy() const;
+		float GetMaxEnergy() const;
 
 	// Returns the current Energy in the range [0.0, 1.0].
 	UFUNCTION(BlueprintCallable, Category = "Lyra|Energy")
-	float GetEnergyNormalized() const;
+		float GetEnergyNormalized() const;
 
 public:
 
 	// Delegate fired when the Energy value has changed.
 	UPROPERTY(BlueprintAssignable)
-	FLyraEnergy_AttributeChanged OnEnergyChanged;
+		FLyraEnergy_AttributeChanged OnEnergyChanged;
 
 	// Delegate fired when the max Energy value has changed.
 	UPROPERTY(BlueprintAssignable)
-	FLyraEnergy_AttributeChanged OnMaxEnergyChanged;
+		FLyraEnergy_AttributeChanged OnMaxEnergyChanged;
 
 protected:
 
@@ -77,10 +77,10 @@ protected:
 
 	// Ability system used by this component.
 	UPROPERTY()
-	ULyraAbilitySystemComponent* AbilitySystemComponent;
+		ULyraAbilitySystemComponent* AbilitySystemComponent;
 
 	// Energy set used by this component.
 	UPROPERTY()
-	const ULyraEnergySet* EnergySet;
+		const ULyraEnergySet* EnergySet;
 	
 };

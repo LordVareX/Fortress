@@ -175,6 +175,14 @@ protected:
 	UFUNCTION()
 		virtual void OnDeathFinished(AActor* OwningActor);
 
+	// Begins the energy sequence for the character (disables collision, disables movement, etc...)
+	UFUNCTION()
+		virtual void OnEnergyChanged(AActor* OwningActor);
+
+	// Ends the max energy sequence for the character (detaches controller, destroys pawn, etc...)
+	UFUNCTION()
+		virtual void OnMaxEnergyChanged(AActor* OwningActor);
+
 	void DisableMovementAndCollision();
 	void DestroyDueToDeath();
 	void UninitAndDestroy();
