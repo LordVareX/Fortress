@@ -1,4 +1,4 @@
-H:\FotressRepo\Fotress\Plugins\GameFeatures\TopDownArena\Intermediate\Build\Win64\UnrealEditor\DebugGame\TopDownArenaRuntime\Module.TopDownArenaRuntime.gen.cpp
+H:\FotressRepo\Fotress\Plugins\GameFeatures\TopDownArena\Intermediate\Build\Win64\UnrealEditor\Development\TopDownArenaRuntime\Module.TopDownArenaRuntime.gen.cpp
 /I .
 /I H:\FotressRepo\Fotress\Plugins\GameFeatures\TopDownArena\Source\TopDownArenaRuntime\Private
 /I ..\Intermediate\Build\Win64\UnrealEditor\Inc\CoreUObject
@@ -330,12 +330,12 @@ H:\FotressRepo\Fotress\Plugins\GameFeatures\TopDownArena\Intermediate\Build\Win6
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\shared"
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\um"
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\winrt"
-/FI"..\Intermediate\Build\Win64\UnrealEditor\Development\Engine\SharedPCH.Engine.NonOptimized.ShadowErrors.h"
-/FI"H:\FotressRepo\Fotress\Plugins\GameFeatures\TopDownArena\Intermediate\Build\Win64\UnrealEditor\DebugGame\TopDownArenaRuntime\Definitions.TopDownArenaRuntime.h"
-/Yu"..\Intermediate\Build\Win64\UnrealEditor\Development\Engine\SharedPCH.Engine.NonOptimized.ShadowErrors.h"
-/Fp"..\Intermediate\Build\Win64\UnrealEditor\Development\Engine\SharedPCH.Engine.NonOptimized.ShadowErrors.h.pch"
-/Fo"H:\FotressRepo\Fotress\Plugins\GameFeatures\TopDownArena\Intermediate\Build\Win64\UnrealEditor\DebugGame\TopDownArenaRuntime\Module.TopDownArenaRuntime.gen.cpp.obj"
-/sourceDependencies H:\FotressRepo\Fotress\Plugins\GameFeatures\TopDownArena\Intermediate\Build\Win64\UnrealEditor\DebugGame\TopDownArenaRuntime\Module.TopDownArenaRuntime.gen.cpp.json
+/FI"..\Intermediate\Build\Win64\UnrealEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h"
+/FI"H:\FotressRepo\Fotress\Plugins\GameFeatures\TopDownArena\Intermediate\Build\Win64\UnrealEditor\Development\TopDownArenaRuntime\Definitions.TopDownArenaRuntime.h"
+/Yu"..\Intermediate\Build\Win64\UnrealEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h"
+/Fp"..\Intermediate\Build\Win64\UnrealEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h.pch"
+/Fo"H:\FotressRepo\Fotress\Plugins\GameFeatures\TopDownArena\Intermediate\Build\Win64\UnrealEditor\Development\TopDownArenaRuntime\Module.TopDownArenaRuntime.gen.cpp.obj"
+/sourceDependencies H:\FotressRepo\Fotress\Plugins\GameFeatures\TopDownArena\Intermediate\Build\Win64\UnrealEditor\Development\TopDownArenaRuntime\Module.TopDownArenaRuntime.gen.cpp.json
 /Zc:inline
 /nologo
 /Oi
@@ -352,7 +352,9 @@ H:\FotressRepo\Fotress\Plugins\GameFeatures\TopDownArena\Intermediate\Build\Win6
 /source-charset:utf-8
 /execution-charset:utf-8
 /Ob2
-/Od
+/Ox
+/Ot
+/GF
 /errorReport:prompt
 /EHsc
 /DPLATFORM_EXCEPTIONS_DISABLED=0
@@ -360,6 +362,7 @@ H:\FotressRepo\Fotress\Plugins\GameFeatures\TopDownArena\Intermediate\Build\Win6
 /MD
 /bigobj
 /fp:fast
+/Zo
 /Zp8
 /we4456
 /we4458

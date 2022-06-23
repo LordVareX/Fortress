@@ -135,6 +135,9 @@ public:
 	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite)
 	bool StartDash = false;
 
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite)
+		int SlotIndex = 0;
+
 	UPROPERTY(EditDefaultsOnly)
 		UInputAction* InputAction;
 
