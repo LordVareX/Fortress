@@ -75,8 +75,8 @@ ALyraCharacter::ALyraCharacter(const FObjectInitializer& ObjectInitializer)
 	HealthComponent->OnDeathFinished.AddDynamic(this, &ThisClass::OnDeathFinished);
 
 	EnergyComponent = CreateDefaultSubobject<ULyraEnergyComponent>(TEXT("EnergyComponent"));
-	/*EnergyComponent->OnDeathStarted.AddDynamic(this, &ThisClass::OnDeathStarted);
-	EnergyComponent->OnDeathFinished.AddDynamic(this, &ThisClass::OnDeathFinished);*/
+	/*EnergyComponent->OnEnergyChanged.AddDynamic(this, &ThisClass::OnEnergyChanged);
+	EnergyComponent->OnMaxEnergyChanged.AddDynamic(this, &ThisClass::OnMaxEnergyChanged);*/
 
 	CameraComponent = CreateDefaultSubobject<ULyraCameraComponent>(TEXT("CameraComponent"));
 	CameraComponent->SetRelativeLocation(FVector(-300.0f, 0.0f, 75.0f));
@@ -216,17 +216,21 @@ UAbilitySystemComponent* ALyraCharacter::GetAbilitySystemComponent() const
 
 void ALyraCharacter::OnAbilitySystemInitialized()
 {
+	if (EnergyComponent != nullptr)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("Energy comp : %s"), *EnergyComponent->GetFName().ToString()));
+		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("Energy comp owner : %s"), *EnergyComponent->GetOwner()->GetFName().ToString()));
+	}
+
 	ULyraAbilitySystemComponent* LyraASC = GetLyraAbilitySystemComponent();
 	check(LyraASC);
 
 	HealthComponent->InitializeWithAbilitySystem(LyraASC);
 
-	//ULyraAbilitySystemComponent* LyraEn = GetLyraAbilitySystemComponent();
-	//check(LyraEn);
+	/*ULyraAbilitySystemComponent* LyraEn = GetLyraAbilitySystemComponent();
+	check(LyraEn);
 
-	////LyraEn->SetOwnerActor(this);
-
-	//EnergyComponent->InitializeWithAbilitySystem(LyraEn);
+	EnergyComponent->InitializeWithAbilitySystem(LyraEn);*/
 
 	InitializeGameplayTags();
 }
@@ -375,9 +379,23 @@ void ALyraCharacter::OnDeathStarted(AActor*)
 	DisableMovementAndCollision();
 }
 
+void ALyraCharacter::OnEnergyChanged(AActor*)
+{
+	/*if (ShieldActor != nullptr)
+	{
+		ShieldActor->Destroy();
+	}
+	DisableMovementAndCollision();*/
+}
+
 void ALyraCharacter::OnDeathFinished(AActor*)
 {
 	GetWorld()->GetTimerManager().SetTimerForNextTick(this, &ThisClass::DestroyDueToDeath);
+}
+
+void ALyraCharacter::OnMaxEnergyChanged(AActor*)
+{
+	//GetWorld()->GetTimerManager().SetTimerForNextTick(this, &ThisClass::DestroyDueToDeath);
 }
 
 void ALyraCharacter::Landed(const FHitResult& Hit)

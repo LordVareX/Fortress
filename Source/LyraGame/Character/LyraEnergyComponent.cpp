@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "LyraEnergyComponent.h"
+
+#include "Character/LyraEnergyComponent.h"
 #include "LyraLogChannels.h"
 #include "System/LyraAssetManager.h"
 #include "System/LyraGameData.h"
