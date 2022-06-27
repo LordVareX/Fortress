@@ -56,6 +56,7 @@ void ULyraQuickBarComponent::CycleActiveSlotForward()
 {
 	if (Slots.Num() < 2)
 	{
+		
 		return;
 	}
 
@@ -66,6 +67,7 @@ void ULyraQuickBarComponent::CycleActiveSlotForward()
 		NewIndex = (NewIndex + 1) % 3;
 		if (Slots[NewIndex] != nullptr)
 		{
+			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, FString::Printf(TEXT("Current slots : %i"), Slots.Num()));
 			SetActiveSlotIndex(NewIndex);
 			return;
 		}
@@ -74,7 +76,7 @@ void ULyraQuickBarComponent::CycleActiveSlotForward()
 
 void ULyraQuickBarComponent::ThrowableCycleActiveSlotForward()
 {
-	if (Slots.Num() < 2)
+	if (Slots.Num() < 5)
 	{
 		return;
 	}
@@ -120,28 +122,151 @@ void ULyraQuickBarComponent::ThrowableCycleActiveSlotForward()
 		}
 	}
 	else if (NewIndex > 2)
-	{
-		//do
-		if (NewIndex != OldIndex)
-		{
-			if (Slots[NewIndex] != nullptr)
-			{
+	{	
+			if (Slots[5] != nullptr)
+			{	
+				int CurrentSlot = Slots.Num() - 1;
+				//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, FString::Printf(TEXT("Current slots : %i"), CurrentSlot));
+				
 				if (NewIndex != 5)
 				{
-					NewIndex = NewIndex + 1;
+					NewIndex = (NewIndex + 1) % Slots.Num();
+					
+					if (Slots[4] != nullptr)
+					{
+						SetActiveSlotIndex(NewIndex);
+						return;
+					}
+					else
+					{
+						NewIndex = NewIndex + 1;
+						if (Slots[5] != nullptr)
+						{
+							
 
-					SetActiveSlotIndex(NewIndex);
-					return;
+							SetActiveSlotIndex(NewIndex);
+							return;
+						}
+						else
+						{
+							NewIndex = NewIndex + 1;
+							if (Slots[3] != nullptr)
+							{
+
+								SetActiveSlotIndex(NewIndex);
+								return;
+							}
+							
+						}
+					}
 				}
 				if (NewIndex == 5)
 				{
-					NewIndex = 3;
-					SetActiveSlotIndex(NewIndex);
-					return;
+					if (Slots[3] != nullptr)
+					{
+						NewIndex = 3;
+						SetActiveSlotIndex(NewIndex);
+						return;
+					}
+					else
+					{
+						if (Slots[4] != nullptr)
+						{
+							NewIndex = 4;
+							SetActiveSlotIndex(NewIndex);
+							return;
+						}
+						else
+						{
+							if (Slots[5] != nullptr)
+							{
+								NewIndex = 5;
+								SetActiveSlotIndex(NewIndex);
+								return;
+							}
+							else
+							{
+								NewIndex = 1;
+
+								SetActiveSlotIndex(NewIndex);
+								return;
+							}
+						}
+					}
 				}
 			}
+			else if (Slots[4] != nullptr)
+			{
+				int CurrentSlot = Slots.Num() - 1;
+				//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, FString::Printf(TEXT("Current slots : %i"), CurrentSlot));
 
-		}
+				if (NewIndex != 4)
+				{
+					NewIndex = (NewIndex + 1) % Slots.Num();
+
+					if (Slots[4] != nullptr)
+					{
+						SetActiveSlotIndex(NewIndex);
+						return;
+					}
+					else
+					{
+						NewIndex = NewIndex + 1;
+						if (Slots[5] != nullptr)
+						{
+
+
+							SetActiveSlotIndex(NewIndex);
+							return;
+						}
+						else
+						{
+							NewIndex = NewIndex + 1;
+							if (Slots[3] != nullptr)
+							{
+
+								SetActiveSlotIndex(NewIndex);
+								return;
+							}
+
+						}
+					}
+				}
+				if (NewIndex == 4)
+				{
+					if (Slots[3] != nullptr)
+					{
+						NewIndex = 3;
+						SetActiveSlotIndex(NewIndex);
+						return;
+					}
+					else
+					{
+						if (Slots[4] != nullptr)
+						{
+							NewIndex = 4;
+							SetActiveSlotIndex(NewIndex);
+							return;
+						}
+						else
+						{
+							if (Slots[5] != nullptr)
+							{
+								NewIndex = 5;
+								SetActiveSlotIndex(NewIndex);
+								return;
+							}
+							else
+							{
+								NewIndex = 1;
+
+								SetActiveSlotIndex(NewIndex);
+								return;
+							}
+						}
+					}
+				}
+			}
 	}
 }
 
