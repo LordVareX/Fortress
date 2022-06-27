@@ -130,6 +130,9 @@ public:
 		bool WantsToJump = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool WantsToShield = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool WantsToSliding = false;
 
 	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite)
