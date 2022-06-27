@@ -40,7 +40,6 @@ ALyraCharacter::ALyraCharacter(const FObjectInitializer& ObjectInitializer)
 	NetCullDistanceSquared = 900000000.0f;
 
 	SlideTimeline = CreateDefaultSubobject<UTimelineComponent>(TEXT("SlidingTimeline"));
-	ZoomTimeline = CreateDefaultSubobject<UTimelineComponent>(TEXT("ZoomTimeline"));
 
 	UCapsuleComponent* CapsuleComp = GetCapsuleComponent();
 	check(CapsuleComp);
@@ -115,7 +114,6 @@ void ALyraCharacter::BeginPlay()
 	}
 
 	DeclareSlidingTimeline();
-	DeclareZoomTimeline();
 }
 
 void ALyraCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -158,7 +156,6 @@ void ALyraCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& Out
 	DOREPLIFETIME(ThisClass, Blocking);
 	DOREPLIFETIME(ThisClass, StartDash);
 	DOREPLIFETIME(ThisClass, ShieldActor);
-	DOREPLIFETIME(ThisClass, Zoom);
 }
 
 void ALyraCharacter::PreReplication(IRepChangedPropertyTracker& ChangedPropertyTracker)
@@ -912,29 +909,10 @@ void ALyraCharacter::TimelineFinishedCallback()
 	}
 }
 
-void ALyraCharacter::TimelineZoomCallback(float val)
-{
-	CameraComponent->SetFieldOfView(val);
-}
-
 void ALyraCharacter::PlayTimeline()
 {
 	SlideTimeline->PlayFromStart();
 	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("start timeline")));
-}
-
-void ALyraCharacter::PlayZoomTimeline()
-{
-	if (Zoom == true)
-	{
-		ZoomTimeline->Play();
-		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("zoom in")));
-	}
-	else
-	{
-		ZoomTimeline->Reverse();
-		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("zoom out")));
-	}
 }
 
 void ALyraCharacter::DeclareSlidingTimeline()
@@ -955,29 +933,6 @@ void ALyraCharacter::DeclareSlidingTimeline()
 		//Add the float curve to the timeline and connect it to your timelines's interpolation function
 		SlideTimeline->AddInterpFloat(FloatCurve, TimelineProgress);
 		SlideTimeline->SetTimelineFinishedFunc(TimelineFinishedEvent);
-	}
-}
-
-void ALyraCharacter::DeclareZoomTimeline()
-{
-	FOnTimelineFloat TimelineProgress;
-
-	TimelineProgress.BindUFunction(this, FName("TimelineZoomCallback"));
-
-	//GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("Zoom declared")));
-
-	if (SpeedCurve != nullptr)
-	{
-		if (ZoomTimeline != nullptr)
-		{
-			ZoomTimeline->SetLooping(false);
-			ZoomTimeline->SetTimelineLength(.25f);
-
-			GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("Zoom declared")));
-
-			//Add the float curve to the timeline and connect it to your timelines's interpolation function
-			ZoomTimeline->AddInterpFloat(SpeedCurve, TimelineProgress);
-		}
 	}
 }
 

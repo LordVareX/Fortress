@@ -58,9 +58,6 @@ class ALyraCharacter : public AModularCharacter, public IAbilitySystemInterface,
 		UPROPERTY()
 		class UTimelineComponent* SlideTimeline;
 
-		UPROPERTY()
-		class UTimelineComponent* ZoomTimeline;
-
 public:
 
 	ALyraCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
@@ -125,9 +122,6 @@ public:
 
 	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite)
 		bool Sliding = false;
-
-	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite)
-		bool Zoom = false;
 
 	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite)
 	bool Blocking = false;
@@ -305,20 +299,11 @@ protected:
 	UFUNCTION()
 		void TimelineFinishedCallback();
 
-	UFUNCTION()
-		void TimelineZoomCallback(float val);
-
 	UFUNCTION(BlueprintCallable)
 		void PlayTimeline();
 
-	UFUNCTION(BlueprintCallable)
-		void PlayZoomTimeline();
-
 	UFUNCTION()
 		void DeclareSlidingTimeline();
-
-	UFUNCTION()
-		void DeclareZoomTimeline();
 
 	UFUNCTION(BlueprintCallable)
 		void RotateOnPlaneAngle();
