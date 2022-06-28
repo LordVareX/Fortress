@@ -1,6 +1,6 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "Character/LyraHealthComponent.h"
+#include "LyraHealthComponent.h"
 #include "LyraLogChannels.h"
 #include "System/LyraAssetManager.h"
 #include "System/LyraGameData.h"

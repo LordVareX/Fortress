@@ -459,7 +459,7 @@ void ALyraCharacter::UninitAndDestroy()
 
 bool ALyraCharacter::CanSlide()
 {
-	return (this->GetLastMovementInputVector().Size() > 0.0f && GetCharacterMovement()->IsFalling() != true);
+	return (this->GetLastMovementInputVector().Size() > 0.0f/* && GetCharacterMovement()->IsFalling() != true*/);
 }
 
 bool ALyraCharacter::IsMovingBackwards()
@@ -842,12 +842,11 @@ void ALyraCharacter::TimelineCallback(float val)
 	}
 	else
 	{
+		RotateOnPlaneAngle();
 		// This function is called for every tick in the timeline.
-		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("Current value : %f"), val));
+		//GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("Current value : %f"), val));
 
 		UpdateMovementSpeed(GetAngleSpeed());
-
-		RotateOnPlaneAngle();
 
 		FVector NormalizeVect;
 		GetCharacterMovement()->GetLastUpdateVelocity().GetSafeNormal(0.000f, NormalizeVect);
@@ -952,6 +951,14 @@ void ALyraCharacter::RotateOnPlaneAngle()
 	if (AnimInst != nullptr)
 	{
 		AnimInst->CheckFloorAngle = FVector::DotProduct(Hit.Normal, DotRaw);
+		if (AnimInst->CheckFloorAngle > 0.f || AnimInst->CheckFloorAngle < 0.f)
+		{
+			AnimInst->CheckSlope = 1.f;
+		}
+		else
+			AnimInst->CheckSlope = 0.0f;
+
+		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("Dot product val: %f"), AnimInst->CheckFloorAngle));
 	}
 	
 	//if (bHit)
