@@ -22,6 +22,8 @@ class ULyraHealthComponent;
 class ULyraEnergyComponent;
 class ULyraCameraComponent;
 class UInputAction;
+class ULyraGameplayAbility;
+class ULyraCameraMode;
 
 
 /**
@@ -88,10 +90,10 @@ public:
 
 	//~For Sliding mechanic
 	UFUNCTION(BlueprintCallable, Reliable, Server, WithValidation, Category = "Transformation")
-	void ServerSlide(float SlideSpeed, float Friction, bool IsSliding, FRotator NewRot);
+	void ServerSlide(float SlideSpeed, float Friction, bool IsSliding, class ULyraGameplayAbility* GA, TSubclassOf<class ULyraCameraMode> CameraMode);
 
 	UFUNCTION(Unreliable, NetMulticast, WithValidation, Category = "Transformation")
-	void MulticastSlide(float SlideSpeed, float Friction, bool IsSliding, FRotator NewRot);
+	void MulticastSlide(float SlideSpeed, float Friction, bool IsSliding, class ULyraGameplayAbility* GA, TSubclassOf<class ULyraCameraMode> CameraMode);
 
 	//~For Shield mechanic
 	UFUNCTION(BlueprintCallable, Reliable, Server, WithValidation, Category = "Shield")
@@ -149,6 +151,12 @@ public:
 
 	UPROPERTY(Replicated)
 	AActor* ShieldActor = nullptr;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	class ULyraGameplayAbility* SlideGA;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	TSubclassOf<class ULyraCameraMode> SlideCM;
 
 protected:
 

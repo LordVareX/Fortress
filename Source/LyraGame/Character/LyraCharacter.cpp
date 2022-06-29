@@ -26,6 +26,8 @@
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "Engine/StaticMeshActor.h"
+#include "Camera/LyraCameraMode.h"
+#include "AbilitySystem/Abilities/LyraGameplayAbility.h"
 
 static FName NAME_LyraCharacterCollisionProfile_Capsule(TEXT("LyraPawnCapsule"));
 static FName NAME_LyraCharacterCollisionProfile_Mesh(TEXT("LyraPawnMesh"));
@@ -402,7 +404,7 @@ void ALyraCharacter::Landed(const FHitResult& Hit)
 	Super::Landed(Hit);
 	if (WantsToSliding == true)
 	{
-		ServerSlide(MaxSlideSpeed, 0.f, true, FRotator());
+		ServerSlide(MaxSlideSpeed, 0.f, true, SlideGA, SlideCM);
 		PlayTimeline();
 	}
 	else
@@ -519,12 +521,12 @@ void ALyraCharacter::ToggleCrouch()
 	}
 }
 
-bool ALyraCharacter::ServerSlide_Validate(float SlideSpeed, float Friction, bool IsSliding, FRotator NewRot)
+bool ALyraCharacter::ServerSlide_Validate(float SlideSpeed, float Friction, bool IsSliding, ULyraGameplayAbility* GA, TSubclassOf<ULyraCameraMode> CameraMode)
 {
 	return true;
 }
 
-void ALyraCharacter::ServerSlide_Implementation(float SlideSpeed, float Friction, bool IsSliding, FRotator NewRot)
+void ALyraCharacter::ServerSlide_Implementation(float SlideSpeed, float Friction, bool IsSliding, ULyraGameplayAbility* GA, TSubclassOf<ULyraCameraMode> CameraMode)
 {
 	RotateOnPlaneAngle();
 
@@ -536,7 +538,7 @@ void ALyraCharacter::ServerSlide_Implementation(float SlideSpeed, float Friction
 	{
 		AnimInst->OnSliding = IsSliding;
 		//SetActorRotation(NewRot);
-		MulticastSlide(SlideSpeed, Friction, IsSliding, NewRot);
+		MulticastSlide(SlideSpeed, Friction, IsSliding, GA, CameraMode);
 	}
 
 	ULyraCharacterMovementComponent* LyraMoveComp = CastChecked<ULyraCharacterMovementComponent>(GetCharacterMovement());
@@ -548,20 +550,32 @@ void ALyraCharacter::ServerSlide_Implementation(float SlideSpeed, float Friction
 
 		if (Sliding == true)
 		{
-			if (bIsCrouched == true)
+			if (GA != nullptr)
+			{
+				GA->SetCameraMode(CameraMode);
+			}
+			/*if (bIsCrouched == true)
 			{
 				UnCrouch();
+			}*/
+		}
+		else
+		{
+			if (GA != nullptr)
+			{
+				GA->ClearCameraMode();
+				//GA->OnAbilityEnd();
 			}
 		}
 	}
 }
 
-bool ALyraCharacter::MulticastSlide_Validate(float SlideSpeed, float Friction, bool IsSliding, FRotator NewRot)
+bool ALyraCharacter::MulticastSlide_Validate(float SlideSpeed, float Friction, bool IsSliding, ULyraGameplayAbility* GA, TSubclassOf<ULyraCameraMode> CameraMode)
 {
 	return true;
 }
 
-void ALyraCharacter::MulticastSlide_Implementation(float SlideSpeed, float Friction, bool IsSliding, FRotator NewRot)
+void ALyraCharacter::MulticastSlide_Implementation(float SlideSpeed, float Friction, bool IsSliding, ULyraGameplayAbility* GA, TSubclassOf<ULyraCameraMode> CameraMode)
 {
 	RotateOnPlaneAngle();
 
@@ -575,9 +589,13 @@ void ALyraCharacter::MulticastSlide_Implementation(float SlideSpeed, float Frict
 
 		if (Sliding == true)
 		{
-			if (bIsCrouched == true)
+			/*if (bIsCrouched == true)
 			{
 				UnCrouch();
+			}*/
+			if (GA != nullptr)
+			{
+				GA->SetCameraMode(CameraMode);
 			}
 			USkeletalMeshComponent* MeshComp = GetMesh();
 
@@ -586,6 +604,14 @@ void ALyraCharacter::MulticastSlide_Implementation(float SlideSpeed, float Frict
 			{
 				AnimInst->OnSliding = IsSliding;
 				//SetActorRotation(NewRot);
+			}
+		}
+		else
+		{
+			if (GA != nullptr)
+			{
+				GA->ClearCameraMode();
+				//GA->OnAbilityEnd();
 			}
 		}
 	}
@@ -886,7 +912,7 @@ void ALyraCharacter::TimelineFinishedCallback()
 	{
 		if (IsLocallyControlled())
 		{
-			ServerSlide(DefaultWalkSpeed, 8.0f, false, FRotator(0.0f, GetActorRotation().Yaw, 0.f));
+			ServerSlide(DefaultWalkSpeed, 8.0f, false, SlideGA, SlideCM);
 
 			Sliding = false;
 
@@ -902,9 +928,15 @@ void ALyraCharacter::TimelineFinishedCallback()
 				AnimInst->CheckFloorAngle = FVector::DotProduct(Hit.Normal, DotRaw);
 			}
 			GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("END")));
-			GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("Dot product value: %f"), FVector::DotProduct(Hit.Normal, DotRaw)));
+			//GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("Dot product value: %f"), FVector::DotProduct(Hit.Normal, DotRaw)));
 			WantsToSliding = false;
 		}
+		/*if (SlideGA != nullptr)
+		{
+			SlideGA->ClearCameraMode();
+			SlideGA->OnAbilityEnd();
+			return;
+		}*/
 	}
 }
 
