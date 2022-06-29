@@ -958,7 +958,7 @@ void ALyraCharacter::RotateOnPlaneAngle()
 		else
 			AnimInst->CheckSlope = 0.0f;
 
-		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("Dot product val: %f"), AnimInst->CheckFloorAngle));
+		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("Dot product val: %f"), AnimInst->CheckSlope));
 	}
 	
 	//if (bHit)
