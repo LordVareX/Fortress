@@ -285,10 +285,6 @@
 			"Enabled": true
 		},
 		{
-			"Name": "TopDownArena",
-			"Enabled": true
-		},
-		{
 			"Name": "Bridge",
 			"Enabled": true,
 			"SupportedTargetPlatforms": [
@@ -296,6 +292,11 @@
 				"Mac",
 				"Linux"
 			]
+		},
+		{
+			"Name": "awsSDK",
+			"Enabled": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/eee4bef24c9d429887ddcc107a5a9b4d"
 		}
 	],
 	"EpicSampleNameHash": "451731683"

@@ -17,6 +17,7 @@
 //@TODO: Would like to isolate this a bit better to get the pawn data in here without this having to know about other stuff
 #include "GameModes/LyraGameMode.h"
 #include "GameModes/LyraExperienceManagerComponent.h"
+#include "System/LyraGameInstance.h"
 
 const FName ALyraPlayerState::NAME_LyraAbilityReady("LyraAbilitiesReady");
 
@@ -129,6 +130,10 @@ void ALyraPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	DOREPLIFETIME(ThisClass, StatTags);
 	DOREPLIFETIME(ThisClass, Pi);
 	DOREPLIFETIME(ThisClass, ScrapCount);
+	DOREPLIFETIME(ThisClass, AWSPlayerSessionId);
+	DOREPLIFETIME(ThisClass, AWSGameSessionId);
+	DOREPLIFETIME(ThisClass, AWSPlayerId);
+	DOREPLIFETIME(ThisClass, Username);
 }
 
 ALyraPlayerController* ALyraPlayerState::GetLyraPlayerController() const
@@ -187,6 +192,19 @@ void ALyraPlayerState::SetPawnData(const ULyraPawnData* InPawnData)
 	UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent(this, NAME_LyraAbilityReady);
 	
 	ForceNetUpdate();
+}
+
+void ALyraPlayerState::BeginPlay()
+{
+	Super::BeginPlay();
+
+	UGameInstance* GameInstance = GetGameInstance();
+	if (GameInstance != nullptr) {
+		ULyraGameInstance* LyraGameInstance = Cast<ULyraGameInstance>(GameInstance);
+		if (LyraGameInstance != nullptr) {
+			SetPlayerInfo(LyraGameInstance->PlayerSessionId, LyraGameInstance->GameSessionId);
+		}
+	}
 }
 
 void ALyraPlayerState::OnRep_PawnData()
@@ -272,4 +290,16 @@ void ALyraPlayerState::ClientBroadcastMessage_Implementation(const FLyraVerbMess
 	{
 		UGameplayMessageSubsystem::Get(this).BroadcastMessage(Message.Verb, Message);
 	}
+}
+
+bool ALyraPlayerState::SetPlayerInfo_Validate(const FString& PlayerSessionId, const FString& GameSessionId)
+{
+	return true;
+}
+
+void ALyraPlayerState::SetPlayerInfo_Implementation(const FString& PlayerSessionId,const FString& GameSessionId)
+{
+		AWSPlayerSessionId = PlayerSessionId;
+		AWSGameSessionId = GameSessionId;
+
 }
