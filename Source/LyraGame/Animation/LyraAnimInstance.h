@@ -38,6 +38,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Character State Data")
 	float CheckFloorAngle = 0.0f;
 
+	UPROPERTY(BlueprintReadOnly, Category = "Character State Data") //float for checking slope ground in blendspace
+	float CheckSlope = 0.0f;
+
 protected:
 
 #if WITH_EDITOR
