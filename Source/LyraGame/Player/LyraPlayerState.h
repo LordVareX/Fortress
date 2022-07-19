@@ -171,18 +171,18 @@ public:
 		int32 Pi = 0;
 
 	UFUNCTION(BlueprintCallable, Reliable, Server, WithValidation, Category = Players)
-		void SetPlayerInfo(const FString& PlayerSessionId, const FString& GameSessionId);
+		void SetPlayerInfo(const FString& PlayerSessionId, const FString& GameSessionId, const FString& Username);
 
-	UPROPERTY(Replicated)
+	UPROPERTY(VisibleAnywhere, Replicated, BlueprintReadWrite)
 		FString AWSPlayerSessionId;
 
-	UPROPERTY(Replicated)
+	UPROPERTY(VisibleAnywhere, Replicated, BlueprintReadWrite)
 		FString AWSGameSessionId;
 
-	UPROPERTY(Replicated)
+	UPROPERTY(VisibleAnywhere, Replicated, BlueprintReadWrite)
 		FString AWSPlayerId;
 
-	UPROPERTY(Replicated)
-		FString Username;
+	UPROPERTY(VisibleAnywhere, Replicated, BlueprintReadWrite)
+		FString AWSUsername;
 
 };

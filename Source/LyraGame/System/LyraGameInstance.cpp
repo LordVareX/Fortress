@@ -17,8 +17,8 @@ void ULyraGameInstance::Init()
 {
 	Super::Init();
 
-	GetWorld()->GetTimerManager().SetTimer(SetAveragePlayerLatencyHandle, this, &ULyraGameInstance::SetAveragePlayerLatency, 1.0f, true, 1.0f);
-	GetWorld()->GetTimerManager().SetTimer(GetResponseTimeHandle, this, &ULyraGameInstance::GetResponseTime, 1.0f, true, 1.0f);
+	/*GetWorld()->GetTimerManager().SetTimer(SetAveragePlayerLatencyHandle, this, &ULyraGameInstance::SetAveragePlayerLatency, 1.0f, true, 1.0f);
+	GetWorld()->GetTimerManager().SetTimer(GetResponseTimeHandle, this, &ULyraGameInstance::GetResponseTime, 1.0f, true, 1.0f);*/
 
 	
 }
@@ -27,7 +27,8 @@ void ULyraGameInstance::Shutdown()
 {
 	Super::Shutdown();
 
-	GetWorld()->GetTimerManager().ClearTimer(GetResponseTimeHandle);
+	/*GetWorld()->GetTimerManager().ClearTimer(GetResponseTimeHandle);
+	GetWorld()->GetTimerManager().ClearTimer(SetAveragePlayerLatencyHandle);*/
 }
 
 ALyraPlayerController* ULyraGameInstance::GetPrimaryPlayerController() const
@@ -54,6 +55,8 @@ void ULyraGameInstance::OnGetResponseTimeResponseReceived(FHttpRequestPtr Reques
 
 	PlayerLatencies.AddTail(ResponseTime);
 	ActivateLatency = true;
+
+	SetAveragePlayerLatency();
 }
 
 void ULyraGameInstance::SetAveragePlayerLatency() {

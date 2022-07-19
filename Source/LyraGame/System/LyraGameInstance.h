@@ -40,7 +40,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Server)
 	FString PingString;
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category = "Lyra|Character")
 	void SetAveragePlayerLatency();
 
 	TDoubleLinkedList<float> PlayerLatencies;
@@ -55,13 +55,13 @@ public:
 	FString GameSessionId;// = "132143124124521421421";
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FString PlayerSessionId;
+	FString PlayerSessionId = "psess-3c191f4c-4571-4455-8f9e-73bc00935148";
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString PlayerId;// = "b55fb4bb-62ff-449f-a9c9-0aed93722d90";
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FString Username;// = "VareX";
+		FString Username; //= "VareX";
 
 
 protected:
@@ -82,7 +82,7 @@ private:
 	UPROPERTY()
 	FString RegionCode;
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category = "Lyra|Character")
 	void GetResponseTime();
 
 	void OnGetResponseTimeResponseReceived(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful);

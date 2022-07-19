@@ -133,7 +133,7 @@ void ALyraPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	DOREPLIFETIME(ThisClass, AWSPlayerSessionId);
 	DOREPLIFETIME(ThisClass, AWSGameSessionId);
 	DOREPLIFETIME(ThisClass, AWSPlayerId);
-	DOREPLIFETIME(ThisClass, Username);
+	DOREPLIFETIME(ThisClass, AWSUsername);
 }
 
 ALyraPlayerController* ALyraPlayerState::GetLyraPlayerController() const
@@ -198,13 +198,16 @@ void ALyraPlayerState::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UGameInstance* GameInstance = GetGameInstance();
-	if (GameInstance != nullptr) {
-		ULyraGameInstance* LyraGameInstance = Cast<ULyraGameInstance>(GameInstance);
-		if (LyraGameInstance != nullptr) {
-			SetPlayerInfo(LyraGameInstance->PlayerSessionId, LyraGameInstance->GameSessionId);
+	//if (GetLocalRole() != ROLE_Authority)
+	//{
+		UGameInstance* GameInstance = GetGameInstance();
+		if (GameInstance != nullptr) {
+			ULyraGameInstance* LyraGameInstance = Cast<ULyraGameInstance>(GameInstance);
+			if (LyraGameInstance != nullptr) {
+				SetPlayerInfo(LyraGameInstance->PlayerSessionId, LyraGameInstance->GameSessionId, LyraGameInstance->Username);
+			}
 		}
-	}
+	//}
 }
 
 void ALyraPlayerState::OnRep_PawnData()
@@ -292,14 +295,22 @@ void ALyraPlayerState::ClientBroadcastMessage_Implementation(const FLyraVerbMess
 	}
 }
 
-bool ALyraPlayerState::SetPlayerInfo_Validate(const FString& PlayerSessionId, const FString& GameSessionId)
+bool ALyraPlayerState::SetPlayerInfo_Validate(const FString& PlayerSessionId, const FString& GameSessionId, const FString& Username)
 {
 	return true;
 }
 
-void ALyraPlayerState::SetPlayerInfo_Implementation(const FString& PlayerSessionId,const FString& GameSessionId)
+void ALyraPlayerState::SetPlayerInfo_Implementation(const FString& PlayerSessionId,const FString& GameSessionId, const FString& Username)
 {
 		AWSPlayerSessionId = PlayerSessionId;
 		AWSGameSessionId = GameSessionId;
+		AWSUsername = Username;
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, FString::Printf(TEXT("Username %s"), *AWSUsername));
+
+		if (ALyraGameMode* LyraGameMode = GetWorld()->GetAuthGameMode<ALyraGameMode>())
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, FString::Printf(TEXT("Username %s"), *AWSUsername));
+			LyraGameMode->ChangeInGameName(LyraGameMode->NewPlayerPC, Username);
+		}
 
 }

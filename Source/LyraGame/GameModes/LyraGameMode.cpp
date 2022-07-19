@@ -19,6 +19,7 @@
 #include "Development/LyraDeveloperSettings.h"
 #include "Player/LyraPlayerSpawningManagerComponent.h"
 #include "TimerManager.h"
+#include "Net/UnrealNetwork.h"
 #include "GameFramework/GameplayMessageSubsystem.h"
 
 ALyraGameMode::ALyraGameMode(const FObjectInitializer& ObjectInitializer)
@@ -31,6 +32,14 @@ ALyraGameMode::ALyraGameMode(const FObjectInitializer& ObjectInitializer)
 	PlayerStateClass = ALyraPlayerState::StaticClass();
 	DefaultPawnClass = ALyraCharacter::StaticClass();
 	HUDClass = ALyraHUD::StaticClass();
+}
+
+void ALyraGameMode::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ThisClass, Players);
+	//DOREPLIFETIME(ABattleMobaGameMode, CharIndex);
 }
 
 const ULyraPawnData* ALyraGameMode::GetPawnDataForController(const AController* InController) const
@@ -340,7 +349,20 @@ void ALyraGameMode::OnPostLogin(AController* NewPlayer)
 {
 	Super::OnPostLogin(NewPlayer);
 
+	NewPlayerPC = NewPlayer;
+	//newPlayer = NewPlayer;
+
 	OnGameModeCombinedPostLoginDelegate.Broadcast(this, NewPlayer);
+
+	if (HasAuthority())
+	{
+		ALyraPlayerController* LyraPlayerController = Cast<ALyraPlayerController>(NewPlayerPC);
+
+		if (LyraPlayerController)
+		{
+			Players.Add(LyraPlayerController);
+		}
+	}
 
 }
 
@@ -397,4 +419,9 @@ void ALyraGameMode::FailedToRestartPlayer(AController* NewPlayer)
 	{
 		UE_LOG(LogLyra, Verbose, TEXT("FailedToRestartPlayer(%s) but there's no pawn class so giving up."), *GetPathNameSafe(NewPlayer));
 	}
+}
+
+void ALyraGameMode::ChangeInGameName(AController* NewPlayerController, const FString& NewName)
+{
+	ChangeName(NewPlayerController, NewName, true);
 }
