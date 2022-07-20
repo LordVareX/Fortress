@@ -55,6 +55,9 @@ public:
 	FString GameSessionId;// = "132143124124521421421";
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FString> ArrayGameSessionId;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString PlayerSessionId = "psess-3c191f4c-4571-4455-8f9e-73bc00935148";
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
