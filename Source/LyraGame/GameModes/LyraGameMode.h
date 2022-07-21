@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "ModularGameMode.h"
+#include "Net/UnrealNetwork.h"
 #include "LyraGameMode.generated.h"
 
 
@@ -26,6 +27,9 @@ UCLASS(Config = Game, Meta = (ShortTooltip = "The base game mode class used by t
 class ALyraGameMode : public AModularGameModeBase
 {
 	GENERATED_BODY()
+
+		//Replicated Network setup
+		void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 public:
 
@@ -74,6 +78,15 @@ protected:
 
 public:
 
+	UPROPERTY(EditAnywhere, Replicated, BlueprintReadWrite, Category = "ActorSpawning")
+	TArray<class ALyraPlayerController*> Players;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NewPlayer")
+		AController* NewPlayerPC;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NewPlayer")
 		APlayerController* newPlayer;
+
+	UFUNCTION()
+		void ChangeInGameName(AController* NewPlayerController, const FString& NewName);
 };

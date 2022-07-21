@@ -59,6 +59,7 @@ public:
 	const T* GetPawnData() const { return Cast<T>(PawnData); }
 
 	void SetPawnData(const ULyraPawnData* InPawnData);
+	virtual void BeginPlay() override;
 
 	//~AActor interface
 	virtual void PreInitializeComponents() override;
@@ -168,5 +169,20 @@ public:
 
 	UPROPERTY(VisibleAnywhere, Replicated, BlueprintReadWrite)
 		int32 Pi = 0;
+
+	UFUNCTION(BlueprintCallable, Reliable, Server, WithValidation, Category = Players)
+		void SetPlayerInfo(const FString& PlayerSessionId, const FString& GameSessionId, const FString& Username);
+
+	UPROPERTY(VisibleAnywhere, Replicated, BlueprintReadWrite)
+		FString AWSPlayerSessionId;
+
+	UPROPERTY(VisibleAnywhere, Replicated, BlueprintReadWrite)
+		FString AWSGameSessionId;
+
+	UPROPERTY(VisibleAnywhere, Replicated, BlueprintReadWrite)
+		FString AWSPlayerId;
+
+	UPROPERTY(VisibleAnywhere, Replicated, BlueprintReadWrite)
+		FString AWSUsername;
 
 };

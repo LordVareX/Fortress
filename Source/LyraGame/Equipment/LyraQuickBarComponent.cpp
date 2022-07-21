@@ -126,7 +126,7 @@ void ULyraQuickBarComponent::ThrowableCycleActiveSlotForward()
 			if (Slots[5] != nullptr)
 			{	
 				int CurrentSlot = Slots.Num() - 1;
-				//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, FString::Printf(TEXT("Current slots : %i"), CurrentSlot));
+				GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, FString::Printf(TEXT("Current slots : %i"), NewIndex));
 				
 				if (NewIndex != 5)
 				{
@@ -139,7 +139,7 @@ void ULyraQuickBarComponent::ThrowableCycleActiveSlotForward()
 					}
 					else
 					{
-						NewIndex = NewIndex + 1;
+						//NewIndex = (NewIndex + 1) % Slots.Num();
 						if (Slots[5] != nullptr)
 						{
 							
@@ -149,7 +149,7 @@ void ULyraQuickBarComponent::ThrowableCycleActiveSlotForward()
 						}
 						else
 						{
-							NewIndex = NewIndex + 1;
+							//NewIndex = (NewIndex + 1) % Slots.Num();
 							if (Slots[3] != nullptr)
 							{
 
@@ -211,7 +211,7 @@ void ULyraQuickBarComponent::ThrowableCycleActiveSlotForward()
 					}
 					else
 					{
-						NewIndex = NewIndex + 1;
+						//NewIndex = (NewIndex + 1) % Slots.Num();
 						if (Slots[5] != nullptr)
 						{
 
@@ -221,7 +221,7 @@ void ULyraQuickBarComponent::ThrowableCycleActiveSlotForward()
 						}
 						else
 						{
-							NewIndex = NewIndex + 1;
+							//NewIndex = (NewIndex + 1) % Slots.Num();
 							if (Slots[3] != nullptr)
 							{
 

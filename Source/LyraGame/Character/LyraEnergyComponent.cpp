@@ -132,7 +132,7 @@ float ULyraEnergyComponent::GetEnergyNormalized() const
 	return 0.0f;
 }
 
-static AActor* GetInstigatorFromAttrChangeData(const FOnAttributeChangeData& ChangeData)
+static AActor* GetInstigatorFromEnergyAttrChangeData(const FOnAttributeChangeData& ChangeData)
 {
 	if (ChangeData.GEModData != nullptr)
 	{
@@ -145,12 +145,12 @@ static AActor* GetInstigatorFromAttrChangeData(const FOnAttributeChangeData& Cha
 
 void ULyraEnergyComponent::HandleEnergyChanged(const FOnAttributeChangeData& ChangeData)
 {
-	OnEnergyChanged.Broadcast(this, ChangeData.OldValue, ChangeData.NewValue, GetInstigatorFromAttrChangeData(ChangeData));
+	OnEnergyChanged.Broadcast(this, ChangeData.OldValue, ChangeData.NewValue, GetInstigatorFromEnergyAttrChangeData(ChangeData));
 }
 
 void ULyraEnergyComponent::HandleMaxEnergyChanged(const FOnAttributeChangeData& ChangeData)
 {
-	OnMaxEnergyChanged.Broadcast(this, ChangeData.OldValue, ChangeData.NewValue, GetInstigatorFromAttrChangeData(ChangeData));
+	OnMaxEnergyChanged.Broadcast(this, ChangeData.OldValue, ChangeData.NewValue, GetInstigatorFromEnergyAttrChangeData(ChangeData));
 }
 
 void ULyraEnergyComponent::HandleOutOfEnergy(AActor* EnergyInstigator, AActor* EnergyCauser, const FGameplayEffectSpec& EnergyEffectSpec, float EnergyMagnitude)

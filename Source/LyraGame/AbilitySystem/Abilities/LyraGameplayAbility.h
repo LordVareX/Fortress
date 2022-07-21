@@ -125,6 +125,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Lyra|Ability")
 	void ClearCameraMode();
 
+	// Clears the ability's camera mode.  Automatically called if needed when the ability ends.
+	UFUNCTION(BlueprintCallable, Category = "Lyra|Ability")
+	void OnAbilityEnd();
+
 	void OnAbilityFailedToActivate(const FGameplayTagContainer& FailedReason) const
 	{
 		NativeOnAbilityFailedToActivate(FailedReason);

@@ -530,3 +530,8 @@ void ULyraGameplayAbility::ClearCameraMode()
 		ActiveCameraMode = nullptr;
 	}
 }
+
+void ULyraGameplayAbility::OnAbilityEnd()
+{
+	K2_EndAbility();
+}
