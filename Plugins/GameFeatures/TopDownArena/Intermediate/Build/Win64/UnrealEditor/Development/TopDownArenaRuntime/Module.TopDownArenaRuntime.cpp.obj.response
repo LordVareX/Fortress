@@ -310,6 +310,11 @@ D:\UE5\Fotress\Plugins\GameFeatures\TopDownArena\Intermediate\Build\Win64\Unreal
 /I D:\UE5\Fotress\Plugins\AsyncMixin\Source\Public
 /I ..\Plugins\Experimental\ControlFlows\Source
 /I ..\Plugins\Experimental\ControlFlows\Source\ControlFlows\Public
+/I ..\Plugins\Online\OnlineSubsystemUtils\Intermediate\Build\Win64\UnrealEditor\Inc\OnlineSubsystemUtils
+/I ..\Plugins\Online\OnlineSubsystemUtils\Source
+/I ..\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils\Classes
+/I ..\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils\Public
+/I ThirdParty\Steamworks\Steamv151\sdk\public
 /I ThirdParty\mimalloc\include
 /I ThirdParty\LibTiff\Source\Win64
 /I ThirdParty\LibTiff\Source

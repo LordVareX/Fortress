@@ -334,6 +334,11 @@ D:\UE5\Fotress\Plugins\GameFeatures\ShooterCore\Intermediate\Build\Win64\UnrealE
 /I Developer\DesktopPlatform\Public
 /I ..\Plugins\Experimental\ControlFlows\Source
 /I ..\Plugins\Experimental\ControlFlows\Source\ControlFlows\Public
+/I ..\Plugins\Online\OnlineSubsystemUtils\Intermediate\Build\Win64\UnrealEditor\Inc\OnlineSubsystemUtils
+/I ..\Plugins\Online\OnlineSubsystemUtils\Source
+/I ..\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils\Classes
+/I ..\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils\Public
+/I ThirdParty\Steamworks\Steamv151\sdk\public
 /I D:\UE5\Fotress\Plugins\CommonGame\Intermediate\Build\Win64\UnrealEditor\Inc\CommonGame
 /I D:\UE5\Fotress\Plugins\CommonGame
 /I D:\UE5\Fotress\Plugins\CommonGame\Source

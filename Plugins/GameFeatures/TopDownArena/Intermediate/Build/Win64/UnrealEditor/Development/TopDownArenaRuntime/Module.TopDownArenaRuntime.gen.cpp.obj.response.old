@@ -1,6 +1,6 @@
-H:\FotressRepo\Fotress\Plugins\GameFeatures\TopDownArena\Intermediate\Build\Win64\UnrealEditor\Development\TopDownArenaRuntime\Module.TopDownArenaRuntime.gen.cpp
+D:\UE5\Fotress\Plugins\GameFeatures\TopDownArena\Intermediate\Build\Win64\UnrealEditor\Development\TopDownArenaRuntime\Module.TopDownArenaRuntime.gen.cpp
 /I .
-/I H:\FotressRepo\Fotress\Plugins\GameFeatures\TopDownArena\Source\TopDownArenaRuntime\Private
+/I D:\UE5\Fotress\Plugins\GameFeatures\TopDownArena\Source\TopDownArenaRuntime\Private
 /I ..\Intermediate\Build\Win64\UnrealEditor\Inc\CoreUObject
 /I Runtime
 /I Runtime\CoreUObject\Public
@@ -270,18 +270,18 @@ H:\FotressRepo\Fotress\Plugins\GameFeatures\TopDownArena\Intermediate\Build\Win6
 /I ..\Plugins\FX\Niagara\Source\NiagaraShader\Public
 /I ..\Plugins\FX\Niagara\Source\NiagaraVertexFactories\Public
 /I Developer\DesktopPlatform\Public
-/I H:\FotressRepo\Fotress\Plugins\GameFeatures\TopDownArena\Intermediate\Build\Win64\UnrealEditor\Inc\TopDownArenaRuntime
-/I H:\FotressRepo\Fotress\Plugins\GameFeatures\TopDownArena\Source
-/I H:\FotressRepo\Fotress\Plugins\GameFeatures\TopDownArena\Source\TopDownArenaRuntime\Public
-/I H:\FotressRepo\Fotress\Intermediate\Build\Win64\UnrealEditor\Inc\LyraGame
-/I H:\FotressRepo\Fotress\Source
-/I H:\FotressRepo\Fotress\Source\LyraGame
+/I D:\UE5\Fotress\Plugins\GameFeatures\TopDownArena\Intermediate\Build\Win64\UnrealEditor\Inc\TopDownArenaRuntime
+/I D:\UE5\Fotress\Plugins\GameFeatures\TopDownArena\Source
+/I D:\UE5\Fotress\Plugins\GameFeatures\TopDownArena\Source\TopDownArenaRuntime\Public
+/I D:\UE5\Fotress\Intermediate\Build\Win64\UnrealEditor\Inc\LyraGame
+/I D:\UE5\Fotress\Source
+/I D:\UE5\Fotress\Source\LyraGame
 /I ..\Plugins\Experimental\ModularGameplay\Intermediate\Build\Win64\UnrealEditor\Inc\ModularGameplay
 /I ..\Plugins\Experimental\ModularGameplay\Source
 /I ..\Plugins\Experimental\ModularGameplay\Source\ModularGameplay\Public
-/I H:\FotressRepo\Fotress\Plugins\ModularGameplayActors\Intermediate\Build\Win64\UnrealEditor\Inc\ModularGameplayActors
-/I H:\FotressRepo\Fotress\Plugins\ModularGameplayActors\Source
-/I H:\FotressRepo\Fotress\Plugins\ModularGameplayActors\Source\ModularGameplayActors\Public
+/I D:\UE5\Fotress\Plugins\ModularGameplayActors\Intermediate\Build\Win64\UnrealEditor\Inc\ModularGameplayActors
+/I D:\UE5\Fotress\Plugins\ModularGameplayActors\Source
+/I D:\UE5\Fotress\Plugins\ModularGameplayActors\Source\ModularGameplayActors\Public
 /I ..\Plugins\Runtime\ReplicationGraph\Intermediate\Build\Win64\UnrealEditor\Inc\ReplicationGraph
 /I ..\Plugins\Runtime\ReplicationGraph
 /I ..\Plugins\Runtime\ReplicationGraph\Source\Public
@@ -302,14 +302,19 @@ H:\FotressRepo\Fotress\Plugins\GameFeatures\TopDownArena\Intermediate\Build\Win6
 /I ..\Plugins\Online\OnlineSubsystem\Source\Public
 /I ..\Plugins\Online\OnlineBase
 /I ..\Plugins\Online\OnlineBase\Source\Public
-/I H:\FotressRepo\Fotress\Plugins\CommonLoadingScreen\Intermediate\Build\Win64\UnrealEditor\Inc\CommonLoadingScreen
-/I H:\FotressRepo\Fotress\Plugins\CommonLoadingScreen\Source
-/I H:\FotressRepo\Fotress\Plugins\CommonLoadingScreen\Source\CommonLoadingScreen\Public
-/I H:\FotressRepo\Fotress\Plugins\AsyncMixin
-/I H:\FotressRepo\Fotress\Plugins\AsyncMixin\Source
-/I H:\FotressRepo\Fotress\Plugins\AsyncMixin\Source\Public
+/I D:\UE5\Fotress\Plugins\CommonLoadingScreen\Intermediate\Build\Win64\UnrealEditor\Inc\CommonLoadingScreen
+/I D:\UE5\Fotress\Plugins\CommonLoadingScreen\Source
+/I D:\UE5\Fotress\Plugins\CommonLoadingScreen\Source\CommonLoadingScreen\Public
+/I D:\UE5\Fotress\Plugins\AsyncMixin
+/I D:\UE5\Fotress\Plugins\AsyncMixin\Source
+/I D:\UE5\Fotress\Plugins\AsyncMixin\Source\Public
 /I ..\Plugins\Experimental\ControlFlows\Source
 /I ..\Plugins\Experimental\ControlFlows\Source\ControlFlows\Public
+/I ..\Plugins\Online\OnlineSubsystemUtils\Intermediate\Build\Win64\UnrealEditor\Inc\OnlineSubsystemUtils
+/I ..\Plugins\Online\OnlineSubsystemUtils\Source
+/I ..\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils\Classes
+/I ..\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils\Public
+/I ThirdParty\Steamworks\Steamv154\sdk\public
 /I ThirdParty\mimalloc\include
 /I ThirdParty\LibTiff\Source\Win64
 /I ThirdParty\LibTiff\Source
@@ -325,17 +330,17 @@ H:\FotressRepo\Fotress\Plugins\GameFeatures\TopDownArena\Intermediate\Build\Win6
 /I ThirdParty\PhysX3\PhysX_3.4\Include\extensions
 /I ThirdParty\PhysX3\PhysX_3.4\Include\geometry
 /I "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\INCLUDE"
-/I "C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8\include\um"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\ucrt"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\shared"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\um"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\winrt"
+/I "C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6.2\include\um"
+/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\ucrt"
+/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\shared"
+/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\um"
+/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\winrt"
 /FI"..\Intermediate\Build\Win64\UnrealEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h"
-/FI"H:\FotressRepo\Fotress\Plugins\GameFeatures\TopDownArena\Intermediate\Build\Win64\UnrealEditor\Development\TopDownArenaRuntime\Definitions.TopDownArenaRuntime.h"
+/FI"D:\UE5\Fotress\Plugins\GameFeatures\TopDownArena\Intermediate\Build\Win64\UnrealEditor\Development\TopDownArenaRuntime\Definitions.TopDownArenaRuntime.h"
 /Yu"..\Intermediate\Build\Win64\UnrealEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h"
 /Fp"..\Intermediate\Build\Win64\UnrealEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h.pch"
-/Fo"H:\FotressRepo\Fotress\Plugins\GameFeatures\TopDownArena\Intermediate\Build\Win64\UnrealEditor\Development\TopDownArenaRuntime\Module.TopDownArenaRuntime.gen.cpp.obj"
-/sourceDependencies H:\FotressRepo\Fotress\Plugins\GameFeatures\TopDownArena\Intermediate\Build\Win64\UnrealEditor\Development\TopDownArenaRuntime\Module.TopDownArenaRuntime.gen.cpp.json
+/Fo"D:\UE5\Fotress\Plugins\GameFeatures\TopDownArena\Intermediate\Build\Win64\UnrealEditor\Development\TopDownArenaRuntime\Module.TopDownArenaRuntime.gen.cpp.obj"
+/sourceDependencies D:\UE5\Fotress\Plugins\GameFeatures\TopDownArena\Intermediate\Build\Win64\UnrealEditor\Development\TopDownArenaRuntime\Module.TopDownArenaRuntime.gen.cpp.json
 /Zc:inline
 /nologo
 /Oi

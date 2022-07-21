@@ -44,7 +44,10 @@ public class LyraGame : ModuleRules
 				"CommonLoadingScreen",
 				"Niagara",
 				"AsyncMixin",
-				"ControlFlows"
+				"ControlFlows",
+				"OnlineSubsystem",
+				"OnlineSubsystemUtils",
+				"Steamworks"
 			}
 		);
 
@@ -78,6 +81,7 @@ public class LyraGame : ModuleRules
 
 		DynamicallyLoadedModuleNames.AddRange(
 			new string[] {
+				"OnlineSubsystemSteam"
 			}
 		);
 
