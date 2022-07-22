@@ -957,7 +957,7 @@ void ALyraCharacter::DeclareSlidingTimeline()
 	if (FloatCurve)
 	{
 		SlideTimeline->SetLooping(false);
-		SlideTimeline->SetTimelineLength(.83f);
+		SlideTimeline->SetTimelineLength(5.83f);
 
 		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("Slide declared")));
 

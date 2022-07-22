@@ -281,7 +281,7 @@ protected:
 		UCurveFloat* SpeedCurve;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float MaxSlideSpeed = 950.f;
+		float MaxSlideSpeed = 1950.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float DefaultWalkSpeed = 600.f;
