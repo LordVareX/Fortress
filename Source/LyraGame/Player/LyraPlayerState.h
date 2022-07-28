@@ -168,10 +168,19 @@ public:
 		int ScrapCount;
 
 	UPROPERTY(VisibleAnywhere, Replicated, BlueprintReadWrite)
+		bool PostGame;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)//(VisibleAnywhere, Replicated, BlueprintReadWrite)
+		int32 CharacterIndex;
+
+	UPROPERTY(VisibleAnywhere, Replicated, BlueprintReadWrite)
 		int32 Pi = 0;
 
 	UFUNCTION(BlueprintCallable, Reliable, Server, WithValidation, Category = Players)
 		void SetPlayerInfo(const FString& PlayerSessionId, const FString& GameSessionId, const FString& Username);
+
+	UFUNCTION(BlueprintCallable, Reliable, Server, WithValidation, Category = Players)
+		void ChangeCharIndex(int32 CharIndex);
 
 	UPROPERTY(VisibleAnywhere, Replicated, BlueprintReadWrite)
 		FString AWSPlayerSessionId;

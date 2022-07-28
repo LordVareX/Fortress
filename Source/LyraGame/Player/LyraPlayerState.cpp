@@ -134,6 +134,8 @@ void ALyraPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	DOREPLIFETIME(ThisClass, AWSGameSessionId);
 	DOREPLIFETIME(ThisClass, AWSPlayerId);
 	DOREPLIFETIME(ThisClass, AWSUsername);
+	DOREPLIFETIME(ThisClass, PostGame);
+	//DOREPLIFETIME(ThisClass, CharacterIndex);
 }
 
 ALyraPlayerController* ALyraPlayerState::GetLyraPlayerController() const
@@ -312,5 +314,16 @@ void ALyraPlayerState::SetPlayerInfo_Implementation(const FString& PlayerSession
 			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, FString::Printf(TEXT("Username %s"), *AWSUsername));
 			LyraGameMode->ChangeInGameName(LyraGameMode->NewPlayerPC, Username);
 		}
+
+}
+
+bool ALyraPlayerState::ChangeCharIndex_Validate(int32 CharIndex)
+{
+	return true;
+}
+
+void ALyraPlayerState::ChangeCharIndex_Implementation(int32 CharIndex)
+{
+	CharacterIndex = CharIndex;
 
 }
