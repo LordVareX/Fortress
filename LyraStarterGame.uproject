@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "{020D509A-4224-3C65-8BB9-7BB1721B603C}",
+	"EngineAssociation": "{F898B945-4101-A40C-0297-D890B6ACF00C}",
 	"Category": "Samples",
 	"Description": "",
 	"Modules": [
@@ -297,6 +297,11 @@
 			"Name": "awsSDK",
 			"Enabled": true,
 			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/eee4bef24c9d429887ddcc107a5a9b4d"
+		},
+		{
+			"Name": "BlueprintJson",
+			"Enabled": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/f837e4835fbc434a853fe1ead2410b84"
 		}
 	],
 	"EpicSampleNameHash": "451731683"

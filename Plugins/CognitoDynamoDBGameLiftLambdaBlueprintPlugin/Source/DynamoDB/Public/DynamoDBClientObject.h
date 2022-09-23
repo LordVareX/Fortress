@@ -1016,12 +1016,9 @@ public:
         FString &errorMessage,
         struct FLatentActionInfo LatentInfo
     );
+
     /**
-    *  <p>Edits an existing item's attributes, or adds a new item to the table if it does not already exist. You can put, delete, or add attribute values. You can also perform a conditional update on an existing item (insert a new attribute name-value pair if it doesn't exist, or replace an existing name-value pair if it has certain expected attribute values).</p> <p>You can also return the item's attribute values in the same <code>UpdateItem</code> operation using the <code>ReturnValues</code> parameter.</p><p><h3>See Also:</h3>   <a href="http://docs.aws.amazon.com/goto/WebAPI/dynamodb-2012-08-10/UpdateItem">AWS API Reference</a></p>
-    *  Queues the request into a thread executor and triggers associated callback when operation has finished.
-    * @param
-    * @param updateItemRequest
-    * @param LatentInfo         The latent action
+    See somewhere it declares
     **/
     UFUNCTION(BlueprintCallable,
     meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"),
