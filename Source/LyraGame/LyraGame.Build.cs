@@ -46,8 +46,8 @@ public class LyraGame : ModuleRules
 				"AsyncMixin",
 				"ControlFlows",
 				"OnlineSubsystem",
-				"OnlineSubsystemUtils",
-				"Steamworks"
+				"OnlineSubsystemUtils"
+				
 			}
 		);
 
@@ -81,7 +81,7 @@ public class LyraGame : ModuleRules
 
 		DynamicallyLoadedModuleNames.AddRange(
 			new string[] {
-				"OnlineSubsystemSteam"
+				
 			}
 		);
 

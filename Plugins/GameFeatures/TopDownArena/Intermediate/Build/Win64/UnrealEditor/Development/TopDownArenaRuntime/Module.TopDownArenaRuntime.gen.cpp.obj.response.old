@@ -314,7 +314,7 @@ D:\UE5\Fotress\Plugins\GameFeatures\TopDownArena\Intermediate\Build\Win64\Unreal
 /I ..\Plugins\Online\OnlineSubsystemUtils\Source
 /I ..\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils\Classes
 /I ..\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils\Public
-/I ThirdParty\Steamworks\Steamv154\sdk\public
+/I ThirdParty\Steamworks\Steamv151\sdk\public
 /I ThirdParty\mimalloc\include
 /I ThirdParty\LibTiff\Source\Win64
 /I ThirdParty\LibTiff\Source

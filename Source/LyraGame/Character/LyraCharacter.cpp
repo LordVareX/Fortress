@@ -80,8 +80,8 @@ ALyraCharacter::ALyraCharacter(const FObjectInitializer& ObjectInitializer)
 	/*EnergyComponent->OnEnergyChanged.AddDynamic(this, &ThisClass::OnEnergyChanged);
 	EnergyComponent->OnMaxEnergyChanged.AddDynamic(this, &ThisClass::OnMaxEnergyChanged);*/
 
-	CameraComponent = CreateDefaultSubobject<ULyraCameraComponent>(TEXT("CameraComponent"));
-	CameraComponent->SetRelativeLocation(FVector(-300.0f, 0.0f, 75.0f));
+	//CameraComponent = CreateDefaultSubobject<ULyraCameraComponent>(TEXT("CameraComponent"));
+	//CameraComponent->SetRelativeLocation(FVector(-300.0f, 0.0f, 75.0f));
 
 	/*ShieldComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ShieldComponent"));
 	ShieldComponent->SetupAttachment(CapsuleComp);
