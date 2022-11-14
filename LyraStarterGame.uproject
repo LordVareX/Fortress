@@ -295,11 +295,6 @@
 			"Name": "BlueprintJson",
 			"Enabled": true,
 			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/f837e4835fbc434a853fe1ead2410b84"
-		},
-		{
-			"Name": "MMoInput",
-			"Enabled": true,
-			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/9083c3168bb944129bbae10800cfc3b5"
 		}
 	],
 	"EpicSampleNameHash": "451731683"
