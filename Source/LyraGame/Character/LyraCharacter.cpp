@@ -46,6 +46,7 @@ ALyraCharacter::ALyraCharacter(const FObjectInitializer& ObjectInitializer)
 	UCapsuleComponent* CapsuleComp = GetCapsuleComponent();
 	check(CapsuleComp);
 	CapsuleComp->InitCapsuleSize(40.0f, 90.0f);
+	CapsuleComp->SetRelativeRotation(FRotator(0.0f, 0.0f, 0.0f));
 	CapsuleComp->SetCollisionProfileName(NAME_LyraCharacterCollisionProfile_Capsule);
 
 	USkeletalMeshComponent* MeshComp = GetMesh();
