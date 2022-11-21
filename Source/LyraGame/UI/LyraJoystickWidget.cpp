@@ -14,7 +14,7 @@ ULyraJoystickWidget::ULyraJoystickWidget(const FObjectInitializer& ObjectInitial
 FReply ULyraJoystickWidget::NativeOnTouchStarted(const FGeometry& InGeometry, const FPointerEvent& InGestureEvent)
 {
 	Super::NativeOnTouchStarted(InGeometry, InGestureEvent);
-	
+
 	TouchOrigin = InGestureEvent.GetScreenSpacePosition();
 
 	FReply Reply = FReply::Handled();
@@ -53,7 +53,7 @@ void ULyraJoystickWidget::NativeOnMouseLeave(const FPointerEvent& InMouseEvent)
 void ULyraJoystickWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
-	
+
 	// Move the inner stick icon around with the vector
 	if (JoystickForeground && JoystickBackground)
 	{
@@ -63,14 +63,14 @@ void ULyraJoystickWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaT
 			(JoystickBackground->GetDesiredSize() * 0.5f)
 		);
 	}
-	
+
 	InputKeyValue2D(StickVector);
 }
 
 void ULyraJoystickWidget::HandleTouchDelta(const FGeometry& InGeometry, const FPointerEvent& InGestureEvent)
 {
 	const FVector2D& ScreenSpacePos = InGestureEvent.GetScreenSpacePosition();
-	
+
 	// The center of the geo locally is just its size
 	FVector2D LocalStickCenter = InGeometry.GetAbsoluteSize();
 
@@ -81,7 +81,7 @@ void ULyraJoystickWidget::HandleTouchDelta(const FGeometry& InGeometry, const FP
 	{
 		MoveStickOffset *= FVector2D(1.0f, -1.0f);
 	}
-	
+
 	FVector2D MoveStickDir = FVector2D::ZeroVector;
 	float MoveStickLength = 0.0f;
 	MoveStickOffset.ToDirectionAndLength(MoveStickDir, MoveStickLength);
