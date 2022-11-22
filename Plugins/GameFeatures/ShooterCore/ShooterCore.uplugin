@@ -16,7 +16,7 @@
 	"Installed": false,
 	"ExplicitlyLoaded": true,
 	"EnabledByDefault": false,
-	"BuiltInInitialFeatureState": "Registered",
+	"BuiltInInitialFeatureState": "Loaded",
 	"Modules": [
 		{
 			"Name": "ShooterCoreRuntime",
